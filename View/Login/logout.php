@@ -1,4 +1,4 @@
-<?php $this->title = 'Déconnexion'; ?>
+<?php $this->title =  WEBSITE_NAME . ' | Déconnexion'; ?>
 
 <div>
 <!-- Bienvenue -->
@@ -15,4 +15,4 @@
 <hr>
 </div>
 <?php $this->sidebar= 'Le blog contient ' . $number_of_items .' articles<br>
-Le blog contient '. $number_of_items_pages.' pages<br>'; ?>
+et '. $number_of_items_pages.' pages d\'articles.<br>'; ?>

@@ -1,14 +1,41 @@
-<footer class="shadow container-fluid">
-  <div class="row text-center">
-    <div class="col-12 bg-danger p-3">
-       <h6 class="lead font-weight-bold text-white">Jean Forteroche |&nbsp;<span class="font-weight-lighter">écrivain et acteur</span>&nbsp;|&nbsp;&copy; 2019</h6>
+<footer class="pb-5 mt-5 bg-primary-alt">
+  <div class="container">
+    <div class="row mb-4 justify-content-center">
+      <div class="col-auto">
+        <a href="index.html">
+          <img src="<?= BASE_URL; ?>public/images/logo.svg" alt="Simetricks" class="icon icon-lg">
+        </a>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col">
+        <ul class="nav justify-content-center">
+          <li class="nav-item"><a href="#" class="nav-link">Cards</a>
+          </li>
+          <li class="nav-item"><a href="#" class="nav-link">Extended Cards</a>
+          </li>
+          <li class="nav-item"><a href="#" class="nav-link">2.0</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row justify-content-center text-center">
+      <div class="col-xl-10">
+        <small class="text-muted">&copy; <?= COPYRIGHT_YEAR. ' Tous droits réservés.' ;?></small>
+      </div>
     </div>
   </div>
 </footer>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="<?php echo BASE_URL; ?>public/js/scroll.js"></script>
-<script type="text/javascript" src="<?php echo BASE_URL; ?>public/js/password_policy.js"></script>
+<a href="#" class="btn back-to-top btn-primary btn-round" data-smooth-scroll data-aos="fade-up" data-aos-offset="2000" data-aos-mirror="true" data-aos-once="false">
+  <img class="icon" src="<?= BASE_URL; ?>public/images/icons/theme/navigation/arrow-up.svg" alt="arrow-up icon" data-inject-svg />
+</a>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="<?= BASE_URL; ?>public/js/scroll.js"></script>
+<script type="text/javascript" src="<?= BASE_URL; ?>public/js/password_policy.js"></script>
+<script type="text/javascript">
+  window.addEventListener("load", function () {    document.querySelector('body').classList.add('loaded');  });
+</script>
 </body>
 </html>

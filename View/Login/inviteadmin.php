@@ -1,4 +1,4 @@
-<?php $this->title = 'Connectez-vous'; ?>
+<?php $this->title =  WEBSITE_NAME . ' | Connexion'; ?>
 
 <div>
 <!-- Bienvenue -->

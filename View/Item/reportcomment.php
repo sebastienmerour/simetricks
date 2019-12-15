@@ -1,4 +1,5 @@
-<?php $this->title = 'Jean Forteroche | écrivain et acteur | Blog - Modification de commentaire'; ?>
+<?php $this->title =  WEBSITE_NAME . ' | Signalement de commentaire'; ?>
+
 <p>&nbsp;</p>
 <?php
 if (empty($comment)) {
@@ -45,10 +46,11 @@ if (empty($comment)) {
 				<div class="form-group">
 				<textarea class="form-control" id="comment" name="content" rows="6" placeholder="Ecrivez ici votre commentaire"></textarea>
 				</div>
-				<div class="g-recaptcha" data-sitekey="6LerX8QUAAAAAAEdU0JZMW5e9-7UNFVF4VumMHcz"></div>
+				<div class="g-recaptcha" data-sitekey="6LehvscUAAAAAH8By_5qI0kdK8aaqHqVHDFwWm5W"></div>
 							<button type="submit" class="btn btn-primary">Envoyer</button>
 			</form>
 		</div>
 </div>
 <?php $this->sidebar= 'Le blog contient ' . $number_of_items .' articles<br>
-Le blog contient '. $number_of_items_pages.' pages<br>'; ?>
+et '. $number_of_items_pages.' pages d\'articles.<br>
+Cette page contient ' . $number_of_comments .' commentaires et ' . $number_of_comments_pages. ' pages de commentaires'; ?>

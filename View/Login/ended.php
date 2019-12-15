@@ -1,4 +1,4 @@
-<?php $this->title = 'Déconnexion'; ?>
+<?php $this->title =  WEBSITE_NAME . ' | Déconnexion'; ?>
 
 <div>
 <!-- Bienvenue -->

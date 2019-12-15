@@ -4,8 +4,7 @@
 	}
 	else {
 ?>
-<?php $this->title = 'Connexion à l\'Administration du blog'; ?>
-
+<?php $this->title =  WEBSITE_NAME . ' |  Panneau d\'Administration'; ?>
 <?php require __DIR__ . '/../errors/errors.php'; ?>
 
 <div>

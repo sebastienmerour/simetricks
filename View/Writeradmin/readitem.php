@@ -4,7 +4,7 @@
 	}
 	else {
 ?>
-<?php $this->title = 'Modification d\'un article'; ?>
+<?php $this->title =  WEBSITE_NAME . ' | Modification d\'un article'; ?>
 <?php if (empty($item)) {
 							require __DIR__ . '/../errors/item_not_found.php';
 			    }

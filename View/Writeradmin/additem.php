@@ -4,7 +4,7 @@
 	}
 	else {
 ?>
-<?php $this->title = 'Ajout d\'un nouvel article'; ?>
+<?php $this->title =  WEBSITE_NAME . ' | Ajout d\'un nouvel article'; ?>
 <?php require __DIR__ . '/../errors/errors.php'; ?>
 
 <!-- Ajout  d'un nouvel article via TINYMCE -->

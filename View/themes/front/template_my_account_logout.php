@@ -1,25 +1,27 @@
-<div class="card my-4">
-  <h5 class="card-header">Connexion</h5>
-  <div class="card-body">
-    <div class="input-group">
-      <a href="login/logout" role="button"  role="button" class="btn btn-md btn-danger">Se déconnecter</a>
+<div class="col-md-12 col-lg-12 d-flex mt-3">
+  <div class="card card-body">
+    <div class="flex-grow-1">
+      <div class="h3">Connexion</div>
     </div>
+    <ul class="list-unstyled mb-0">
+      <li>
+        <a href="login/logout" role="button"  role="button" class="btn btn-md btn-danger">Se déconnecter</a>
+      </li>
+    </ul>
   </div>
 </div>
-<div class="card my-4">
-  <h5 class="card-header">Menu</h5>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-lg-12">
-        <ul class="list-unstyled mb-0">
-          <li>
-            <a href="user">Mon Compte</a>
-          </li>
-          <li>
-            <a href="<?php echo BASE_URL; ?>">Le Blog</a>
-          </li>
-        </ul>
-      </div>
+<div class="col-md-12 col-lg-12 d-flex">
+  <div class="card card-body">
+    <div class="flex-grow-1">
+      <div class="h3">Menu</div>
     </div>
+    <ul class="list-unstyled mb-0">
+      <li>
+        <a href="user" class="hover-arrow">Mon Compte</a>
+      </li>
+      <li>
+        <a href="<?= BASE_URL; ?>" class="hover-arrow">Le Blog</a>
+      </li>
+    </ul>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<?php $this->title = 'Jean Forteroche | écrivain et acteur | Blog'; ?>
+<?php $this->title = WEBSITE_NAME; ?>
 
 <!-- Pour chaque post on met un foreach : -->
 <?php foreach ($items as $item):?>
@@ -51,4 +51,4 @@ require __DIR__ . '/../Home/pagination_home.php';
 }
 ?>
 <?php $this->sidebar= 'Le blog contient ' . $number_of_items .' articles<br>
-Le blog contient '. $number_of_items_pages.' pages<br>'; ?>
+et '. $number_of_items_pages.' pages d\'articles.<br>'; ?>

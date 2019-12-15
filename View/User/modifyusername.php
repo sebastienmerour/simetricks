@@ -4,7 +4,7 @@
 	}
 	else {
 ?>
-<?php $this->title = 'Mon compte - Mise à jour'; ?>
+<?php $this->title =  WEBSITE_NAME . ' | Mon compte - Mise à jour'; ?>
 				<!-- Username -->
 				<?php
 					echo '<h1 class="mt-4">Bienvenue ' .$this->clean($user['firstname']). ' !</h1>';
@@ -188,8 +188,8 @@
         </div>
 				<hr>
 			</div><!-- fin du div tab-content -->
-<?php
-$this->sidebar= 'Le blog contient ' . $number_of_items .' articles<br>
-Le blog contient '. $number_of_items_pages.' pages<br>';
+
+<?php $this->sidebar= 'Le blog contient ' . $number_of_items .' articles<br>
+et '. $number_of_items_pages.' pages d\'articles.<br>';
 };
 ?>

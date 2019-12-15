@@ -4,7 +4,7 @@
 	}
 	else {
 ?>
-<?php $this->title = 'Modification d\'un commentaire'; ?>
+<?php $this->title =  WEBSITE_NAME . ' | Modification d\'un commentaire'; ?>
 <?php if (empty($comment)) {
 							require __DIR__ . '/../errors/comment_not_found.php';
 			    }
