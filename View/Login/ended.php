@@ -9,7 +9,7 @@
 <div class="container">
   <div class="row">
     <p>Vous avez été déconnectés. &nbsp;</p>
-    <p>Pour vous connecter, <a href="../../writeradmin/">cliquez ici</a></p>
+    <p>Pour vous connecter, <a href="<?= BASE_ADMIN_URL ; ?>">cliquez ici</a></p>
   </div>
 </div>
 <hr>

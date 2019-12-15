@@ -75,7 +75,7 @@ if (empty($comment)) {
 				<div class="form-group">
 				<textarea class="form-control" id="comment" name="content" rows="6" placeholder="Ecrivez ici votre commentaire"></textarea>
 				</div>
-				<div class="g-recaptcha" data-sitekey="6LehvscUAAAAAH8By_5qI0kdK8aaqHqVHDFwWm5W"></div>
+				<div class="g-recaptcha" data-sitekey="<?= RECAPTCHA_SITE_KEY; ?>"></div>
 							<button type="submit" class="btn btn-primary">Envoyer</button>
 			</form>
 		</div>

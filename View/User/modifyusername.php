@@ -39,7 +39,7 @@
 							    <div class="col-sm-8"><h6>Modifier ma photo de profil :</h6>
 									<form action="<?php echo BASE_URL; ?>user/updateavatar" method="post" enctype="multipart/form-data">
 										                <input type="file" name="avatar" class="text-center center-block file-upload">
-																		<label for="avatar">(JPG, PNG ou GIF | max. 1 Mo)</label>
+																		<label for="avatar" class="text-muted text-small">(JPG, PNG ou GIF | max. 1 Mo)</label>
 																		<input type="hidden" name="MAX_FILE_SIZE" value="1048576">
 																		<br>
 													          <input type="submit" class="btn btn-sm btn-success" name="modifyavatar" value="Envoyer">
@@ -152,7 +152,7 @@
 					<?php
 					if (!empty($_SESSION['errors']['username'])){?>
 					<div class="alert alert-danger alert-dismissible fade show" role="alert">
-						<?php  echo $_SESSION['errors']['username'];?>
+						<?= $_SESSION['errors']['username'];?>
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>

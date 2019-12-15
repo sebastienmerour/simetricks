@@ -329,7 +329,7 @@ class User extends Model
                 // on indique à l'utilisateur qu'il s'est trompé de username ou de mot de passe.
                 // on ne préciser pas qu'il s'agit du username qui est faux, pour raison de sécurité :
                 $_SESSION['errors'] = "Identifiant ou Mot de passe incorrect !";
-                header('Location: ../writeradmin/');
+                header('Location:' . BASE_ADMIN_URL);
             } else {
 
                 // Sinon, si le username a bien été trouvé, il faut vérifier que le mot de passe est correct.
@@ -357,13 +357,13 @@ class User extends Model
                     }
 
                     // On redirige l'utilisateur vers la page protégée :
-                    header('Location: ../writeradmin/dashboard');
+                    header('Location:' . BASE_ADMIN_URL. 'dashboard');
                     exit;
 
                 } else {
                     // Dans le cas où le mot de passe est faux, on envoie un message :
                     $_SESSION['errors'] = "Vous n'êtes pas autorisés à accéder à l'administration !";
-                    header('Location: ../writeradmin/');
+                    header('Location:' . BASE_ADMIN_URL);
                 }
             }
         }

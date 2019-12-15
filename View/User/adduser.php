@@ -29,7 +29,7 @@
 			<div class="form-group">
 				<input type="text" class="form-control" id="email" name="email" placeholder="E-mail" required><br>
 			</div>
-			<div class="g-recaptcha mb-3" data-sitekey="6LehvscUAAAAAH8By_5qI0kdK8aaqHqVHDFwWm5W"></div>
+			<div class="g-recaptcha mb-3" data-sitekey="<?= RECAPTCHA_SITE_KEY; ?>"></div>
 
 
 			<div class="form-group">

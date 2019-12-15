@@ -1,6 +1,6 @@
 <?php
 	if(!ISSET($_SESSION['id_user_admin'])){
-		header('location: ../writeradmin/');
+		header('location: '. BASE_ADMIN_URL);
 	}
 	else {
 ?>

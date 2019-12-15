@@ -171,7 +171,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: /writerblog/item/readcomment/' . $item . '/' . $comment);
+            header('Location: '. BASE_URL. 'item/readcomment/' . $item . '/' . $comment);
             exit;
         }
     }
@@ -196,10 +196,10 @@ class Comment extends Model
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             if (ISSET($_SESSION['id_user'])) {
-                header('Location: /writerblog/item/indexuser/' . $item . '/1/#comments');
+                header('Location: '. BASE_URL. 'item/indexuser/' . $item . '/1/#comments');
                 exit;
             } else {
-                header('Location: /writerblog/item/' . $item . '/1/#comments');
+                header('Location: '. BASE_URL. 'item/' . $item . '/1/#comments');
                 exit;
             }
         }

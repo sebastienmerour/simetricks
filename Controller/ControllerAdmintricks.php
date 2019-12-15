@@ -11,7 +11,7 @@ require_once 'Model/User.php';
  * @author Sébastien Merour
  */
 
-class ControllerWriteradmin extends Controller
+class ControllerAdmintricks extends Controller
 {
     private $user;
     private $item;
@@ -27,7 +27,7 @@ class ControllerWriteradmin extends Controller
     // CREATE
     // ITEMS
 
-    // Affichage du formulaire ce création d'article
+    // Affichage du formulaire de création d'un article :
     public function additem()
     {
         $items = $this->item->count();

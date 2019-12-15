@@ -1,7 +1,7 @@
 <footer class="shadow container-fluid">
   <div class="row text-center">
     <div class="col-12 bg-danger p-3">
-       <h6 class="lead font-weight-bold text-white"><?php WEBSITE_NAME. ' | &copy; '.COPYRIGHT_YEAR ;?></h6>
+       <h6 class="lead font-weight-bold text-white"><?= WEBSITE_NAME. ' | &copy; '.COPYRIGHT_YEAR ;?></h6>
     </div>
   </div>
 </footer>

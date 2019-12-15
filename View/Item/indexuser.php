@@ -92,10 +92,10 @@ if ($comments_current_page > $number_of_comments_pages) {
     <textarea class="form-control" name="content" rows="7" placeholder="Ecrivez ici votre commentaire"></textarea>
   </div>
   <div class="d-flex align-items-center justify-content-between">
-    <div class="g-recaptcha" data-sitekey="6LehvscUAAAAAH8By_5qI0kdK8aaqHqVHDFwWm5W"></div>
+    <div class="g-recaptcha" data-sitekey="<?= RECAPTCHA_SITE_KEY; ?>"></div>
   </div>
   <div class="d-flex align-items-center justify-content-between mt-2">
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Envoyer</button>
+    <button class="btn btn-primary btn-block" type="submit">Envoyer</button>
   </div>
 </form>
 </div>

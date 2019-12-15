@@ -41,7 +41,7 @@ class ControllerUser extends Controller
         if (!empty($_POST['username']) && !empty($_POST['pass']) && !empty($_POST['email'])) {
 
             if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-                $secretKey      = '6LehvscUAAAAAKqwsNh3itC2eIpvnSe64ltCXxr3';
+                $secretKey      = RECAPTCHA_SECRET_KEY;
                 $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $_POST['g-recaptcha-response']);
                 $responseData   = json_decode($verifyResponse);
                 $username       = $this->request->getParameter("username");

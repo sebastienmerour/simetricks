@@ -20,7 +20,7 @@ class Item extends Model
         $errors   = array();
         $messages = array();
         $user_id  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO items (id_user, title, content, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, title, content, date_creation)
                       VALUES
                       (:id_user, :title, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
@@ -31,7 +31,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre article a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../writeradmin/dashboard');
+            header('Location:' . BASE_ADMIN_URL. 'dashboard');
             exit;
         }
     }
@@ -42,7 +42,7 @@ class Item extends Model
         $errors   = array();
         $messages = array();
         $user_id  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO items (id_user, title, image, content, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, title, image, content, date_creation)
                       VALUES
                       (:id_user, :title, :image, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
@@ -55,7 +55,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre article a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../writeradmin/dashboard');
+            header('Location:' . BASE_ADMIN_URL. 'dashboard');
             exit;
         }
     }
@@ -66,12 +66,12 @@ class Item extends Model
     // Afficher la liste des Articles :
     public function getItems()
     {
-        $sql   = 'SELECT items.id, items.title, items.image, items.content,
-     DATE_FORMAT(items.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
-     DATE_FORMAT(items.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-     users.id_user, users.firstname, users.name FROM items
+        $sql   = 'SELECT extended_cards.id, extended_cards.title, extended_cards.image, extended_cards.content,
+     DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+     DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+     users.id_user, users.firstname, users.name FROM extended_cards
      LEFT JOIN users
-     ON items.id_user = users.id_user
+     ON extended_cards.id_user = users.id_user
      ORDER BY date_creation DESC LIMIT ' . 0 . ', ' . $this->number_of_items_by_page . '';
         $items = $this->dbConnect($sql);
         return $items;
@@ -81,12 +81,12 @@ class Item extends Model
     public function getPaginationItems($items_current_page)
     {
         $start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql   = 'SELECT items.id, items.title, items.image, items.content,
-    DATE_FORMAT(items.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
-    DATE_FORMAT(items.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-    users.id_user, users.firstname, users.name FROM items
+        $sql   = 'SELECT extended_cards.id, extended_cards.title, extended_cards.image, extended_cards.content,
+    DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+    DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+    users.id_user, users.firstname, users.name FROM extended_cards
     LEFT JOIN users
-    ON items.id_user = users.id_user
+    ON extended_cards.id_user = users.id_user
     ORDER BY date_creation DESC LIMIT ' . $start . ', ' . $this->number_of_items_by_page . '';
         $items = $this->dbConnect($sql);
         return $items;
@@ -95,14 +95,14 @@ class Item extends Model
     // Afficher un Article en particulier :
     public function getItem($item_id)
     {
-        $sql  = 'SELECT items.id, items.title AS title, items.image AS image, items.content AS content,
-        DATE_FORMAT(items.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
-        DATE_FORMAT(items.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+        $sql  = 'SELECT extended_cards.id, extended_cards.title AS title, extended_cards.image AS image, extended_cards.content AS content,
+        DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+        DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
         users.id_user, users.firstname, users.name
-        FROM items
+        FROM extended_cards
         LEFT JOIN users
-        ON items.id_user = users.id_user
-        WHERE items.id = ? ';
+        ON extended_cards.id_user = users.id_user
+        WHERE extended_cards.id = ? ';
         $req  = $this->dbConnect($sql, array(
             $item_id
         ));
@@ -118,7 +118,7 @@ class Item extends Model
     {
         $title   = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $content = !empty($_POST['content']) ? trim($_POST['content']) : null;
-        $sql     = 'UPDATE items SET title = :title, image = :image, content = :content,
+        $sql     = 'UPDATE extended_cards SET title = :title, image = :image, content = :content,
     date_update = NOW() WHERE id = :id';
         $item    = $this->dbConnect($sql, array(
             ':id' => $item_id,
@@ -139,7 +139,7 @@ class Item extends Model
     {
         $title   = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $content = !empty($_POST['content']) ? trim($_POST['content']) : null;
-        $sql     = 'UPDATE items SET title = :title, content = :content, date_update = NOW() WHERE id = :id';
+        $sql     = 'UPDATE extended_cards SET title = :title, content = :content, date_update = NOW() WHERE id = :id';
         $item    = $this->dbConnect($sql, array(
             ':id' => $item_id,
             ':title' => $title,
@@ -157,7 +157,7 @@ class Item extends Model
     // Suppression d'un article :
     public function eraseItem($item_id)
     {
-        $sql = 'DELETE FROM items WHERE id = ' . (int) $item_id;
+        $sql = 'DELETE FROM extended_cards WHERE id = ' . (int) $item_id;
         $req = $this->dbConnect($sql);
         $req->execute();
         // Ici on affiche le message de confirmation :
@@ -174,7 +174,7 @@ class Item extends Model
     // Pagination des Articles :
     public function count()
     {
-        $sql               = 'SELECT COUNT(id) AS counter FROM items';
+        $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards';
         $this->items_count = $this->dbConnect($sql);
         $items             = $this->items_count->fetch(\PDO::FETCH_ASSOC);
         $number_of_items   = $items['counter'];
