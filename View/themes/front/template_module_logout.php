@@ -20,7 +20,7 @@
         <a href="user" class="hover-arrow">Mon Compte</a>
       </li>
       <li>
-        <a href="<?= BASE_URL; ?>" class="hover-arrow">Le Blog</a>
+        <a href="<?= BASE_URL; ?>" class="hover-arrow">Accueil</a>
       </li>
     </ul>
   </div>

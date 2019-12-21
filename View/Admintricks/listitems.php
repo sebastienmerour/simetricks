@@ -8,7 +8,7 @@
   <!-- News -->
 	<?php require __DIR__ . '/../errors/confirmation.php'; ?>
 
-  <h2 id="lastitems">Derniers articles</h2>
+  <h2 id="lastitems">Derniers ajouts</h2>
   <div class="table-responsive">
 
   <table class="table table-striped table-sm">

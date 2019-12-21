@@ -8,27 +8,40 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>additem">
-          <span data-feather="edit"></span>
-          Ecrire un article
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>extendedcards">
+          <span data-feather="credit-card"></span>
+          Extended Cards
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>#lastitems">
-          <span data-feather="book-open"></span>
-          Derniers Articles
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>cards">
+          <span data-feather="bookmark"></span>
+          Cards
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>tomoderate">
-          <span data-feather="filter"></span>
-          Commentaires signalés
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>2k">
+          <span data-feather="fast-forward"></span>
+          2.0
         </a>
+      </li>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>allcomments">
           <span data-feather="message-square"></span>
-          Tous les commentaires
+          Commentaires
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>tomoderate">
+          <span data-feather="alert-triangle"></span>
+          Commentaires signalés
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>users">
+          <span data-feather="users"></span>
+          Utilisateurs
         </a>
       </li>
       <li class="nav-item">

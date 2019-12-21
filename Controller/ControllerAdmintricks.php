@@ -385,4 +385,122 @@ class ControllerAdmintricks extends Controller
             exit;
         }
     }
+
+    // READ
+    // USERS
+
+    public function users()
+    {
+        $users_current_page    = 1;
+        $users_previous_page   = $users_current_page - 1;
+        $users_next_page       = $users_current_page + 1;
+        $users                 = $this->user->selectUsers($users_current_page);
+        $default               = "default.png";
+        $number_of_users_pages = $this->user->getNumberOfUsersPagesFromAdmin();
+        $counter_users         = $this->user->getTotalOfUSers();
+        $this->generateadminView(array(
+            'users' => $users,
+            'default' => $default,
+            'users_current_page' => $users_current_page,
+            'users_previous_page' => $users_previous_page,
+            'users_next_page' => $users_next_page,
+            'number_of_users_pages' => $number_of_users_pages,
+            'counter_users' => $counter_users
+        ));
+    }
+
+    // Affichage d'un user seul :
+    public function readuser()
+    {
+
+        $user_id = $this->request->getParameter("id");
+        $user    = $this->user->getUser($user_id);
+        $this->generateadminView(array(
+            'user' => $user
+        ));
+    }
+
+
+    // UPDATE
+    // USERS
+
+    // Modification d'un user :
+    public function updateuser()
+    {
+        if (isset($_POST["modify"])) {
+            $errors                = array();
+            $messages              = array();
+            $user_id               = $this->request->getParameter("id");
+            $status                = $this->request->getParameter("status");
+            $firstname             = $this->request->getParameter("firstname");
+            $name                  = $this->request->getParameter("name");
+            $email                 = $this->request->getParameter("email");
+            $date_birth            = $this->request->getParameter("date_birth");
+            $fileinfo              = @getimagesize($_FILES["avatar"]["tmp_name"]);
+            $width                 = $fileinfo[0];
+            $height                = $fileinfo[1];
+            $extensions_authorized = array(
+                "gif",
+                "png",
+                "jpg",
+                "jpeg"
+            );
+            $extension_upload      = pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION);
+            $time                  = date("Y-m-d-H-i-s");
+            $avatarname            = str_replace(' ', '-', strtolower($_FILES['avatar']['name']));
+            $avatarname            = preg_replace("/\.[^.\s]{3,4}$/", "", $avatarname);
+            $avatarname            = "{$time}-{$user_id}-avatar.{$extension_upload}";
+            $destination           = ROOT_PATH . 'public/images/avatars';
+
+            if (!file_exists($_FILES["avatar"]["tmp_name"])) {
+                $this->user->changeUserFromAdmin($user_id, $status, $firstname, $name, $email, $date_birth);
+            } else if (!in_array($extension_upload, $extensions_authorized)) {
+                $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: ../readuser/' . $user_id);
+                    exit;
+                }
+            } else if (($_FILES["avatar"]["size"] > 1000000)) {
+                $errors['errors'] = 'Le fichier est trop lourd.';
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: ../readuser/' . $user_id);
+                    exit;
+                }
+            } else if ($width < "300" || $height < "200") {
+                $errors['errors'] = 'Le fichier n\'a pas les bonnes dimensions';
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: ../readuser/' . $user_id);
+                    exit;
+                }
+            } else {
+                move_uploaded_file($_FILES['avatar']['tmp_name'], $destination . "/" . $avatarname);
+                $this->user->changeUserImageFromAdmin($user_id, $status, $firstname, $name, $avatarname, $email, $date_birth);
+            }
+        }
+    }
+
+
+    // DELETE
+    // USERS
+
+    // Suppression d'un user :
+    public function removeuser()
+    {
+        $user_id = $this->request->getParameter("id");
+        $this->user->eraseUser($user_id);
+        if ($user_id === false) {
+            throw new Exception('Impossible de supprimer l\'Utilisateur !');
+        } else {
+            $messages['confirmation'] = 'L\'Utilisateur bien été supprimé !';
+            $this->generateadminView();
+        }
+    }
+
+
+
+
+
 }

@@ -8,10 +8,10 @@
   <!-- News -->
 	<?php require __DIR__ . '/../errors/confirmation.php'; ?>
 
-<h2 id="allcomments">Tous les commentaires</h2>
+<h2 id="allcomments">Commentaires</h2>
 <?php
 if ($counter_comments < 1) {
-  require __DIR__ . '/../view/errors/comments_not_found.php';
+  require __DIR__ . '/../view/errors/comments_not_found_admin.php';
 }
 
 else {

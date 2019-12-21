@@ -59,6 +59,7 @@ class ControllerLogin extends Controller
     // Appui sur le bouton Deconnexion d'un user :
     public function logout()
     {
+
         $items                 = $this->item->count();
         $number_of_items       = $this->item->count();
         $number_of_items_pages = $this->item->getNumberOfPages();

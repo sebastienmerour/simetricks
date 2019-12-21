@@ -13,6 +13,8 @@ require_once 'Framework/Request.php';
 class User extends Model
 {
 
+    public $number_of_users_by_page = 5;
+
     // CREATE
 
     // Création d'un utilisateur :
@@ -102,8 +104,9 @@ class User extends Model
     // Affichage d'un utilisateur :
     public function getUser($user_id)
     {
-        $sql   = 'SELECT id_user, username, firstname, name, avatar, pass, email, DATE_FORMAT(date_birth, \'%Y-%m-%d \')
-       AS date_birth FROM users WHERE id_user = :id_user';
+        $sql   = 'SELECT id_user, status, username, firstname, name, avatar, pass, email, DATE_FORMAT(date_birth, \'%Y-%m-%d \')
+       AS date_birth, DATE_FORMAT(date_register, \'%Y-%m-%d \') AS date_register
+       FROM users WHERE id_user = :id_user';
         $query = $this->dbConnect($sql, array(
             ':id_user' => $user_id
         ));
@@ -111,10 +114,22 @@ class User extends Model
         return $user;
     }
 
+    // Afficher la liste complète de tous les users en Admin :
+    public function selectUsers($users_current_page)
+    {
+        $users_start = (int) (($users_current_page - 1) * $this->number_of_users_by_page);
+        $sql            = 'SELECT id_user, firstname, name, avatar, email,
+    DATE_FORMAT(date_register, \'%d/%m/%Y à %Hh%i\') AS date_register_fr
+    FROM users
+    ORDER BY date_register DESC LIMIT ' . $users_start . ', ' . $this->number_of_users_by_page . '';
+        $users       = $this->dbConnect($sql);
+        return $users;
+    }
+
 
     // UPDATE
 
-    // Modification d'un utilisateur :
+    // Modification d'un utilisateur en front :
     public function changeUser($pass, $email, $firstname, $name, $date_birth)
     {
         $errors         = array();
@@ -170,6 +185,108 @@ class User extends Model
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: ../user/');
+            exit;
+        }
+    }
+
+    // Modification d'un utilisateur en front :
+    public function changeUserFromAdmin($user_id, $status, $firstname, $name, $email, $date_birth)
+    {
+        $errors         = array();
+        $errorsmail     = array();
+        $messages       = array();
+        $identification = $user_id;
+        $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
+        $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
+        $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
+        $email          = !empty($_POST['email']) ? trim($_POST['email']) : null;
+        $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
+
+        // Ensuite on vérifie si l'adresse mail possède un format valide :
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // L'adresse e-mail a-t-elle une forme valide ? Regex ou non ?
+            $errorsmail['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
+        }
+
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            die(header('Location: ../user/'.$user_id));
+            exit;
+        }
+        if (!empty($errorsmail)) {
+            $_SESSION['errorsmail'] = $errorsmail;
+            die(header('Location: ../user/'.$user_id));
+            exit;
+        }
+
+        $sql  = 'UPDATE users
+           SET status = :status, firstname= :firstname, name= :name, email= :email, date_birth= :date_birth
+           WHERE id_user= :id_user';
+        $user = $this->dbConnect($sql, array(
+            ':id_user' => htmlspecialchars($identification),
+            ':status' => htmlspecialchars($status),
+            ':firstname' => htmlspecialchars($firstname),
+            ':name' => htmlspecialchars($name),
+            ':email' => htmlspecialchars($email),
+            ':date_birth' => htmlspecialchars($date_birth)
+        ));
+
+        // Ici on affiche le message de confirmation :
+        $messages['confirmation'] = 'Le compte a bien été mis à jour !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: ../readuser/'.$user_id);
+            exit;
+        }
+    }
+
+
+    // Modification d'un utilisateur en front :
+    public function changeUserImageFromAdmin($user_id, $status, $firstname, $name, $avatarname, $email, $date_birth)
+    {
+        $errors         = array();
+        $errorsmail     = array();
+        $messages       = array();
+        $identification = $user_id;
+        $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
+        $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
+        $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
+        $email          = !empty($_POST['email']) ? trim($_POST['email']) : null;
+        $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
+
+        // Ensuite on vérifie si l'adresse mail possède un format valide :
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // L'adresse e-mail a-t-elle une forme valide ? Regex ou non ?
+            $errorsmail['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
+        }
+
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            die(header('Location: ../user/'.$user_id));
+            exit;
+        }
+        if (!empty($errorsmail)) {
+            $_SESSION['errorsmail'] = $errorsmail;
+            die(header('Location: ../user/'.$user_id));
+            exit;
+        }
+
+        $sql  = 'UPDATE users
+           SET status = :status, firstname= :firstname, name= :name, avatar= :avatar, email= :email, date_birth= :date_birth
+           WHERE id_user= :id_user';
+        $user = $this->dbConnect($sql, array(
+            ':id_user' => htmlspecialchars($identification),
+            ':status' => htmlspecialchars($status),
+            ':firstname' => htmlspecialchars($firstname),
+            ':name' => htmlspecialchars($name),
+            ':avatar' => htmlspecialchars($avatarname),
+            ':email' => htmlspecialchars($email),
+            ':date_birth' => htmlspecialchars($date_birth)
+        ));
+
+        // Ici on affiche le message de confirmation :
+        $messages['confirmation'] = 'Le compte a bien été mis à jour !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: ../readuser/'.$user_id);
             exit;
         }
     }
@@ -241,6 +358,24 @@ class User extends Model
         }
     }
 
+    // DELETE
+    // Suppression d'un utilisateur :
+    public function eraseUser($user_id)
+    {
+        $sql = 'DELETE FROM users WHERE id_user = ' . (int) $user_id;
+        $req = $this->dbConnect($sql);
+        $req->execute();
+        // Ici on affiche le message de confirmation :
+        $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été supprimé !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: ../users');
+            exit;
+        }
+    }
+
+
+
 
     // CONNEXION ET DECONNEXION
 
@@ -248,6 +383,7 @@ class User extends Model
     public function logInUser($username, $passwordAttempt)
     {
         if (isset($_POST['login'])) {
+            $errors    = array();
 
             // On récupère les valeurs saisies dans le formulaire de login :
             $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
@@ -265,8 +401,11 @@ class User extends Model
 
                 // on indique à l'utilisateur qu'il s'est trompé de username ou de mot de passe.
                 // on ne précise pas qu'il s'agit du username qui est faux, pour raison de sécurité :
-                $_SESSION['errors'] = "Identifiant ou Mot de passe incorrect!";
+
+                $errors['errors'] = 'Identifiant ou Mot de passe incorrect !';
+                $_SESSION['errors'] = $errors;
                 header('Location: ../login/');
+
             } else {
 
                 // Sinon, si le username a bien été trouvé, il faut vérifier que le mot de passe est correct.
@@ -299,7 +438,8 @@ class User extends Model
 
                 } else {
                     // Dans le cas où le mot de passe est faux, on envoie un message :
-                    $_SESSION['errors'] = "Identifiant ou Mot de passe incorrect !";
+                    $errors['errors'] = 'Identifiant ou Mot de passe incorrect !';
+                    $_SESSION['errors'] = $errors;
                     header('Location: ../login/');
                 }
             }
@@ -328,7 +468,8 @@ class User extends Model
 
                 // on indique à l'utilisateur qu'il s'est trompé de username ou de mot de passe.
                 // on ne préciser pas qu'il s'agit du username qui est faux, pour raison de sécurité :
-                $_SESSION['errors'] = "Identifiant ou Mot de passe incorrect !";
+                $errors['errors'] = 'Identifiant ou Mot de passe incorrect !';
+                $_SESSION['errors'] = $errors;
                 header('Location:' . BASE_ADMIN_URL);
             } else {
 
@@ -362,11 +503,36 @@ class User extends Model
 
                 } else {
                     // Dans le cas où le mot de passe est faux, on envoie un message :
-                    $_SESSION['errors'] = "Vous n'êtes pas autorisés à accéder à l'administration !";
+                    $errors['errors'] = 'Vous n\'êtes pas autorisés à accéder à l\'administration !';
+                    $_SESSION['errors'] = $errors;
+
                     header('Location:' . BASE_ADMIN_URL);
                 }
             }
         }
     }
+
+    // CALCULS
+    // FRONT
+
+    // Calculer le nombre total de Pages de Users pour l'admin :
+    public function getNumberOfUsersPagesFromAdmin()
+    {
+        $total_users_count     = $this->getTotalOfUsers();
+        $number_of_users_pages = ceil($total_users_count / $this->number_of_users_by_page);
+        return $number_of_users_pages;
+    }
+
+    // Calculer le nombre total de users :
+    public function getTotalOfUsers()
+    {
+        $sql                  = 'SELECT COUNT(id_user) as counter FROM users';
+        $users                = $this->dbConnect($sql);
+        $this->users_count    = $users->fetch(\PDO::FETCH_ASSOC);
+        $total_users_count    = $this->users_count['counter'];
+        return $total_users_count;
+    }
+
+
 
 }

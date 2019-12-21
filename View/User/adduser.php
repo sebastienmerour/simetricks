@@ -91,7 +91,7 @@
 		</form>
 	</div>
 </div>
-<?php $this->sidebar= 'Le blog contient ' . $number_of_items .' articles<br>
+<?php $this->sidebar= 'Le site contient ' . $number_of_items .' articles<br>
 et '. $number_of_items_pages.' pages d\'articles.<br>'; ?>
 
 <?php

@@ -51,6 +51,6 @@ if (empty($comment)) {
 			</form>
 		</div>
 </div>
-<?php $this->sidebar= 'Le blog contient ' . $number_of_items .' articles<br>
+<?php $this->sidebar= 'Le site contient ' . $number_of_items .' articles<br>
 et '. $number_of_items_pages.' pages d\'articles.<br>
 Cette page contient ' . $number_of_comments .' commentaires et ' . $number_of_comments_pages. ' pages de commentaires'; ?>

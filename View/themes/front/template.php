@@ -14,11 +14,11 @@
     <div class="col-md-4">
       <?php if(!ISSET($_SESSION['id_user']))
                 {
-			     require('template_my_account_login.php'); }
+			     require('template_module_login.php'); }
            else {
-             require('template_my_account_logout.php');
+             require('template_module_logout.php');
            }?>
-			<?php require('template_statistiques.php')?>
+			<?php require('template_module_stats.php')?>
     </div><!-- Fin du div col-md-4 -->
 
   </div><!-- Fin du div row -->

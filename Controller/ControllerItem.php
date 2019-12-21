@@ -42,6 +42,8 @@ class ControllerItem extends Controller
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
         $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
+        $total_comments_count     = $this->comment->getTotalOfComments();
+        $total_users_count        = $this->user->getTotalOfUsers();
         $default                  = "default.png";
         $number_of_comments_pages = $this->comment->getNumberOfCommentsPagesFromItem($item_id);
         $this->generateView(array(
@@ -49,6 +51,8 @@ class ControllerItem extends Controller
             'number_of_items' => $number_of_items,
             'number_of_items_pages' => $number_of_items_pages,
             'comments' => $comments,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
             'default' => $default,
             'comments_current_page' => $comments_current_page,
             'page_previous_comments' => $page_previous_comments,

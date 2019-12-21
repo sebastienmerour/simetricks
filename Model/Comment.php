@@ -319,7 +319,7 @@ class Comment extends Model
         return $number_of_comments_pages;
     }
 
-    // Calculer le nombre total de commentaires pour l'admin :
+    // Calculer le nombre total de commentaires :
     public function getTotalOfComments()
     {
         $sql                  = 'SELECT COUNT(id) as counter FROM comments';

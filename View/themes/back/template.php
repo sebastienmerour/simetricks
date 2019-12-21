@@ -18,13 +18,13 @@
         <div class="btn-toolbar mb-3 mb-md-0">
           <div class="btn-group mr-2">
             <?php if(ISSET($_SESSION['id_user_admin'])){?>
-            <a href="<?= BASE_ADMIN_URL; ?>additem" role="button" class="btn btn-sm btn-success">Ecrire un article</a>
+            <a href="<?= BASE_ADMIN_URL; ?>additem" role="button" class="btn btn-sm btn-success">Créer une Extended Card</a>
           <?php } else {}?>
           </div>
         </div>
       </div>
       <div class="table-responsive">
-        	<?php echo $content; ?>
+        	<?= $content; ?>
       </div>
     </main>
   </div>
