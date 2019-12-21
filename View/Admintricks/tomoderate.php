@@ -22,7 +22,7 @@
 	        <th>Date</th>
 	        <th>Utilisateur</th>
 	        <th>Commentaire</th>
-	        <th>Modification</th>
+	        <th>Consultation</th>
 	        <th>Suppression</th>
 	      </tr>
 	    </thead>
@@ -30,6 +30,12 @@
 	      <?php
 	      while ($comment_reported = $comments_reported->fetch())
 	      {
+					$content = $this->cleantinymce($comment_reported['content']);
+					$maxlen = 50;
+					if ( strlen($content) > $maxlen ){
+				    $content = substr($content,0,strrpos($content,". ",$maxlen-strlen($content))+50);
+					}
+
 	      ?>
 	      <tr>
 	        <td><h6 class="mt-2 text-left"><?= $this->clean($comment_reported['date_creation_fr']); ?></h6></td>
@@ -39,9 +45,9 @@
 	            <h6 class="mt-2 text-left"><?= $this->clean(isset($comment_reported['firstname_com'], $comment_reported['name_com']) ? $comment_reported['firstname_com'] . ' ' . $comment_reported['name_com'] : $comment_reported['author']);?></h6><br>
 	          </div>
 	        </div></td>
-	        <td><h6 class="mt-2 text-left"><?= $this->cleantinymce($comment_reported['content']); ?></h6></td>
-	        <td><a href="<?= "readcomment/" . $this->clean($comment_reported['id']) ;?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
-	        <td><a href="<?= "removecommentreported/" . $this->clean($comment_reported['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
+	        <td><h6 id="commentcontent" class="mt-2 text-left"><?= $content; ?> ...</h6></td>
+	        <td><a href="<?= BASE_ADMIN_URL. 'readcommentreported/' . $this->clean($comment_reported['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
+	        <td><a href="<?= BASE_ADMIN_URL. 'removecommentreported/' . $this->clean($comment_reported['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
 	      </tr>
 	            <?php
 	    }

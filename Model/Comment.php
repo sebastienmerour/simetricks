@@ -150,7 +150,6 @@ class Comment extends Model
         return $comments_reported;
     }
 
-
     // UPDATE
     // FRONT
 
@@ -175,6 +174,7 @@ class Comment extends Model
             exit;
         }
     }
+
 
     // UPDATE
     // FRONT
@@ -223,6 +223,42 @@ class Comment extends Model
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: ../readcomment/' . $comment);
+            exit;
+        }
+    }
+
+    // Modification d'un commentaire signalé depuis l'Admin
+    public function changeCommentReportedAdmin($content)
+    {
+        $comment                  = $_GET['id'];
+        $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
+        $sql                      = 'UPDATE comments SET content = :content, date_update = NOW() WHERE id = :id';
+        $newComment               = $this->dbConnect($sql, array(
+            ':id' => $comment,
+            ':content' => $content
+        ));
+        $messages['confirmation'] = 'Merci ! Votre commentaire a bien été modifié !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: ../readcommentreported/' . $comment);
+            exit;
+        }
+    }
+
+    // Modification d'un commentaire signalé depuis l'Admin
+    public function approveComment($id_comment)
+    {
+        $comment                  = $_GET['id'];
+        $report                   = "no";
+        $sql                      = 'UPDATE comments SET report = :report, date_update = NOW() WHERE id = :id';
+        $newComment               = $this->dbConnect($sql, array(
+            ':id' => $id_comment,
+            ':report' => $report
+        ));
+        $messages['confirmation'] = 'Merci ! Le commentaire a bien été approuvé !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: ../readcommentreported/' . $comment);
             exit;
         }
     }

@@ -20,7 +20,13 @@ class ControllerHome extends Controller
     // Lister les articles en page d'accueil :
     public function index()
     {
-        $items                 = $this->item->getItems();
+      if (null!= $this->request->ifParameter("id"))  {
+        $items_current_page  = $this->request->getParameter("id");
+        }
+        else {
+          $items_current_page = 1;
+        }
+        $items                 = $this->item->getItems($items_current_page);
         $number_of_items       = $this->item->count();
         $items_current_page    = 1;
         $previous_page         = $items_current_page - 1;

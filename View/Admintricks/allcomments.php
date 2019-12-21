@@ -24,7 +24,7 @@ require('allcomments_pagination.php');}
         <th>Date</th>
         <th>Utilisateur</th>
         <th>Commentaire</th>
-        <th>Modification</th>
+        <th>Consultation</th>
         <th>Suppression</th>
       </tr>
     </thead>
@@ -32,6 +32,12 @@ require('allcomments_pagination.php');}
       <?php
       while ($comment = $comments->fetch())
       {
+					$content = $this->cleantinymce($comment['content']);
+					$maxlen = 50;
+					if ( strlen($content) > $maxlen ){
+				    $content = substr($content,0,strrpos($content,". ",$maxlen-strlen($content))+50);
+					}
+
       ?>
       <tr>
         <td><h6 class="mt-2 text-left"><?= $this->clean($comment['date_creation_fr']); ?></h6></td>
@@ -41,9 +47,9 @@ require('allcomments_pagination.php');}
             <h6 class="mt-2 text-left"><?= $this->clean(isset($comment['firstname_com'], $comment['name_com']) ? $comment['firstname_com'] . ' ' . $comment['name_com'] : $comment['author']);?></h6><br>
           </div>
         </div></td>
-        <td><h6 class="mt-2 text-left"><?= $this->cleantinymce($comment['content']); ?></h6></td>
-        <td><a href="<?= "readcomment/" . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
-        <td><a href="<?= "removecomment/" . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
+        <td><h6 class="mt-2 text-left"><?= $content; ?> ...</h6></td>
+        <td><a href="<?= BASE_ADMIN_URL. 'readcomment/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
+        <td><a href="<?= BASE_ADMIN_URL. 'removecomment/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
       </tr>
             <?php
     }

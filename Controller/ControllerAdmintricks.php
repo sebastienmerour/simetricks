@@ -297,6 +297,20 @@ class ControllerAdmintricks extends Controller
         ));
     }
 
+    // Affichage d'un commentaire signalé :
+    public function readcommentreported()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $comment    = $this->comment->getComment($id_comment);
+        $default    = "default.png";
+        $this->generateadminView(array(
+            'comment' => $comment,
+            'default' => $default
+        ));
+    }
+
+
+
     // UPDATE
     // COMMENTS
 
@@ -308,6 +322,25 @@ class ControllerAdmintricks extends Controller
         $content    = $comment['content'];
         $this->comment->changeCommentAdmin($content);
     }
+
+    // Modification d'un commentaire :
+    public function updatecommentreported()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $comment    = $this->comment->getComment($id_comment);
+        $content    = $comment['content'];
+        $this->comment->changeCommentReportedAdmin($content);
+    }
+
+    // Approuver un commentaire signalé :
+    public function approve()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $comment    = $this->comment->getComment($id_comment);
+        $content    = $comment['content'];
+        $this->comment->approveComment($id_comment);
+    }
+
 
     // DELETE
     // COMMENTS
