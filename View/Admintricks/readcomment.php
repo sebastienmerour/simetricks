@@ -31,7 +31,7 @@
                   <br>
                   <button class="btn btn-md btn-success" name="modify" type="submit">Enregistrer</button>
                   <a href="#"><button class="btn btn-md btn-secondary" type="reset">Annuler</button></a>
-                  <a href="<?= BASE_ADMIN_URL; ?>"><button class="btn btn-md btn-primary" type="button">Retour</button></a>
+                  <a href="<?= $_SERVER['HTTP_REFERER']; ?>"><button class="btn btn-md btn-primary" type="button">Retour</button></a>
               </div>
         </div>
       </form>

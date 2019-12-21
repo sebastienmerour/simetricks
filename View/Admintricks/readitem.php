@@ -50,7 +50,7 @@
 	                  <br>
 	                  <button class="btn btn-md btn-success" name="modify" type="submit">Enregistrer</button>
 	                  <a href="#" role="button" class="btn btn-md btn-secondary" type="reset">Annuler</a>
-	                  <a href="<?= BASE_ADMIN_URL; ?>" role="button" class="btn btn-md btn-primary" type="button">Retour</a>
+	                  <a href="<?= $_SERVER['HTTP_REFERER']; ?>" role="button" class="btn btn-md btn-primary" type="button">Retour</a>
 	              </div>
 	        </div>
       </form>

@@ -6,11 +6,12 @@
   {
   ?>
   <li>
-      <a class="btn btn-outline-secondary" href="listallcomments/1/<?= $comments_previous_page; ?>" aria-label="Previous">
+      <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>allcomments/<?= $comments_previous_page; ?>" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>&nbsp;
   </li>
   <?php
+
 
   }
   for ($i = 1; $i <= $number_of_comments_pages; $i++)
@@ -22,7 +23,7 @@
       }
       else {
 
-        echo '><a class="btn btn-outline-primary" href="listallcomments/1/' . $i . '">' . $i . '</a>&nbsp;</li>';
+        echo '><a class="btn btn-outline-primary" href="'. BASE_ADMIN_URL .'allcomments/' . $i . '">' . $i . '</a>&nbsp;</li>';
       }
   }
 
@@ -30,7 +31,7 @@
   {
   ?>
   <li>
-      <a class="btn btn-outline-secondary" href="listallcomments/1/<?= $comments_next_page; ?>" aria-label="Next">
+      <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>allcomments/<?= $comments_next_page; ?>" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
   </li>
