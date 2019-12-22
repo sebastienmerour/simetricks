@@ -8,7 +8,7 @@
   <!-- News -->
 	<?php require __DIR__ . '/../errors/confirmation.php'; ?>
 
-  <h2 id="lastitems">Derniers ajouts</h2>
+  <h2 id="lastitems">Extended Cards</h2>
   <div class="table-responsive">
   <table class="table table-striped table-sm">
     <thead>
@@ -26,7 +26,7 @@
       while ($item = $items->fetch()) {
       ?>
       <tr>
-				<td><h6 class="mt-2 text-left"><?= $this->clean($item['date_creation_fr']); ?></h6></td>
+        <td><h6 class="mt-2 text-left"><?= $this->clean($item['date_creation_fr']); ?></h6></td>
         <td><h6 class="mt-2 text-left"><a target="_blank" href="<?= BASE_ADMIN_URL.'readuser/' . $this->clean($item['id_user']) ?>">
         <?= $this->clean($item['firstname']); ?>&nbsp;<?= $this->clean($item['name']);?></a></span></td>
 				<td><a href="<?= BASE_ADMIN_URL.'readitem/' . $this->clean($item['id'])?>/1">
@@ -48,7 +48,7 @@
   	require __DIR__ . '/../errors/items_not_found.php';
   }
   else {
-  require('dashboard_pagination.php');}
+  require('extendedcards_pagination.php');}
   ?>
 </div>
 <?php

@@ -107,7 +107,7 @@
 											</tr>
 										</tbody>
 									</table>
-									<a href="user/modifyuser"><button class="btn btn-success" role="button">Modifier</button></a>
+									<a href="user/modifyuser#username"><button class="btn btn-success" role="button">Modifier</button></a>
 						</div>
 				<hr>
 			</div><!-- fin du div tab-content -->

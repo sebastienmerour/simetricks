@@ -13,6 +13,7 @@
 
 				<!-- Profil-->
 				<p>Mon Profil</p>
+				<?php require __DIR__ . '/../errors/errors.php'; ?>
 				<?php require __DIR__ . '/../errors/confirmation.php'; ?>
 				<hr>
               <!-- Avatar-->
@@ -149,16 +150,6 @@
       <div class="tab-pane fade" id="username" role="tabpanel" aria-labelledby="pills-profile-tab">
         <form role="form" class="form needs-validation" action="user/updateusername" method="post" id="usermodification" novalidate>
           <p>&nbsp;</p>
-					<?php
-					if (!empty($_SESSION['errors']['username'])){?>
-					<div class="alert alert-danger alert-dismissible fade show" role="alert">
-						<?= $_SESSION['errors']['username'];?>
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<?php };?>
-					<?php unset($_SESSION['errors']); ?>
 					<?php
 					if (!empty($_SESSION['messages']['usernameupdated'])){?>
 					<div class="alert alert-success alert-dismissible fade show" role="alert">

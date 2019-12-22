@@ -48,28 +48,6 @@
 			  <span id="number" class="invalid">- au moins <b>1 chiffre</b></span><br>
 			  <span id="length" class="invalid">- au minimum <b>8 caractères</b></span><br>
 			</div>
-			<?php
-				if (!empty($_SESSION['errors']['username']))
-				{?>
-					<div class="bg-danger text-white rounded p-3 mb-3">
-		  			<?php echo $_SESSION['errors']['username'];?>
-					</div>
-			<?php
-				}
-				if (!empty($_SESSION['errors']['passdifferent']))
-				{?>
-					<div class="bg-danger text-white rounded p-3 mb-3">
-		  			<?php echo $_SESSION['errors']['passdifferent'];?>
-					</div>
-			<?php }
-				if (!empty($_SESSION['errors']['email']))
-				{?>
-					<div class="bg-danger text-white rounded p-3 mb-3">
-		  			<?php echo $_SESSION['errors']['email'];?>
-					</div>
-			 <?php
-				} ?>
-		<?php unset($_SESSION['errors']); ?>
 		<?php
 			if (!empty($_SESSION['messages']['usercreated']))
 			{?>

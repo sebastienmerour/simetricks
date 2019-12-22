@@ -1,12 +1,12 @@
 <?php $this->title =  WEBSITE_NAME . ' | Connexion'; ?>
 
-<?php require __DIR__ . '/../errors/errors.php'; ?>
 <div class="row justify-content-center pt-3">
   <div class="col-8">
     <div class="text-center mb-4">
       <h1 class="mb-1">Connexion</h1>
       <span>Entrez votre identifiant et votre mot de passe ci-dessous :</span>
     </div>
+    <?php require __DIR__ . '/../errors/errors.php'; ?>
     <form method="post" action="login/login">
       <div class="form-group">
         <input type="text" name="username" placeholder="Identifiant" class="form-control" value="<?php if(ISSET($_COOKIE['username'])){echo $_COOKIE['username'];}?>" required autofocus>

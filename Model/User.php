@@ -133,7 +133,6 @@ class User extends Model
     public function changeUser($pass, $email, $firstname, $name, $date_birth)
     {
         $errors         = array();
-        $errorsmail     = array();
         $messages       = array();
         $identification = $_SESSION['id_user'];
         $pass           = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
@@ -144,7 +143,7 @@ class User extends Model
 
         // Ensuite on vérifie si l'adresse mail possède un format valide :
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // L'adresse e-mail a-t-elle une forme valide ? Regex ou non ?
-            $errorsmail['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
+            $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
         }
 
         // Ensuite on vérifie si les 2 mots de passe sont identiques :
@@ -154,12 +153,7 @@ class User extends Model
         }
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../user/'));
-            exit;
-        }
-        if (!empty($errorsmail)) {
-            $_SESSION['errorsmail'] = $errorsmail;
-            die(header('Location: ../user/'));
+            die(header('Location: ../user/modifyuser'));
             exit;
         }
         // Maintenant, on hashe le mot de passe, car on ne veut pas enregistrer
@@ -294,7 +288,7 @@ class User extends Model
     // Modification d'un identifiant :
     public function changeUsername($username)
     {
-        $errorsuser     = array();
+        $errors         = array();
         $messages       = array();
         $identification = $_SESSION['id_user'];
         $username       = !empty($_POST['username']) ? trim($_POST['username']) : null;
@@ -314,12 +308,12 @@ class User extends Model
         // Si l'identifiant est déjà pris, on affiche une erreur.
         // Si row est supérieur à 0 cela veut dire que l'identifiant se trouve déjà en bdd :
         if ($row['num'] > 0) {
-            $errorsuser['username'] = 'Désolé, cet identifiant est déjà pris.<br>';
+            $errors['username'] = 'Désolé, cet identifiant est déjà pris.<br>';
         }
 
-        if (!empty($errorsuser)) {
-            $_SESSION['errorsuser'] = $errorsuser;
-            die(header('Location: ../user/'));
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            die(header('Location: ../user/modifyuser#username'));
 
             exit;
         }
@@ -333,7 +327,7 @@ class User extends Model
         $messages['confirmation'] = 'Votre identifiant a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../user/');
+            header('Location: ../user/modifyuser#username');
             exit;
         }
     }
@@ -383,8 +377,6 @@ class User extends Model
     public function logInUser($username, $passwordAttempt)
     {
         if (isset($_POST['login'])) {
-            $errors    = array();
-
             // On récupère les valeurs saisies dans le formulaire de login :
             $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
             $passwordAttempt = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
@@ -401,9 +393,7 @@ class User extends Model
 
                 // on indique à l'utilisateur qu'il s'est trompé de username ou de mot de passe.
                 // on ne précise pas qu'il s'agit du username qui est faux, pour raison de sécurité :
-
-                $errors['errors'] = 'Identifiant ou Mot de passe incorrect !';
-                $_SESSION['errors'] = $errors;
+                $_SESSION['errors']['loginfailed'] = 'Identifiant ou Mot de passe incorrect !';
                 header('Location: ../login/');
 
             } else {
@@ -438,8 +428,7 @@ class User extends Model
 
                 } else {
                     // Dans le cas où le mot de passe est faux, on envoie un message :
-                    $errors['errors'] = 'Identifiant ou Mot de passe incorrect !';
-                    $_SESSION['errors'] = $errors;
+                    $_SESSION['errors']['loginfailed'] = 'Identifiant ou Mot de passe incorrect !';
                     header('Location: ../login/');
                 }
             }
