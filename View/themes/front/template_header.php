@@ -15,6 +15,7 @@
     <link href="<?= BASE_URL; ?>public/css/scroll-front.css" rel="stylesheet">
     <link href="<?= BASE_URL; ?>public/css/loaders/loader-typing.css" rel="stylesheet" media="all">
     <link href="<?= BASE_URL; ?>public/css/theme.css" rel="stylesheet" media="all">
+    <link href="<?= BASE_URL; ?>public/css/simetricks.css" rel="stylesheet" media="all">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title><?= $title ?></title>
 </head>

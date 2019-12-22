@@ -50,16 +50,6 @@
 								</div>
 							</div>
 							<hr>
-							<?php
-							if (!empty($_SESSION['messages']['userupdated'])){?>
-							<div class="alert alert-success alert-dismissible fade show" role="alert">
-								<?php  echo $_SESSION['messages']['userupdated'];?>
-								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<?php };?>
-							<?php unset($_SESSION['messages']); ?>
 				<!-- Infos Personnelles -->
 				<!-- TABS -->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -114,7 +104,7 @@
         											<br>
         											<button class="btn btn-md btn-success" name="modifyuser" type="submit">Enregistrer</button>
         											<a href="#" class="btn btn-md btn-secondary" type="reset">Annuler</a>
-        											<a href="user" class="btn btn-md btn-primary" role="button">Retour</a>
+        											<a href="<?= $_SERVER['HTTP_REFERER']; ?>" class="btn btn-md btn-primary" role="button">Retour</a>
         									</div>
         						</div>
                     <p>&nbsp;</p>
@@ -131,16 +121,6 @@
 			<div class="tab-pane fade" id="username" role="tabpanel" aria-labelledby="pills-profile-tab">
         <form role="form" class="form needs-validation" action="user/updateusername" method="post" id="usermodification" novalidate>
           <p>&nbsp;</p>
-					<?php
-					if (!empty($_SESSION['messages']['usernameupdated'])){?>
-					<div class="alert alert-success alert-dismissible fade show" role="alert">
-						<?php  echo $_SESSION['messages']['usernameupdated'];?>
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<?php };?>
-					<?php unset($_SESSION['messages']); ?>
           <div class="form-group">
               <div class="col-xs-6">
                   <label for="username"><h4>Identifiant</h4></label>
@@ -152,7 +132,7 @@
                       <br>
                       <button class="btn btn-md btn-success" name="modifyusername" type="submit">Enregistrer</button>
                       <a href="#"><button class="btn btn-md btn-secondary" type="reset">Annuler</button></a>
-                      <a href="index.php"><button class="btn btn-md btn-primary" type="button">Retour</button></a>
+                      <a href="<?= $_SERVER['HTTP_REFERER']; ?>"><button class="btn btn-md btn-primary" type="button">Retour</button></a>
                   </div>
             </div>
             <p>&nbsp;</p>

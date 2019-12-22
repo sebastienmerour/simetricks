@@ -44,6 +44,7 @@ if (!empty($_SESSION['errors']['email'])) {
  <?php
 }
 ?>
+
 <?php
 unset($_SESSION['errors']);
 ?>

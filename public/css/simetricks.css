@@ -1,0 +1,31 @@
+/* The message box is shown when the user clicks on the password field */
+
+#feedback {
+	display: none;
+	color: #000;
+	text-align: left;
+	margin-top: 10px;
+}
+/* Add a green text color and a checkmark when the requirements are right */
+
+.valid {
+	color: green;
+}
+.valid-feedback:before {
+	position: relative;
+	left: -35px;
+}
+/* Add a red text color and an "x" icon when the requirements are wrong */
+
+.invalid {
+	color: red;
+}
+.invalid:before {
+	position: relative;
+	left: -35px;
+}
+.tooltip-inner {
+	background-color: #fff;
+	color: #000;
+	border: 1px solid #CCCCCC;
+}

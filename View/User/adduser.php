@@ -29,19 +29,17 @@
 			<div class="form-group">
 				<input type="text" class="form-control" id="email" name="email" placeholder="E-mail" required><br>
 			</div>
-			<div class="g-recaptcha mb-3" data-sitekey="<?= RECAPTCHA_SITE_KEY; ?>"></div>
-
-
-			<div class="form-group">
-				<button class="btn btn-primary btn-block" type="submit" name="register">Envoyer</button>
-			</div>
-			<div class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input" id="signup-agree">
-				<label class="custom-control-label text-small text-muted" for="signup-agree">J'accepte les <a href="#">
+			<div class="form-group custom-control custom-checkbox text-right">
+				<input type="checkbox" class="custom-control-input" id="cgu" name="cgu">
+				<label class="custom-control-label text-small text-muted" for="cgu">J'accepte les <a href="#">
 					Conditions Générales d'Utilisation</a>
 				</label>
 			</div>
-			<div id="feedback" class="text-left text-small text-muted mt-3">
+			<div class="g-recaptcha mb-3" data-sitekey="<?= RECAPTCHA_SITE_KEY; ?>"></div>
+			<div class="form-group">
+				<button class="btn btn-primary btn-block" type="submit" name="register">Envoyer</button>
+			</div>
+			<div id="feedback" class="text-left text-small text-muted mt-3 mb-2">
 				<span class="text-left">Votre mot de passe doit contenir :</span><br>
 			  <span id="letter" class="invalid">- au moins <b>1 minuscule</b></span><br>
 			  <span id="capital" class="invalid">- au moins <b>1 majuscule</b></span><br>
@@ -49,18 +47,15 @@
 			  <span id="length" class="invalid">- au minimum <b>8 caractères</b></span><br>
 			</div>
 		<?php
-			if (!empty($_SESSION['messages']['usercreated']))
-			{?>
-					<div class="bg-success text-white rounded p-3">
-		  			<?php echo $_SESSION['messages']['usercreated'];
-						?>
-					</div>
-		Pour accéder à votre compte, veuillez vous identifier :
-		<a href="login">cliquez ici</a>
-			<?php
-			}
+		if (!empty($_SESSION['messages']['confirmation']))
+				{
+				require __DIR__ . '/../errors/confirmation.php';
+				?>
+				Pour accéder à votre compte, veuillez vous identifier :
+				<a href="login">cliquez ici</a>
+				<?php
+				}
 			?>
-		<?php unset($_SESSION['messages']); ?>
 			<hr>
 			<div class="text-center text-small text-muted">
 				<span>Vous avez déjà un compte? <a href="login/">Identifiez-vous</a>

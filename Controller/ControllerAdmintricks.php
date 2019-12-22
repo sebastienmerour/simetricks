@@ -440,10 +440,11 @@ class ControllerAdmintricks extends Controller
     // Modification d'un user :
     public function updateuser()
     {
-        if (isset($_POST["modify"])) {
+        $user_id               = $this->request->getParameter("id");
+
+        if (isset($_POST["modify"]) && !empty($_POST["firstname"]) && !empty($_POST["name"])) {
             $errors                = array();
             $messages              = array();
-            $user_id               = $this->request->getParameter("id");
             $status                = $this->request->getParameter("status");
             $firstname             = $this->request->getParameter("firstname");
             $name                  = $this->request->getParameter("name");
@@ -493,6 +494,15 @@ class ControllerAdmintricks extends Controller
                 $this->user->changeUserImageFromAdmin($user_id, $status, $firstname, $name, $avatarname, $email, $date_birth);
             }
         }
+        else {
+          $errors['errors'] = 'Merci de renseigner tous les champs !';
+          if (!empty($errors)) {
+              $_SESSION['errors'] = $errors;
+              header('Location: ../readuser/' . $user_id);
+              exit;
+          }
+
+        }
     }
 
 
@@ -511,9 +521,5 @@ class ControllerAdmintricks extends Controller
             $this->generateadminView();
         }
     }
-
-
-
-
 
 }

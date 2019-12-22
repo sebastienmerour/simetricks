@@ -89,7 +89,7 @@ class User extends Model
             ':email' => htmlspecialchars($email),
             ':date_birth' => htmlspecialchars('1950-01-01 00:00:00')
         ));
-        $messages['usercreated'] = 'Votre compte a bien été créé !';
+        $messages['confirmation'] = 'Votre compte a bien été créé !';
         header('Location: adduser');
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -183,11 +183,11 @@ class User extends Model
         }
     }
 
-    // Modification d'un utilisateur en front :
+    // Modification d'un utilisateur en Admin :
     public function changeUserFromAdmin($user_id, $status, $firstname, $name, $email, $date_birth)
     {
+
         $errors         = array();
-        $errorsmail     = array();
         $messages       = array();
         $identification = $user_id;
         $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
@@ -198,17 +198,12 @@ class User extends Model
 
         // Ensuite on vérifie si l'adresse mail possède un format valide :
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // L'adresse e-mail a-t-elle une forme valide ? Regex ou non ?
-            $errorsmail['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
+            $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
         }
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../user/'.$user_id));
-            exit;
-        }
-        if (!empty($errorsmail)) {
-            $_SESSION['errorsmail'] = $errorsmail;
-            die(header('Location: ../user/'.$user_id));
+            die(header('Location: ../readuser/'.$user_id));
             exit;
         }
 
@@ -238,7 +233,6 @@ class User extends Model
     public function changeUserImageFromAdmin($user_id, $status, $firstname, $name, $avatarname, $email, $date_birth)
     {
         $errors         = array();
-        $errorsmail     = array();
         $messages       = array();
         $identification = $user_id;
         $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
@@ -249,16 +243,11 @@ class User extends Model
 
         // Ensuite on vérifie si l'adresse mail possède un format valide :
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // L'adresse e-mail a-t-elle une forme valide ? Regex ou non ?
-            $errorsmail['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
+            $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
         }
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../user/'.$user_id));
-            exit;
-        }
-        if (!empty($errorsmail)) {
-            $_SESSION['errorsmail'] = $errorsmail;
             die(header('Location: ../user/'.$user_id));
             exit;
         }
@@ -335,7 +324,6 @@ class User extends Model
     // Modification d'un avatar :
     public function changeAvatar($avatarname)
     {
-
         $user_id                  = $_SESSION['id_user'];
         $sql                      = 'UPDATE users
            SET avatar = :avatar

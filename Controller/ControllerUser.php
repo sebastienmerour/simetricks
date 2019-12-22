@@ -38,7 +38,7 @@ class ControllerUser extends Controller
     // Création du user :
     public function createuser()
     {
-        if (!empty($_POST['username']) && !empty($_POST['pass']) && !empty($_POST['email'])) {
+        if (!empty($_POST['username']) && !empty($_POST['pass']) && !empty($_POST['email']) && !empty($_POST['cgu'])) {
 
             if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
                 $secretKey      = RECAPTCHA_SECRET_KEY;

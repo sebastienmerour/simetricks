@@ -49,16 +49,6 @@
 								</div>
 							</div>
 							<hr>
-							<?php
-							if (!empty($_SESSION['messages']['userupdated'])){?>
-							<div class="alert alert-success alert-dismissible fade show" role="alert">
-								<?php  echo $_SESSION['messages']['userupdated'];?>
-								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<?php };?>
-							<?php unset($_SESSION['messages']); ?>
 				<!-- Infos Personnelles -->
 				<!-- TABS -->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">

@@ -42,7 +42,7 @@ class ControllerLogin extends Controller
             $passwordAttempt = $this->request->getParameter("pass");
             $this->user->logInUser($username, $passwordAttempt);
         } else
-            throw new Exception("Action impossible : courriel ou mot de passe non défini");
+            throw new Exception("Action impossible : identifiant ou mot de passe non défini");
     }
 
     // Processus de Connexion d'un user sur l'interdace d'admin :
@@ -53,13 +53,12 @@ class ControllerLogin extends Controller
             $passwordAttempt = $this->request->getParameter("pass");
             $this->user->logInUserAdmin($username, $passwordAttempt);
         } else
-            throw new Exception("Action impossible : courriel ou mot de passe non défini");
+            throw new Exception("Action impossible : identifiant ou mot de passe non défini");
     }
 
     // Appui sur le bouton Deconnexion d'un user :
     public function logout()
     {
-
         $items                 = $this->item->count();
         $number_of_items       = $this->item->count();
         $number_of_items_pages = $this->item->getNumberOfPages();
