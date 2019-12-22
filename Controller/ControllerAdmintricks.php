@@ -3,6 +3,7 @@ require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
 require_once 'Model/Comment.php';
 require_once 'Model/User.php';
+require_once 'Model/Calculate.php';
 
 /**
  * Contrôleur gérant la page d'accueil de l'administration du site
@@ -16,12 +17,14 @@ class ControllerAdmintricks extends Controller
     private $user;
     private $item;
     private $comment;
+    private $calculate;
 
     public function __construct()
     {
         $this->user    = new User();
         $this->item    = new Item();
         $this->comment = new Comment();
+        $this->calculate = new Calculate();
     }
 
     // CREATE
@@ -30,7 +33,7 @@ class ControllerAdmintricks extends Controller
     // Affichage du formulaire de création d'un article :
     public function additem()
     {
-        $items = $this->item->count();
+        $items = $this->calculate->getTotalOfItems();
         $this->generateadminView(array(
             'items' => $items
         ));
@@ -117,31 +120,25 @@ class ControllerAdmintricks extends Controller
     // Affichage de la page d'accueil après connexion :
     public function dashboard()
     {
-        $number_of_items       = $this->item->count();
-        if (null!= $this->request->ifParameter("id"))  {
-          $items_current_page  = $this->request->getParameter("id");
-          }
-          else {
-            $items_current_page = 1;
-          }
+        $default                  = "default.png";
+        $items_current_page     = 1;
+        $comments_current_page  = 1;
+        $users_current_page  = 1;
         $items                 = $this->item->getItems($items_current_page);
-        $page_previous_items   = $items_current_page - 1;
-        $page_next_items       = $items_current_page + 1;
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $comments                 = $this->comment->selectComments($comments_current_page);
+        $users                 = $this->user->selectUsers($users_current_page);
         $this->generateadminView(array(
+            'default' => $default,
             'items' => $items,
-            'number_of_items' => $number_of_items,
-            'items_current_page' => $items_current_page,
-            'page_previous_items' => $page_previous_items,
-            'page_next_items' => $page_next_items,
-            'number_of_items_pages' => $number_of_items_pages
+            'comments' => $comments,
+            'users' => $users
         ));
     }
 
     // Affichage de la page Extended Cards :
     public function extendedcards()
     {
-        $number_of_items       = $this->item->count();
+        $number_of_items       = $this->calculate->getTotalOfItems();
         if (null!= $this->request->ifParameter("id"))  {
           $items_current_page  = $this->request->getParameter("id");
           }
@@ -151,7 +148,7 @@ class ControllerAdmintricks extends Controller
         $items                 = $this->item->getItems($items_current_page);
         $page_previous_items   = $items_current_page - 1;
         $page_next_items       = $items_current_page + 1;
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateadminView(array(
             'items' => $items,
             'number_of_items' => $number_of_items,
@@ -269,8 +266,8 @@ class ControllerAdmintricks extends Controller
         $comments_reported_next_page       = $comments_reported_current_page + 1;
         $comments_reported                 = $this->comment->selectCommentsReported($comments_reported_current_page);
         $default                           = "default.png";
-        $number_of_comments_reported_pages = $this->comment->getNumberOfCommentsReportedPagesFromAdmin();
-        $counter_comments_reported         = $this->comment->getTotalOfCommentsReported();
+        $number_of_comments_reported_pages = $this->calculate->getNumberOfCommentsReportedPagesFromAdmin();
+        $counter_comments_reported         = $this->calculate->getTotalOfCommentsReported();
         $this->generateadminView(array(
             'comments_reported' => $comments_reported,
             'default' => $default,
@@ -295,8 +292,8 @@ class ControllerAdmintricks extends Controller
         $comments_next_page       = $comments_current_page + 1;
         $comments                 = $this->comment->selectComments($comments_current_page);
         $default                  = "default.png";
-        $number_of_comments_pages = $this->comment->getNumberOfCommentsPagesFromAdmin();
-        $counter_comments         = $this->comment->getTotalOfComments();
+        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromAdmin();
+        $counter_comments         = $this->calculate->getTotalOfComments();
         $this->generateadminView(array(
             'comments' => $comments,
             'default' => $default,
@@ -381,6 +378,8 @@ class ControllerAdmintricks extends Controller
             exit;
         }
     }
+
+    // Suppression d'un commentaire signalé :
     public function removecommentreported()
     {
         $id_comment = $this->request->getParameter("id");
@@ -397,6 +396,7 @@ class ControllerAdmintricks extends Controller
     // READ
     // USERS
 
+    // Affichage de la liste des utilisateurs en Admin :
     public function users()
     {
       if (null!= $this->request->ifParameter("id"))  {
@@ -409,8 +409,8 @@ class ControllerAdmintricks extends Controller
         $users_next_page       = $users_current_page + 1;
         $users                 = $this->user->selectUsers($users_current_page);
         $default               = "default.png";
-        $number_of_users_pages = $this->user->getNumberOfUsersPagesFromAdmin();
-        $counter_users         = $this->user->getTotalOfUSers();
+        $number_of_users_pages = $this->calculate->getNumberOfUsersPagesFromAdmin();
+        $counter_users         = $this->calculate->getTotalOfUSers();
         $this->generateadminView(array(
             'users' => $users,
             'default' => $default,

@@ -1,6 +1,8 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
+require_once 'Model/Calculate.php';
+
 
 /**
  * Contrôleur gérant la page d'accueil
@@ -12,9 +14,11 @@ require_once 'Model/Item.php';
 class ControllerHome extends Controller
 {
     private $item;
+    private $calculate;
     public function __construct()
     {
         $this->item = new Item();
+        $this->calculate = new Calculate();
     }
 
     // Lister les articles en page d'accueil :
@@ -27,11 +31,11 @@ class ControllerHome extends Controller
           $items_current_page = 1;
         }
         $items                 = $this->item->getItems($items_current_page);
-        $number_of_items       = $this->item->count();
+        $number_of_items       = $this->calculate->getTotalOfItems();
         $items_current_page    = 1;
         $previous_page         = $items_current_page - 1;
         $next_page             = $items_current_page + 1;
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
             'items' => $items,
             'number_of_items' => $number_of_items,

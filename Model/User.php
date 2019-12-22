@@ -489,27 +489,5 @@ class User extends Model
         }
     }
 
-    // CALCULS
-    // FRONT
-
-    // Calculer le nombre total de Pages de Users pour l'admin :
-    public function getNumberOfUsersPagesFromAdmin()
-    {
-        $total_users_count     = $this->getTotalOfUsers();
-        $number_of_users_pages = ceil($total_users_count / $this->number_of_users_by_page);
-        return $number_of_users_pages;
-    }
-
-    // Calculer le nombre total de users :
-    public function getTotalOfUsers()
-    {
-        $sql                  = 'SELECT COUNT(id_user) as counter FROM users';
-        $users                = $this->dbConnect($sql);
-        $this->users_count    = $users->fetch(\PDO::FETCH_ASSOC);
-        $total_users_count    = $this->users_count['counter'];
-        return $total_users_count;
-    }
-
-
 
 }

@@ -3,6 +3,7 @@ require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
 require_once 'Model/Comment.php';
 require_once 'Model/User.php';
+require_once 'Model/Calculate.php';
 
 /**
  * Contrôleur des actions liées aux articles
@@ -16,6 +17,7 @@ class ControllerItem extends Controller
     private $item;
     private $comment;
     private $user;
+    private $calculate;
 
     /**
      * Constructeur
@@ -25,6 +27,7 @@ class ControllerItem extends Controller
         $this->item    = new Item();
         $this->comment = new Comment();
         $this->user    = new User();
+        $this->calculate    = new Calculate();
     }
 
     // ITEMS //
@@ -35,15 +38,15 @@ class ControllerItem extends Controller
     {
         $item_id                  = $this->request->getParameter("id");
         $item                     = $this->item->getItem($item_id);
-        $number_of_items          = $this->item->count();
-        $number_of_items_pages    = $this->item->getNumberOfPages();
+        $number_of_items          = $this->calculate->getTotalOfItems();
+        $number_of_items_pages    = $this->calculate->getNumberOfPages();
         $number_of_comments       = $this->comment->countComments($item_id);
         $comments_current_page    = $this->comment->getCommentsCurrentPage();
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
         $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
-        $total_comments_count     = $this->comment->getTotalOfComments();
-        $total_users_count        = $this->user->getTotalOfUsers();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         $default                  = "default.png";
         $number_of_comments_pages = $this->comment->getNumberOfCommentsPagesFromItem($item_id);
         $this->generateView(array(
@@ -68,8 +71,8 @@ class ControllerItem extends Controller
         $item_id                  = $this->request->getParameter("id");
         $item                     = $this->item->getItem($item_id);
         $user                     = $this->user->getUser($_SESSION['id_user']);
-        $number_of_items          = $this->item->count();
-        $number_of_items_pages    = $this->item->getNumberOfPages();
+        $number_of_items          = $this->calculate->getTotalOfItems();
+        $number_of_items_pages    = $this->calculate->getNumberOfPages();
         $number_of_comments       = $this->comment->countComments($item_id);
         $comments_current_page    = $this->comment->getCommentsCurrentPageUser();
         $page_previous_comments   = $comments_current_page - 1;
@@ -178,10 +181,10 @@ class ControllerItem extends Controller
     // Affichage d'un commentaire :
     public function readcomment()
     {
-        $item_id                  = $this->item->getItemId();
+        $item_id                  = $this->calculate->getItemId();
         $item                     = $this->item->getItem($item_id);
-        $number_of_items          = $this->item->count();
-        $number_of_items_pages    = $this->item->getNumberOfPages();
+        $number_of_items          = $this->calculate->getTotalOfItems();
+        $number_of_items_pages    = $this->calculate->getNumberOfPages();
         $number_of_comments       = $this->comment->countComments($item_id);
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;
@@ -221,10 +224,10 @@ class ControllerItem extends Controller
     // Signaler un commentaire :
     public function reportcomment()
     {
-        $item_id                  = $this->item->getItemId();
+        $item_id                  = $this->calculate->getItemId();
         $item                     = $this->item->getItem($item_id);
-        $number_of_items          = $this->item->count();
-        $number_of_items_pages    = $this->item->getNumberOfPages();
+        $number_of_items          = $this->calculate->getTotalOfItems();
+        $number_of_items_pages    = $this->calculate->getNumberOfPages();
         $number_of_comments       = $this->comment->countComments($item_id);
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;

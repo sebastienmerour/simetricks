@@ -343,48 +343,4 @@ class Comment extends Model
         return $number_of_comments_pages;
     }
 
-
-    // CALCULS
-    // FRONT
-
-    // Calculer le nombre total de Pages de Commentaires pour l'admin :
-    public function getNumberOfCommentsPagesFromAdmin()
-    {
-        $total_comments_count     = $this->getTotalOfComments();
-        $number_of_comments_pages = ceil($total_comments_count / $this->number_of_comments_by_page);
-        return $number_of_comments_pages;
-    }
-
-    // Calculer le nombre total de commentaires :
-    public function getTotalOfComments()
-    {
-        $sql                  = 'SELECT COUNT(id) as counter FROM comments';
-        $comments             = $this->dbConnect($sql);
-        $this->comments_count = $comments->fetch(\PDO::FETCH_ASSOC);
-        $total_comments_count = $this->comments_count['counter'];
-        return $total_comments_count;
-    }
-
-    // Calculer le nombre total de Pages de Commentaires pour l'admin :
-    public function getNumberOfCommentsReportedPagesFromAdmin()
-    {
-        $total_comments_reported_count     = $this->getTotalOfCommentsReported();
-        // Calculer le nombre de pages nécessaires :
-        $number_of_comments_reported_pages = ceil($total_comments_reported_count / $this->number_of_comments_reported_by_page);
-        return $number_of_comments_reported_pages;
-    }
-
-    // Calculer le nombre total de commentaires signalés pour l'admin :
-    public function getTotalOfCommentsReported()
-    {
-        $sql                     = 'SELECT COUNT(id) as counter FROM comments WHERE report = :report ';
-        $comments_reported_count = $this->dbConnect($sql, array(
-            ':report' => "yes"
-        ));
-
-        $this->comments_reported_count = $comments_reported_count->fetch(\PDO::FETCH_ASSOC);
-        $total_comments_reported_count = $this->comments_reported_count['counter'];
-        return $total_comments_reported_count;
-    }
-
 }

@@ -12,7 +12,7 @@
 					require __DIR__ . '/../errors/errors.php'; ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="card my-4">
-  <h5 class="card-header">Modification de l'article</h5>
+  <h5 class="card-header">Modification de l'article <strong><?= $this->clean($item['title']);?></strong></h5>
     <div class="card-body">
 				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>updateitem/<?= $this->clean($item['id']);?>" method="post"
 	        id="itemmodification" enctype="multipart/form-data" novalidate>
@@ -35,7 +35,8 @@
 								?>
 							<div class="custom-file">
 							<input type="file" name="image" class="custom-file-input">
-							<label class="custom-file-label" for="customFile">Parcourir...</label>
+							<label class="custom-file-label" data-browse="Parcourir..." for="image"></label>
+
 							</div>
 							<label for="image">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label>
 							<input type="hidden" name="MAX_FILE_SIZE" value="1048576">

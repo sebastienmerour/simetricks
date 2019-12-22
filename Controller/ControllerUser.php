@@ -2,6 +2,8 @@
 require_once 'Framework/Controller.php';
 require_once 'Model/User.php';
 require_once 'Model/Item.php';
+require_once 'Model/Calculate.php';
+
 
 /**
  * Contrôleur des actions liées aux utilisateurs
@@ -14,10 +16,13 @@ class ControllerUser extends Controller
 {
     private $user;
     private $item;
+    private $calculate;
+
     public function __construct()
     {
         $this->user = new User();
         $this->item = new Item();
+        $this->calculate = new Calculate();
     }
 
     // Create
@@ -25,11 +30,9 @@ class ControllerUser extends Controller
     // Affichage du formulaire d'inscription :
     public function adduser()
     {
-        $items                 = $this->item->count();
-        $number_of_items       = $this->item->count();
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
-            'items' => $items,
             'number_of_items' => $number_of_items,
             'number_of_items_pages' => $number_of_items_pages
         ));
@@ -80,12 +83,10 @@ class ControllerUser extends Controller
     {
         $user                  = $this->request->getSession()->setAttribut("user", $this->user);
         $user                  = $this->user->getUser($_SESSION['id_user']);
-        $items                 = $this->item->count();
-        $number_of_items       = $this->item->count();
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
             'user' => $user,
-            'items' => $items,
             'number_of_items' => $number_of_items,
             'number_of_items_pages' => $number_of_items_pages
         ));
@@ -96,12 +97,10 @@ class ControllerUser extends Controller
     {
         $user_id               = $this->request->getParameter("id");
         $user                  = $this->user->getUser($user_id);
-        $items                 = $this->item->count();
-        $number_of_items       = $this->item->count();
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
             'user' => $user,
-            'items' => $items,
             'number_of_items' => $number_of_items,
             'number_of_items_pages' => $number_of_items_pages
         ));
@@ -112,13 +111,11 @@ class ControllerUser extends Controller
     // Affichage de la page de modification de user :
     function modifyuser()
     {
-        $items                 = $this->item->count();
-        $number_of_items       = $this->item->count();
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         $user                  = $this->request->getSession()->setAttribut("user", $this->user);
         $user                  = $this->user->getUser($_SESSION['id_user']);
         $this->generateView(array(
-            'items' => $items,
             'user' => $user,
             'number_of_items' => $number_of_items,
             'number_of_items_pages' => $number_of_items_pages

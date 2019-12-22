@@ -170,45 +170,7 @@ class Item extends Model
         }
     }
 
-    // CALCULS
 
-    // Pagination des Articles :
-    public function count()
-    {
-        $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards';
-        $this->items_count = $this->dbConnect($sql);
-        $items             = $this->items_count->fetch(\PDO::FETCH_ASSOC);
-        $number_of_items   = $items['counter'];
-        return $number_of_items;
-    }
 
-    // Obtenir la page courante des articles :
-    public function getCurrentPage()
-    {
-        if (isset($_GET['id'])) {
-            $items_current_page = (int) $_GET['id'];
-        } else {
-            $items_current_page = 1;
-        }
-        return $items_current_page;
-    }
-
-    // Obtenir le nombre de pages des articles :
-    public function getNumberOfPages()
-    {
-        $number_of_items       = $this->count();
-        // Calculer le nombre de pages nécessaires :
-        $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
-        return $number_of_items_pages;
-    }
-
-    // Obtenir l'ID d'un item sur la page de modification de commentaires :
-    public function getItemId()
-    {
-        $q       = explode("/", $_SERVER['REQUEST_URI']);
-        $value   = $q[4];
-        $item_id = (int) $value;
-        return $item_id;
-    }
 
 }

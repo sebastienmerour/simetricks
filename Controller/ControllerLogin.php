@@ -2,6 +2,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Model/User.php';
 require_once 'Model/Item.php';
+require_once 'Model/Calculate.php';
 
 /**
  * Contrôleur gérant la connexion au site
@@ -14,21 +15,21 @@ class ControllerLogin extends Controller
 {
     private $user;
     private $item;
+    private $calculate;
 
     public function __construct()
     {
         $this->user = new User();
         $this->item = new Item();
+        $this->calculate = new Calculate();
     }
 
     // Affichage de la page de connexion :
     public function index()
     {
-        $items                 = $this->item->count();
-        $number_of_items       = $this->item->count();
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
-            'items' => $items,
             'number_of_items' => $number_of_items,
             'number_of_items_pages' => $number_of_items_pages
         ));
@@ -59,16 +60,14 @@ class ControllerLogin extends Controller
     // Appui sur le bouton Deconnexion d'un user :
     public function logout()
     {
-        $items                 = $this->item->count();
-        $number_of_items       = $this->item->count();
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         if (ISSET($_SESSION['id_user'])) {
             $this->request->getSession()->destroy();
             // Suppression des cookies de connexion automatique
             setcookie('username', '');
             setcookie('pass', '');
             $this->generateView(array(
-                'items' => $items,
                 'number_of_items' => $number_of_items,
                 'number_of_items_pages' => $number_of_items_pages
             ));
@@ -94,8 +93,8 @@ class ControllerLogin extends Controller
     // On invite un utilisateur non connecté à se connecter :
     public function invite()
     {
-        $number_of_items       = $this->item->count();
-        $number_of_items_pages = $this->item->getNumberOfPages();
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'number_of_items_pages' => $number_of_items_pages
