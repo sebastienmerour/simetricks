@@ -50,5 +50,6 @@ else {
 require __DIR__ . '/../Home/pagination_index.php';
 }
 ?>
-<?= $this->sidebar= 'Le site contient ' . $number_of_items .' articles<br>
-et '. $number_of_items_pages.' pages d\'articles.<br>'; ?>
+
+<?php $this->sidebar= 'Le site contient ' . $number_of_items .' articles<br>
+et '. $number_of_items_pages.' pages d\'articles.<br>';

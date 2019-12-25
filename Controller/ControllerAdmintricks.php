@@ -33,10 +33,7 @@ class ControllerAdmintricks extends Controller
     // Affichage du formulaire de création d'un article :
     public function additem()
     {
-        $items = $this->calculate->getTotalOfItems();
-        $this->generateadminView(array(
-            'items' => $items
-        ));
+        $this->generateadminView();
     }
 
     // Processus de création d'un article :
@@ -47,6 +44,10 @@ class ControllerAdmintricks extends Controller
             $messages              = array();
             $user_id               = $_SESSION['id_user_admin'];
             $title                 = $_POST['title'];
+            $date_native           = $_POST['date_native'];
+            $licence               = $_POST['licence'];
+            $langage               = $_POST['langage'];
+            $links                 = $_POST['links'];
             $content               = $_POST['content'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];
@@ -75,7 +76,7 @@ class ControllerAdmintricks extends Controller
             }
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->item->insertItem($user_id, $title, $content);
+                $this->item->insertItem($user_id, $title, $date_native, $licence, $langage, $links, $content);
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -103,7 +104,8 @@ class ControllerAdmintricks extends Controller
 
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->insertItemImage($user_id, $title, $itemimagename, $content);
+                $this->item->insertItemImage($user_id, $title, $itemimagename, $date_native, $licence, $langage, $links, $content);
+
             }
         }
     }
@@ -181,6 +183,10 @@ class ControllerAdmintricks extends Controller
             $messages              = array();
             $item_id               = $this->request->getParameter("id");
             $title                 = $this->request->getParameter("title");
+            $date_native  = $this->request->getParameter("date_native");
+            $licence  = $this->request->getParameter("licence");
+            $langage  = $this->request->getParameter("langage");
+            $links  = $this->request->getParameter("links");
             $content               = $this->request->getParameter("content");
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];
@@ -203,8 +209,12 @@ class ControllerAdmintricks extends Controller
                 $messages = array();
                 $item_id  = $this->request->getParameter("id");
                 $title    = $this->request->getParameter("title");
+                $date_native  = $this->request->getParameter("date_native");
+                $licence  = $this->request->getParameter("licence");
+                $langage  = $this->request->getParameter("langage");
+                $links  = $this->request->getParameter("links");
                 $content  = $this->request->getParameter("content");
-                $this->item->changeItem($title, $content, $item_id);
+                $this->item->changeItem($title, $date_native, $licence, $langage, $links, $content, $item_id);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -228,7 +238,7 @@ class ControllerAdmintricks extends Controller
                 }
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->changeItemImage($title, $itemimagename, $content, $item_id);
+                $this->item->changeItemImage($title, $itemimagename, $date_native, $licence, $langage, $links, $content, $item_id);
             }
         }
     }

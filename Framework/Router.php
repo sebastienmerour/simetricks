@@ -64,7 +64,7 @@ class Router
     private function manageError(Exception $exception)
     {
         $view = new View('error');
-        $view->generate(array(
+        $view->generateError(array(
             'msgError' => $exception->getMessage()
         ));
     }

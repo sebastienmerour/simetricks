@@ -65,6 +65,55 @@ class Calculate extends Model
 
 
   // COMMENTAIRES
+  // FRONT
+
+  // Calculer le nombre de Commentaires d'un article en particulier :
+  public function countComments($item_id)
+  {
+      $sql                  = 'SELECT COUNT(id) as counter FROM comments WHERE id_item = ?';
+      $this->comments_count = $this->dbConnect($sql, array(
+          $item_id
+      ));
+      $comments             = $this->comments_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_comments   = $comments['counter'];
+      return $number_of_comments;
+  }
+
+  // Obtenir l'ID du commentaire pour une modification du commentaire en Front :
+  public function getCommentId()
+  {
+      $q          = explode("/", $_SERVER['REQUEST_URI']);
+      $value      = $q[5];
+      $id_comment = (int) $value;
+      return $id_comment;
+  }
+
+  // Obtenir la page courante des commentaires sur un article en particulier :
+  public function getCommentsCurrentPage()
+  {
+      $q                     = explode("/", $_SERVER['REQUEST_URI']);
+      $value                 = $q[4];
+      $comments_current_page = (int) $value;
+      return $comments_current_page;
+  }
+
+  // Obtenir la page courante des commentaires sur un article en particulier avec user connecté :
+  public function getCommentsCurrentPageUser()
+  {
+      $q                     = explode("/", $_SERVER['REQUEST_URI']);
+      $value                 = $q[5];
+      $comments_current_page = (int) $value;
+      return $comments_current_page;
+  }
+
+  // Obtenir le nombre de pages des commentaires sur un article en particulier :
+  public function getNumberOfCommentsPagesFromItem($item_id)
+  {
+      $number_of_comments       = $this->countComments($item_id);
+      $number_of_comments_pages = ceil($number_of_comments / $this->number_of_comments_by_page);
+      return $number_of_comments_pages;
+  }
+
   // ADMIN
 
   // Calculer le nombre total de Pages de Commentaires pour l'admin :

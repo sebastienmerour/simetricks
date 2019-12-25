@@ -40,15 +40,15 @@ class ControllerItem extends Controller
         $item                     = $this->item->getItem($item_id);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $number_of_items_pages    = $this->calculate->getNumberOfPages();
-        $number_of_comments       = $this->comment->countComments($item_id);
-        $comments_current_page    = $this->comment->getCommentsCurrentPage();
+        $number_of_comments       = $this->calculate->countComments($item_id);
+        $comments_current_page    = $this->calculate->getCommentsCurrentPage();
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
         $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
         $default                  = "default.png";
-        $number_of_comments_pages = $this->comment->getNumberOfCommentsPagesFromItem($item_id);
+        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($item_id);
         $this->generateView(array(
             'item' => $item,
             'number_of_items' => $number_of_items,
@@ -73,13 +73,13 @@ class ControllerItem extends Controller
         $user                     = $this->user->getUser($_SESSION['id_user']);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $number_of_items_pages    = $this->calculate->getNumberOfPages();
-        $number_of_comments       = $this->comment->countComments($item_id);
-        $comments_current_page    = $this->comment->getCommentsCurrentPageUser();
+        $number_of_comments       = $this->calculate->countComments($item_id);
+        $comments_current_page    = $this->calculate->getCommentsCurrentPageUser();
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
         $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
         $default                  = "default.png";
-        $number_of_comments_pages = $this->comment->getNumberOfCommentsPagesFromItem($item_id);
+        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($item_id);
         $this->generateView(array(
             'item' => $item,
             'number_of_items' => $number_of_items,
@@ -185,14 +185,14 @@ class ControllerItem extends Controller
         $item                     = $this->item->getItem($item_id);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $number_of_items_pages    = $this->calculate->getNumberOfPages();
-        $number_of_comments       = $this->comment->countComments($item_id);
+        $number_of_comments       = $this->calculate->countComments($item_id);
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
         $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
-        $id_comment               = $this->comment->getCommentId();
+        $id_comment               = $this->calculate->getCommentId();
         $comment                  = $this->comment->getComment($id_comment);
-        $number_of_comments_pages = $this->comment->getNumberOfCommentsPagesFromItem($item_id);
+        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($item_id);
         $default                  = "default.png";
         $this->generateView(array(
             'comment' => $comment,
@@ -215,7 +215,7 @@ class ControllerItem extends Controller
     // Modification d'un commentaire :
     public function updatecomment()
     {
-        $id_comment = $this->comment->getCommentId();
+        $id_comment = $this->calculate->getCommentId();
         $comment    = $this->comment->getComment($id_comment);
         $content    = $comment['content'];
         $this->comment->changeComment($content);
@@ -228,14 +228,14 @@ class ControllerItem extends Controller
         $item                     = $this->item->getItem($item_id);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $number_of_items_pages    = $this->calculate->getNumberOfPages();
-        $number_of_comments       = $this->comment->countComments($item_id);
+        $number_of_comments       = $this->calculate->countComments($item_id);
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
         $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
-        $id_comment               = $this->comment->getCommentId();
+        $id_comment               = $this->calculate->getCommentId();
         $comment                  = $this->comment->getComment($id_comment);
-        $number_of_comments_pages = $this->comment->getNumberOfCommentsPagesFromItem($item_id);
+        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($item_id);
         $this->comment->reportBadComment($id_comment);
         $default = "default.png";
         $this->generateView(array(

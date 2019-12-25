@@ -16,7 +16,7 @@
     <script src="https://cdn.tiny.cloud/1/g3t2j6ax1fih16h88zn6d7z6bd9akw3ur6zuo3p7qainhbeq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
     tinymce.init({
-      selector: '#content',
+      selector: '#content', 
       auto_focus: 'element1',
       height: "400px"
     });

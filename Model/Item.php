@@ -15,20 +15,24 @@ class Item extends Model
     // CREATE
 
     // Création d'un nouvel article sans photo :
-    public function insertItem($user_id, $title, $content)
+    public function insertItem($user_id, $title, $date_native, $licence, $langage, $links, $content)
     {
         $errors   = array();
         $messages = array();
         $user_id  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO extended_cards (id_user, title, content, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, title, date_native, licence, langage, links, content, date_creation)
                       VALUES
-                      (:id_user, :title, :content, NOW())';
+                      (:id_user, :title, :date_native, :licence, :langage, :links, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
             ':id_user' => $user_id,
             ':title' => $title,
+            ':date_native' => $date_native,
+            ':licence' => $licence,
+            ':langage' => $langage,
+            ':links' => $links,
             ':content' => $content
         ));
-        $messages['confirmation'] = 'Votre article a bien été ajouté !';
+        $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location:' . BASE_ADMIN_URL. 'dashboard');
@@ -42,17 +46,21 @@ class Item extends Model
         $errors   = array();
         $messages = array();
         $user_id  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO extended_cards (id_user, title, image, content, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, title, image, date_native, licence, langage, links, content, date_creation)
                       VALUES
-                      (:id_user, :title, :image, :content, NOW())';
+                      (:id_user, :title, :image, :date_native, :licence, :langage, :links, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
             ':id_user' => $user_id,
             ':title' => $title,
             ':image' => $itemimagename,
+            ':date_native' => $date_native,
+            ':licence' => $licence,
+            ':langage' => $langage,
+            ':links' => $links,
             ':content' => $content
         ));
 
-        $messages['confirmation'] = 'Votre article a bien été ajouté !';
+        $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location:' . BASE_ADMIN_URL. 'dashboard');
@@ -78,25 +86,16 @@ class Item extends Model
         return $items;
     }
 
-    // Pagniation des Articles :
-    public function getPaginationItems($items_current_page)
-    {
-        $start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql   = 'SELECT extended_cards.id, extended_cards.title, extended_cards.image, extended_cards.content,
-    DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
-    DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-    users.id_user, users.firstname, users.name FROM extended_cards
-    LEFT JOIN users
-    ON extended_cards.id_user = users.id_user
-    ORDER BY date_creation DESC LIMIT ' . $start . ', ' . $this->number_of_items_by_page . '';
-        $items = $this->dbConnect($sql);
-        return $items;
-    }
 
     // Afficher un Article en particulier :
     public function getItem($item_id)
     {
-        $sql  = 'SELECT extended_cards.id, extended_cards.title AS title, extended_cards.image AS image, extended_cards.content AS content,
+        $sql  = 'SELECT extended_cards.id, extended_cards.title AS title, extended_cards.image AS image,
+        DATE_FORMAT(extended_cards.date_native, \'%Y-%m-%d\') AS date_native,
+        extended_cards.licence AS licence,
+        extended_cards.langage AS langage,
+        extended_cards.links AS links,
+        extended_cards.content AS content,
         DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
         DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
         users.id_user, users.firstname, users.name
@@ -115,19 +114,29 @@ class Item extends Model
     // UPDATE
 
     // Modification d'un article avec photo :
-    public function changeItemImage($title, $itemimagename, $content, $item_id)
+    public function changeItemImage($title, $itemimagename, $date_native, $licence, $langage, $links, $content, $item_id)
     {
         $title   = !empty($_POST['title']) ? trim($_POST['title']) : null;
+        $date_native = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
+        $licence = !empty($_POST['licence']) ? trim($_POST['licence']) : null;
+        $langage = !empty($_POST['langage']) ? trim($_POST['langage']) : null;
+        $links = !empty($_POST['links']) ? trim($_POST['links']) : null;
         $content = !empty($_POST['content']) ? trim($_POST['content']) : null;
-        $sql     = 'UPDATE extended_cards SET title = :title, image = :image, content = :content,
-    date_update = NOW() WHERE id = :id';
+        $sql     = 'UPDATE extended_cards SET title = :title, image = :image,
+        date_native = :date_native, licence = :licence, langage = :langage, links = :links,
+        content = :content,
+        date_update = NOW() WHERE id = :id';
         $item    = $this->dbConnect($sql, array(
             ':id' => $item_id,
             ':title' => $title,
             ':image' => $itemimagename,
+            ':date_native' => $date_native,
+            ':licence' => $licence,
+            ':langage' => $langage,
+            ':links' => $links,
             ':content' => $content
         ));
-        $messages['confirmation'] = 'Votre article a bien été modifié !';
+        $messages['confirmation'] = 'Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: ../readitem/' . $item_id);
@@ -136,14 +145,24 @@ class Item extends Model
     }
 
     // Modification d'un article sans photo :
-    public function changeItem($title, $content, $item_id)
+    public function changeItem($title, $date_native, $licence, $langage, $links, $content, $item_id)
     {
         $title   = !empty($_POST['title']) ? trim($_POST['title']) : null;
+        $date_native = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
+        $licence = !empty($_POST['licence']) ? trim($_POST['licence']) : null;
+        $langage = !empty($_POST['langage']) ? trim($_POST['langage']) : null;
+        $links = !empty($_POST['links']) ? trim($_POST['links']) : null;
         $content = !empty($_POST['content']) ? trim($_POST['content']) : null;
-        $sql     = 'UPDATE extended_cards SET title = :title, content = :content, date_update = NOW() WHERE id = :id';
+        $sql     = 'UPDATE extended_cards SET title = :title,
+        date_native = :date_native, licence = :licence, langage = :langage, links = :links,
+        content = :content, date_update = NOW() WHERE id = :id';
         $item    = $this->dbConnect($sql, array(
             ':id' => $item_id,
             ':title' => $title,
+            ':date_native' => $date_native,
+            ':licence' => $licence,
+            ':langage' => $langage,
+            ':links' => $links,
             ':content' => $content
         ));
         $messages['confirmation'] = 'Merci ! Votre article a bien été modifié !';
