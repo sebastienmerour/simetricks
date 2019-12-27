@@ -96,7 +96,7 @@
                     <div class="form-group">
                         <div class="col-xs-6">
                             <label for="date_birth"><h4>Date de naissance</h4></label>
-                            <input type="date" class="form-control" name="date_birth" id="date_birth" value="<?php echo strftime('%Y-%m-%d', strtotime($user['date_birth'])); ?>" title="Modifiez votre date de naissance si besoin">
+                            <input type="date" class="form-control" name="date_birth" id="date_birth" value="<?= strftime('%Y-%m-%d', strtotime($user['date_birth'])); ?>" title="Modifiez votre date de naissance si besoin">
                         </div>
                     </div>
         						<div class="form-group">

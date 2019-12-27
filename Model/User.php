@@ -105,7 +105,7 @@ class User extends Model
     public function getUser($user_id)
     {
         $sql   = 'SELECT id_user, status, username, firstname, name, avatar, pass, email, DATE_FORMAT(date_birth, \'%Y-%m-%d \')
-       AS date_birth, DATE_FORMAT(date_register, \'%Y-%m-%d \') AS date_register
+       AS date_birth, DATE_FORMAT(date_register, \'%d/%m/%Y \') AS date_register
        FROM users WHERE id_user = :id_user';
         $query = $this->dbConnect($sql, array(
             ':id_user' => $user_id

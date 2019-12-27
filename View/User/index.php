@@ -70,19 +70,19 @@
 				    </tr>
 						<tr>
 				      <th scope="row">E-Mail</th>
-				      <td><?php echo $user['email'] ?></td>
+				      <td><?= $user['email'] ?></td>
 				    </tr>
 				    <tr>
 				      <th scope="row">Prénom</th>
-				      <td><?php echo $user['firstname'] ?></td>
+				      <td><?= $user['firstname'] ?></td>
 				    </tr>
 						<tr>
 				      <th scope="row">Nom</th>
-				      <td><?php echo $user['name'] ?></td>
+				      <td><?= $user['name'] ?></td>
 				    </tr>
 						<tr>
 							<th scope="row">Date de naissance</th>
-							<td><?php echo strftime('%d/%m/%Y', strtotime($user['date_birth'])); ?></td>
+							<td><?= strftime('%d/%m/%Y', strtotime($user['date_birth'])); ?></td>
 						</tr>
 				  </tbody>
 				</table>

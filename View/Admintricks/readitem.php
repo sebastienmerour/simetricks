@@ -25,7 +25,7 @@
 					<div class="row">
 						<div class="col-6">
 					<label for="date_native">Date de création :</label><br>
-          <input class="form-control" id="date_native" name="date_native" type="date" value="<?php echo strftime('%Y-%m-%d', strtotime($item['date_native'])); ?>"><br>
+          <input class="form-control" id="date_native" name="date_native" type="date" value="<?= $this->clean($item['date_native']); ?>"><br>
 				</div>
 					<div class="col-6">
 					<label for="licence">Licence :</label><br>

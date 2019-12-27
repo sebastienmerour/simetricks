@@ -63,7 +63,7 @@
 								<label for="date_birth">Date de naissance :</label><br>
 								<input type="date" class="form-control" name="date_birth" id="date_birth" value="<?= strftime('%Y-%m-%d', strtotime($user['date_birth'])); ?>" title="Modifiez la date de naissance si besoin"><br>
 								<label for="date_register">Date d'enregistrement :</label><br>
-								<input type="text" readonly class="form-control" name="date_register" id="date_register" value="<?= strftime('%d/%m/%Y', strtotime($user['date_register'])); ?>" title="Date d'enregistrement"><br>
+								<input type="text" readonly class="form-control" name="date_register" id="date_register" value="<?= $this->clean($user['date_register']); ?>" title="Date d'enregistrement"><br>
 								<hr>
 								<br><br>
 	            </div>
