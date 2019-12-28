@@ -105,7 +105,7 @@ class User extends Model
     public function getUser($id_user)
     {
         $sql   = 'SELECT id_user, status, username, firstname, name, avatar, pass, email, DATE_FORMAT(date_birth, \'%Y-%m-%d \')
-       AS date_birth, DATE_FORMAT(date_register, \'%d/%m/%Y \') AS date_register
+       AS date_birth, DATE_FORMAT(date_register, \'%d/%m/%Y \') AS date_register, DATE_FORMAT(date_update, \'%d/%m/%Y \') AS date_update
        FROM users WHERE id_user = :id_user';
         $query = $this->dbConnect($sql, array(
             ':id_user' => $id_user
@@ -178,7 +178,8 @@ class User extends Model
         ));
 
         $sql  = 'UPDATE users
-           SET pass = :pass, email= :email, firstname= :firstname, name= :name, date_birth= :date_birth
+           SET pass = :pass, email= :email, firstname= :firstname, name= :name, date_birth= :date_birth,
+           date_update = NOW()
            WHERE id_user= :id_user';
         $user = $this->dbConnect($sql, array(
             ':id_user' => htmlspecialchars($identification),
@@ -223,7 +224,8 @@ class User extends Model
         }
 
         $sql  = 'UPDATE users
-           SET status = :status, firstname= :firstname, name= :name, email= :email, date_birth= :date_birth
+           SET status = :status, firstname= :firstname, name= :name, email= :email, date_birth= :date_birth,
+           date_update = NOW()
            WHERE id_user= :id_user';
         $user = $this->dbConnect($sql, array(
             ':id_user' => htmlspecialchars($identification),
@@ -268,7 +270,8 @@ class User extends Model
         }
 
         $sql  = 'UPDATE users
-           SET status = :status, firstname= :firstname, name= :name, avatar= :avatar, email= :email, date_birth= :date_birth
+           SET status = :status, firstname= :firstname, name= :name, avatar= :avatar, email= :email, date_birth= :date_birth,
+           date_update = NOW()
            WHERE id_user= :id_user';
         $user = $this->dbConnect($sql, array(
             ':id_user' => htmlspecialchars($identification),
@@ -322,7 +325,7 @@ class User extends Model
             exit;
         }
         $sql2                     = 'UPDATE users
-         SET username= :username
+         SET username= :username, date_update = NOW()
          WHERE id_user= :id_user';
         $userupdate               = $this->dbConnect($sql2, array(
             ':id_user' => htmlspecialchars($identification),
@@ -341,7 +344,8 @@ class User extends Model
     {
         $id_user                  = $_SESSION['id_user'];
         $sql                      = 'UPDATE users
-           SET avatar = :avatar
+           SET avatar = :avatar,
+           date_update = NOW()
            WHERE id_user = :id_user';
         $avatarCreation           = $this->dbConnect($sql, array(
             ':avatar' => htmlspecialchars($avatarname),

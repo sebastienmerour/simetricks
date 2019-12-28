@@ -5,6 +5,7 @@
 	else {
 ?>
 <?php $this->title =  WEBSITE_NAME . ' | Modification d\'un utilisateur'; ?>
+<?php require('users_menu.php'); ?>
 <?php if (empty($user)) {
 							require __DIR__ . '/../errors/user_not_found.php';
 			    }
@@ -64,6 +65,8 @@
 								<input type="date" class="form-control" name="date_birth" id="date_birth" value="<?= strftime('%Y-%m-%d', strtotime($user['date_birth'])); ?>" title="Modifiez la date de naissance si besoin"><br>
 								<label for="date_register">Date d'enregistrement :</label><br>
 								<input type="text" readonly class="form-control" name="date_register" id="date_register" value="<?= $this->clean($user['date_register']); ?>" title="Date d'enregistrement"><br>
+								<label for="date_register">Dernière mise à jour :</label><br>
+								<input type="text" readonly class="form-control" name="date_update" id="date_update" value="<?= $this->clean($user['date_update']); ?>" title="Dernière mise à jour"><br>
 								<hr>
 								<br><br>
 	            </div>
