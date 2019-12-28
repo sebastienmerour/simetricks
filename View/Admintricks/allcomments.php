@@ -5,18 +5,9 @@
 	else {
 ?>
 <?php $this->title =  WEBSITE_NAME . ' |  Panneau d\'Administration'; ?>
-  <!-- News -->
-	<?php require __DIR__ . '/../errors/confirmation.php'; ?>
-
-<h2 id="allcomments">Commentaires</h2>
-<?php
-if ($counter_comments < 1) {
-  require __DIR__ . '/../view/errors/comments_not_found_admin.php';
-}
-
-else {
-require('allcomments_pagination.php');}
-?>
+<?php require('allcomments_menu.php'); ?>
+<?php require __DIR__ . '/../errors/confirmation.php'; ?>
+<h2 id="allcomments">Commentaires Publiés</h2>
 <div class="table-responsive">
   <table class="table table-striped table-sm">
     <thead>

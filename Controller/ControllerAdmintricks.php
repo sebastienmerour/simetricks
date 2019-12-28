@@ -243,8 +243,48 @@ class ControllerAdmintricks extends Controller
         }
     }
 
+    // Restaurer un item depuis la Corbeille :
+    public function moveitemtoitems()
+    {
+        $item_id = $this->request->getParameter("id");
+        $this->item->restoreItem($item_id);
+    }
+
+
     // DELETE
     // ITEMS
+
+    // Affichage de la Corbeille :
+    public function extendedcardsbin()
+    {
+      $number_of_items_deleted       = $this->calculate->getTotalOfItemsDeleted();
+      if (null!= $this->request->ifParameter("id"))  {
+        $items_deleted_current_page  = $this->request->getParameter("id");
+        }
+        else {
+          $items_deleted_current_page = 1;
+        }
+      $items_deleted                 = $this->item->getItemsDeleted($items_deleted_current_page);
+      $page_previous_items_deleted   = $items_deleted_current_page - 1;
+      $page_next_items_deleted       = $items_deleted_current_page + 1;
+      $number_of_items_deleted_pages = $this->calculate->getNumberOfPagesDeleted();
+      $this->generateadminView(array(
+          'items_deleted' => $items_deleted,
+          'number_of_items_deleted' => $number_of_items_deleted,
+          'items_deleted_current_page' => $items_deleted_current_page,
+          'page_previous_items_deleted' => $page_previous_items_deleted,
+          'page_next_items_deleted' => $page_next_items_deleted,
+          'number_of_items_deleted_pages' => $number_of_items_deleted_pages
+      ));
+    }
+
+
+    // Déplacer un item vers la Corbeille :
+    public function moveitemtobin()
+    {
+        $item_id = $this->request->getParameter("id");
+        $this->item->moveItem($item_id);
+    }
 
     // Suppression d'un article :
     public function removeitem()
@@ -257,6 +297,12 @@ class ControllerAdmintricks extends Controller
             $messages['confirmation'] = 'L\'article a bien été supprimé !';
             $this->generateadminView();
         }
+    }
+
+    // Vider la Corbeille :
+    public function empty()
+    {
+        $this->item->emptybin();
     }
 
 
@@ -366,8 +412,6 @@ class ControllerAdmintricks extends Controller
     public function approve()
     {
         $id_comment = $this->request->getParameter("id");
-        $comment    = $this->comment->getComment($id_comment);
-        $content    = $comment['content'];
         $this->comment->approveComment($id_comment);
     }
 

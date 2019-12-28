@@ -4,7 +4,8 @@
 	}
 	else {
 ?>
-<?php $this->title =  WEBSITE_NAME . ' | Modification d\'un article'; ?>
+<?php $this->title =  WEBSITE_NAME . ' |  Modification d\'un article'; ?>
+<?php require('extendedcards_menu.php'); ?>
 <?php if (empty($item)) {
 							require __DIR__ . '/../errors/item_not_found.php';
 			    }
@@ -69,6 +70,7 @@
 							<br>
 							<button class="btn btn-md btn-success" name="modify" type="submit">Enregistrer</button>
 							<a href="#" role="button" class="btn btn-md btn-secondary" type="reset">Annuler</a>
+							<a href="<?= BASE_ADMIN_URL. 'removeitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
 							<a href="<?= $_SERVER['HTTP_REFERER']; ?>" role="button" class="btn btn-md btn-primary" type="button">Retour</a>
 						</div>
 			</div>

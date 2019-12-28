@@ -248,7 +248,7 @@ class Comment extends Model
     // Modification d'un commentaire signalé depuis l'Admin
     public function approveComment($id_comment)
     {
-        $comment                  = $_GET['id'];
+        // $comment                  = $_GET['id'];
         $report                   = "no";
         $sql                      = 'UPDATE comments SET report = :report, date_update = NOW() WHERE id = :id';
         $newComment               = $this->dbConnect($sql, array(
@@ -258,7 +258,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été approuvé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readcommentreported/' . $comment);
+            header('Location: ../tomoderate/');
             exit;
         }
     }

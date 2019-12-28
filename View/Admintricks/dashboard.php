@@ -35,8 +35,8 @@
         <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'readitem/' . $this->clean($item['id'])?>/1">
 				<h6 class="mt-2 text-left"><?= $this->clean($item['title']); ?></h6></a></span></td>
         <td><a href="<?= BASE_ADMIN_URL. 'readitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
-        <td><a href="<?= BASE_ADMIN_URL. 'removeitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
-      </tr>
+        <td><a href="<?= BASE_ADMIN_URL. 'moveitemtobin/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
+		  </tr>
       <?php
         }
       ?>

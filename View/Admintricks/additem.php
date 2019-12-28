@@ -5,8 +5,9 @@
 	else {
 ?>
 <?php $this->title =  WEBSITE_NAME . ' | Ajout d\'un nouvel article'; ?>
+<?php require('extendedcards_menu.php'); ?>
 <?php require __DIR__ . '/../errors/errors.php'; ?>
-
+<?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="card my-4">
 	<h5 class="card-header">Ajout d'une <strong>Extended Card</strong></h5>
     <div class="card-body">

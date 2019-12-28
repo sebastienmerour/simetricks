@@ -1,6 +1,6 @@
 <?php if (!empty($_SESSION['messages']['confirmation']))
           {?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
               <?= $_SESSION['messages']['confirmation'];
               ?>
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">

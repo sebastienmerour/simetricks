@@ -5,10 +5,10 @@
 	else {
 ?>
 <?php $this->title =  WEBSITE_NAME . ' |  Panneau d\'Administration'; ?>
-  <!-- News -->
-	<?php require __DIR__ . '/../errors/confirmation.php'; ?>
-
-  <h2 id="lastitems">Extended Cards</h2>
+<?php require('extendedcards_menu.php'); ?>
+<?php require __DIR__ . '/../errors/confirmation.php'; ?>
+<div class="table-responsive">
+  <h2 id="lastitems">Cards Publiées</h2>
   <div class="table-responsive">
   <table class="table table-striped table-sm">
     <thead>
@@ -35,7 +35,7 @@
         <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'readitem/' . $this->clean($item['id'])?>/1">
 				<h6 class="mt-2 text-left"><?= $this->clean($item['title']); ?></h6></a></span></td>
         <td><a href="<?= BASE_ADMIN_URL. 'readitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
-        <td><a href="<?= BASE_ADMIN_URL. 'removeitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
+        <td><a href="<?= BASE_ADMIN_URL. 'moveitemtobin/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
       </tr>
       <?php
         }
@@ -45,11 +45,12 @@
 
   <?php
   if ($items_current_page > $number_of_items_pages) {
-  	require __DIR__ . '/../errors/items_not_found.php';
+  	require __DIR__ . '/../errors/item_not_found.php';
   }
   else {
   require('extendedcards_pagination.php');}
   ?>
+</div>
 </div>
 <?php
 };

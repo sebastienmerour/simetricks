@@ -50,6 +50,29 @@ class Calculate extends Model
   }
 
 
+  // ADMIN
+
+  // Obtenir le nombre total des Items supprimés :
+  public function getTotalOfItemsDeleted()
+  {
+      $sql                  = 'SELECT COUNT(id) AS counter FROM extended_cards WHERE bin = :bin ';
+      $items_deleted_count = $this->dbConnect($sql, array(
+          ':bin' => "yes"
+      ));
+      $this->items_deleted_count = $items_deleted_count->fetch(\PDO::FETCH_ASSOC);
+      $total_items_deleted_count = $this->items_deleted_count['counter'];
+      return $total_items_deleted_count;
+  }
+
+  // Obtenir le nombre de pages des articles supprimés :
+  public function getNumberOfPagesDeleted()
+  {
+      $number_of_items_deleted       = $this->getTotalOfItemsDeleted();
+      // Calculer le nombre de pages nécessaires :
+      $number_of_items_deleted_pages = ceil($number_of_items_deleted / $this->number_of_items_by_page);
+      return $number_of_items_deleted_pages;
+  }
+
   // COMMENTAIRES
   // FRONT
 

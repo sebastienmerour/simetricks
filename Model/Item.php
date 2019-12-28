@@ -35,7 +35,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'dashboard');
+            header('Location:' . BASE_ADMIN_URL. 'extendedcards');
             exit;
         }
     }
@@ -63,7 +63,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'dashboard');
+            header('Location:' . BASE_ADMIN_URL. 'extendedcards');
             exit;
         }
     }
@@ -81,6 +81,7 @@ class Item extends Model
      users.id_user, users.firstname, users.name FROM extended_cards
      LEFT JOIN users
      ON extended_cards.id_user = users.id_user
+     WHERE bin != "yes"
      ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
         $items = $this->dbConnect($sql);
         return $items;
@@ -108,6 +109,24 @@ class Item extends Model
         ));
         $item = $req->fetch();
         return $item;
+    }
+
+    // Afficher la liste des Articles Supprimés :
+    public function getItemsDeleted($items_deleted_current_page)
+    {
+        $items_start = (int) (($items_deleted_current_page - 1) * $this->number_of_items_by_page);
+        $sql   = 'SELECT extended_cards.id, extended_cards.title, extended_cards.image, extended_cards.content,
+     DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+     DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+     users.id_user, users.firstname, users.name FROM extended_cards
+     LEFT JOIN users
+     ON extended_cards.id_user = users.id_user
+     WHERE bin = :bin
+     ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
+        $items_deleted = $this->dbConnect($sql, array(
+            ':bin' => "yes"
+        ));
+        return $items_deleted;
     }
 
 
@@ -173,8 +192,43 @@ class Item extends Model
         }
     }
 
+    // Restaurer un item depuis la Corbeille
+    public function restoreItem($item_id)
+    {
+        $bin                      = "no";
+        $sql                      = 'UPDATE extended_cards SET bin = :bin, date_update = NOW() WHERE id = :id';
+        $newComment               = $this->dbConnect($sql, array(
+            ':id' => $item_id,
+            ':bin' => $bin
+        ));
+        $messages['confirmation'] = 'Merci ! L\'Extended Card a bien été restaurée !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: ../extendedcardsbin/');
+            exit;
+        }
+    }
+
     // DELETE
-    // Suppression d'un article :
+
+    // Déplacement d'un item vers la Corbeille
+    public function moveItem($item_id)
+    {
+        $bin                      = "yes";
+        $sql                      = 'UPDATE extended_cards SET bin = :bin, date_update = NOW() WHERE id = :id';
+        $newComment               = $this->dbConnect($sql, array(
+            ':id' => $item_id,
+            ':bin' => $bin
+        ));
+        $messages['confirmation'] = 'Merci ! L\'Extended Card a été déplacée dans la corbeille !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: ../extendedcards/');
+            exit;
+        }
+    }
+
+    // Suppression définitive d'un article :
     public function eraseItem($item_id)
     {
         $sql = 'DELETE FROM extended_cards WHERE id = ' . (int) $item_id;
@@ -184,7 +238,25 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! Votre article a bien été supprimé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../');
+            header('Location:' . BASE_ADMIN_URL. 'extendedcardsbin');
+            exit;
+        }
+    }
+
+    // Vidage de la Corbeille :
+    public function emptybin()
+    {
+        $bin = "yes";
+        $sql = 'DELETE FROM extended_cards WHERE bin = :bin';
+        $req = $this->dbConnect($sql, array(
+            ':bin' => $bin
+        ));
+        $req->execute();
+        // Ici on affiche le message de confirmation :
+        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location:' . BASE_ADMIN_URL. 'extendedcardsbin');
             exit;
         }
     }
