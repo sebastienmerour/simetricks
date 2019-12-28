@@ -39,6 +39,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>account">
+          <span data-feather="user"></span>
+          Mon Compte
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>users">
           <span data-feather="users"></span>
           Utilisateurs

@@ -522,6 +522,18 @@ class ControllerAdmintricks extends Controller
         ));
     }
 
+    // Affichage du compte Admin :
+    public function account()
+    {
+        $id_user = $_SESSION['id_user_admin'];
+        $user    = $this->user->getUser($id_user);
+        $this->generateadminView(array(
+            'user' => $user
+        ));
+    }
+
+
+
     // Affichage d'un user seul :
     public function readuser()
     {

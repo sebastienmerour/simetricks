@@ -81,7 +81,7 @@ class ControllerUser extends Controller
     // Affichage de Mon Compte :
     function index()
     {
-        $user                  = $this->request->getSession()->setAttribut("user", $this->user);
+        //$user                  = $this->request->getSession()->setAttribut("user", $this->user);
         $user                  = $this->user->getUser($_SESSION['id_user']);
         $number_of_items       = $this->calculate->getTotalOfItems();
         $number_of_items_pages = $this->calculate->getNumberOfPages();

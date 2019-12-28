@@ -121,7 +121,7 @@ class User extends Model
         $sql            = 'SELECT id_user, firstname, name, avatar, email,
     DATE_FORMAT(date_register, \'%d/%m/%Y à %Hh%i\') AS date_register_fr
     FROM users
-    WHERE bin != "yes"
+    WHERE bin != "yes" AND id_user != "18"
     ORDER BY date_register DESC LIMIT ' . $users_start . ', ' . $this->number_of_users_by_page . '';
         $users       = $this->dbConnect($sql);
         return $users;
