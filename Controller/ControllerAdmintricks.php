@@ -244,7 +244,7 @@ class ControllerAdmintricks extends Controller
     }
 
     // Restaurer un item depuis la Corbeille :
-    public function moveitemtoitems()
+    public function restorethisitem()
     {
         $id_item = $this->request->getParameter("id");
         $this->item->restoreItem($id_item);
@@ -286,7 +286,7 @@ class ControllerAdmintricks extends Controller
         $this->item->moveItem($id_item);
     }
 
-    // Suppression d'un article :
+    // Suppression définitive d'un article :
     public function removeitem()
     {
         $id_item = $this->request->getParameter("id");
@@ -299,7 +299,7 @@ class ControllerAdmintricks extends Controller
         }
     }
 
-    // Vider la Corbeille :
+    // Vider la Corbeille Extended Cards :
     public function empty()
     {
         $this->item->emptybin();
@@ -415,17 +415,63 @@ class ControllerAdmintricks extends Controller
         $this->comment->approveComment($id_comment);
     }
 
+    // Restaurer un commentaire depuis la Corbeille :
+    public function restorethiscomment()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $this->comment->restoreComment($id_comment);
+    }
+
 
     // DELETE
     // COMMENTS
 
-    // Suppression d'un commentaire :
+    // Affichage de la Corbeille des commentaires :
+    public function allcommentsbin()
+    {
+        if (null!= $this->request->ifParameter("id"))  {
+        $comments_deleted_current_page    = $this->request->getParameter("id");
+        }
+        else {
+          $comments_deleted_current_page  = 1;
+        }
+        $comments_deleted_previous_page   = $comments_deleted_current_page - 1;
+        $comments_deleted_next_page       = $comments_deleted_current_page + 1;
+        $comments_deleted                 = $this->comment->selectCommentsDeleted($comments_deleted_current_page);
+        $default                          = "default.png";
+        $number_of_comments_deleted_pages = $this->calculate->getNumberOfCommentsDeletedPagesFromAdmin();
+        $counter_comments_deleted        = $this->calculate->getTotalOfCommentsDeleted();
+        $this->generateadminView(array(
+            'comments_deleted' => $comments_deleted,
+            'default' => $default,
+            'comments_deleted_current_page' => $comments_deleted_current_page,
+            'comments_deleted_previous_page' => $comments_deleted_previous_page,
+            'comments_deleted_next_page' => $comments_deleted_next_page,
+            'number_of_comments_deleted_pages' => $number_of_comments_deleted_pages,
+            'counter_comments_deleted' => $counter_comments_deleted
+        ));
+    }
+
+    // Déplacer un commentaire vers la Corbeille :
+    public function movecommenttobin()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $this->comment->moveComment($id_comment);
+    }
+
+    // Vider la Corbeille Commentaires
+    public function emptycomments()
+    {
+        $this->comment->emptycommentsbin();
+    }
+
+    // Suppression d'un commentaire définitivement :
     public function removecomment()
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->eraseComment($id_comment);
         // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé !';
+        $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé définitivement!';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: ../allcomments');

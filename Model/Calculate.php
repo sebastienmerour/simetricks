@@ -24,7 +24,8 @@ class Calculate extends Model
   // Obtenir le nombre total des Items :
   public function getTotalOfItems()
   {
-      $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards';
+      $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards
+      WHERE bin != "yes"';
       $this->items_count = $this->dbConnect($sql);
       $items             = $this->items_count->fetch(\PDO::FETCH_ASSOC);
       $number_of_items   = $items['counter'];
@@ -93,7 +94,9 @@ class Calculate extends Model
   // Calculer le nombre de Commentaires d'un article en particulier :
   public function countComments($id_item)
   {
-      $sql                  = 'SELECT COUNT(id) as counter FROM comments WHERE id_item = ?';
+      $sql                  = 'SELECT COUNT(id) as counter FROM comments
+      WHERE id_item = ? AND bin != "yes"
+      ';
       $this->comments_count = $this->dbConnect($sql, array(
           $id_item
       ));
@@ -168,6 +171,30 @@ class Calculate extends Model
       $total_comments_reported_count = $this->comments_reported_count['counter'];
       return $total_comments_reported_count;
   }
+
+  // Calculer le nombre total de commentaires supprimés :
+  public function getTotalOfCommentsDeleted()
+  {
+      $sql                  = 'SELECT COUNT(id) as counter FROM comments WHERE bin = :bin ';
+      $comments_deleted           = $this->dbConnect($sql, array(
+          ':bin' => "yes"
+      ));
+      $this->comments_deleted_count = $comments_deleted->fetch(\PDO::FETCH_ASSOC);
+      $total_comments_deleted_count = $this->comments_deleted_count['counter'];
+      return $total_comments_deleted_count;
+  }
+
+  // Calculer le nombre total de Pages de Commentaires Supprimés pour l'admin :
+  public function getNumberOfCommentsDeletedPagesFromAdmin()
+  {
+      $total_comments_deleted_count     = $this->getTotalOfCommentsDeleted();
+      $number_of_comments_deleted_pages = ceil($total_comments_deleted_count / $this->number_of_comments_by_page);
+      return $number_of_comments_deleted_pages;
+  }
+
+
+
+
 
   // USERS
   // ADMIN

@@ -31,7 +31,7 @@
                   <br>
                   <button class="btn btn-md btn-success" name="modify" type="submit">Modifier</button>
 									<a href="<?= BASE_ADMIN_URL. 'approve/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-warning">Approuver</a>
-									<a href="<?= BASE_ADMIN_URL. 'removecommentreported/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-danger">Supprimer</a>
+									<a href="<?= BASE_ADMIN_URL. 'removecommentreported/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-danger">Supprimer définitivement</a>
 								  <a href="#"><button class="btn btn-md btn-secondary" type="reset">Annuler</button></a>
                   <a href="<?= $_SERVER['HTTP_REFERER']; ?>"><button class="btn btn-md btn-primary" type="button">Retour</button></a>
               </div>

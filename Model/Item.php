@@ -81,7 +81,7 @@ class Item extends Model
      users.id_user, users.firstname, users.name FROM extended_cards
      LEFT JOIN users
      ON extended_cards.id_user = users.id_user
-     WHERE bin != "yes"
+     WHERE extended_cards.bin != "yes"
      ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
         $items = $this->dbConnect($sql);
         return $items;
@@ -121,7 +121,7 @@ class Item extends Model
      users.id_user, users.firstname, users.name FROM extended_cards
      LEFT JOIN users
      ON extended_cards.id_user = users.id_user
-     WHERE bin = :bin
+     WHERE extended_cards.bin = :bin
      ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
         $items_deleted = $this->dbConnect($sql, array(
             ':bin' => "yes"
@@ -197,7 +197,7 @@ class Item extends Model
     {
         $bin                      = "no";
         $sql                      = 'UPDATE extended_cards SET bin = :bin, date_update = NOW() WHERE id = :id';
-        $newComment               = $this->dbConnect($sql, array(
+        $restore                  = $this->dbConnect($sql, array(
             ':id' => $id_item,
             ':bin' => $bin
         ));
@@ -216,7 +216,7 @@ class Item extends Model
     {
         $bin                      = "yes";
         $sql                      = 'UPDATE extended_cards SET bin = :bin, date_update = NOW() WHERE id = :id';
-        $newComment               = $this->dbConnect($sql, array(
+        $move               = $this->dbConnect($sql, array(
             ':id' => $id_item,
             ':bin' => $bin
         ));
@@ -260,8 +260,5 @@ class Item extends Model
             exit;
         }
     }
-
-
-
 
 }
