@@ -165,8 +165,8 @@ class ControllerAdmintricks extends Controller
     public function readitem()
     {
 
-        $item_id = $this->request->getParameter("id");
-        $item    = $this->item->getItem($item_id);
+        $id_item = $this->request->getParameter("id");
+        $item    = $this->item->getItem($id_item);
         $this->generateadminView(array(
             'item' => $item
         ));
@@ -181,7 +181,7 @@ class ControllerAdmintricks extends Controller
         if (isset($_POST["modify"])) {
             $errors                = array();
             $messages              = array();
-            $item_id               = $this->request->getParameter("id");
+            $id_item               = $this->request->getParameter("id");
             $title                 = $this->request->getParameter("title");
             $date_native  = $this->request->getParameter("date_native");
             $licence  = $this->request->getParameter("licence");
@@ -207,38 +207,38 @@ class ControllerAdmintricks extends Controller
 
             if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $messages = array();
-                $item_id  = $this->request->getParameter("id");
+                $id_item  = $this->request->getParameter("id");
                 $title    = $this->request->getParameter("title");
                 $date_native  = $this->request->getParameter("date_native");
                 $licence  = $this->request->getParameter("licence");
                 $langage  = $this->request->getParameter("langage");
                 $links  = $this->request->getParameter("links");
                 $content  = $this->request->getParameter("content");
-                $this->item->changeItem($title, $date_native, $licence, $langage, $links, $content, $item_id);
+                $this->item->changeItem($title, $date_native, $licence, $langage, $links, $content, $id_item);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readitem/' . $item_id);
+                    header('Location: ../readitem/' . $id_item);
                     exit;
                 }
             } else if (($_FILES["image"]["size"] > 1000000)) {
                 $errors['errors'] = 'Le fichier est trop lourd.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readitem/' . $item_id);
+                    header('Location: ../readitem/' . $id_item);
                     exit;
                 }
             } else if ($width < "300" || $height < "200") {
                 $errors['errors'] = 'Le fichier n\'a pas les bonnes dimensions';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readitem/' . $item_id);
+                    header('Location: ../readitem/' . $id_item);
                     exit;
                 }
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->changeItemImage($title, $itemimagename, $date_native, $licence, $langage, $links, $content, $item_id);
+                $this->item->changeItemImage($title, $itemimagename, $date_native, $licence, $langage, $links, $content, $id_item);
             }
         }
     }
@@ -246,8 +246,8 @@ class ControllerAdmintricks extends Controller
     // Restaurer un item depuis la Corbeille :
     public function moveitemtoitems()
     {
-        $item_id = $this->request->getParameter("id");
-        $this->item->restoreItem($item_id);
+        $id_item = $this->request->getParameter("id");
+        $this->item->restoreItem($id_item);
     }
 
 
@@ -282,16 +282,16 @@ class ControllerAdmintricks extends Controller
     // Déplacer un item vers la Corbeille :
     public function moveitemtobin()
     {
-        $item_id = $this->request->getParameter("id");
-        $this->item->moveItem($item_id);
+        $id_item = $this->request->getParameter("id");
+        $this->item->moveItem($id_item);
     }
 
     // Suppression d'un article :
     public function removeitem()
     {
-        $item_id = $this->request->getParameter("id");
-        $this->item->eraseItem($item_id);
-        if ($item_id === false) {
+        $id_item = $this->request->getParameter("id");
+        $this->item->eraseItem($id_item);
+        if ($id_item === false) {
             throw new Exception('Impossible de supprimer l\' article !');
         } else {
             $messages['confirmation'] = 'L\'article a bien été supprimé !';

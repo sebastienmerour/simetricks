@@ -36,19 +36,19 @@ class ControllerItem extends Controller
     // Affichage d'un seul item avec ses commentaires - pour user inconnu :
     public function index()
     {
-        $item_id                  = $this->request->getParameter("id");
-        $item                     = $this->item->getItem($item_id);
+        $id_item                  = $this->request->getParameter("id");
+        $item                     = $this->item->getItem($id_item);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $number_of_items_pages    = $this->calculate->getNumberOfPages();
-        $number_of_comments       = $this->calculate->countComments($item_id);
+        $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = $this->calculate->getCommentsCurrentPage();
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
-        $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
+        $comments                 = $this->comment->getPaginationComments($id_item, $comments_current_page);
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
         $default                  = "default.png";
-        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($item_id);
+        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($id_item);
         $this->generateView(array(
             'item' => $item,
             'number_of_items' => $number_of_items,
@@ -68,18 +68,18 @@ class ControllerItem extends Controller
     // Affichage d'un seul item avec ses commentaires - pour user connecté :
     public function indexuser()
     {
-        $item_id                  = $this->request->getParameter("id");
-        $item                     = $this->item->getItem($item_id);
+        $id_item                  = $this->request->getParameter("id");
+        $item                     = $this->item->getItem($id_item);
         $user                     = $this->user->getUser($_SESSION['id_user']);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $number_of_items_pages    = $this->calculate->getNumberOfPages();
-        $number_of_comments       = $this->calculate->countComments($item_id);
+        $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = $this->calculate->getCommentsCurrentPageUser();
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
-        $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
+        $comments                 = $this->comment->getPaginationComments($id_item, $comments_current_page);
         $default                  = "default.png";
-        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($item_id);
+        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($id_item);
         $this->generateView(array(
             'item' => $item,
             'number_of_items' => $number_of_items,
@@ -102,7 +102,7 @@ class ControllerItem extends Controller
     // Ajout d'un nouveau commentaire - pour user inconnu :
     public function createcomment()
     {
-        $item_id = $this->request->getParameter("id");
+        $id_item = $this->request->getParameter("id");
         if (!empty($_POST['content']) && !empty($_POST['author'])) {
 
             if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
@@ -113,25 +113,25 @@ class ControllerItem extends Controller
                 $content        = $this->request->getParameter("content");
 
                 if ($responseData->success) {
-                    $this->comment->insertComment($item_id, $author, $content);
+                    $this->comment->insertComment($id_item, $author, $content);
                 } else {
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
                         $_SESSION['errors'] = $errors;
-                        header('Location: ../item/' . $item_id . '/1/#addcomment');
+                        header('Location: ../item/' . $id_item . '/1/#addcomment');
                         exit;
                     }
                 }
             } else {
                 $errors['errors']   = 'Merci de cocher la case reCAPTCHA.';
                 $_SESSION['errors'] = $errors;
-                header('Location: ../item/' . $item_id . '/1/#addcomment');
+                header('Location: ../item/' . $id_item . '/1/#addcomment');
                 exit;
             }
         } else {
             $errors['errors']   = 'Merci de renseigner tous les champs';
             $_SESSION['errors'] = $errors;
-            header('Location: ../item/' . $item_id . '/1/#addcomment');
+            header('Location: ../item/' . $id_item . '/1/#addcomment');
             exit;
         }
     }
@@ -139,7 +139,7 @@ class ControllerItem extends Controller
     // Ajout d'un nouveau commentaire - pour user connecté :
     public function createcommentloggedin()
     {
-        $item_id = $this->request->getParameter("id");
+        $id_item = $this->request->getParameter("id");
 
         if (!empty($_POST['content'])) {
 
@@ -153,25 +153,25 @@ class ControllerItem extends Controller
                 $content        = $this->request->getParameter("content");
 
                 if ($responseData->success) {
-                    $this->comment->insertCommentLoggedIn($item_id, $user_id, $author, $content);
+                    $this->comment->insertCommentLoggedIn($id_item, $user_id, $author, $content);
                 } else {
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
                         $_SESSION['errors'] = $errors;
-                        header('Location: ../item/indexuser/' . $item_id . '/1/#addcomment');
+                        header('Location: ../item/indexuser/' . $id_item . '/1/#addcomment');
                         exit;
                     }
                 }
             } else {
                 $errors['errors']   = 'Merci de cocher la case reCAPTCHA.';
                 $_SESSION['errors'] = $errors;
-                header('Location: ../item/indexuser/' . $item_id . '/1/#addcomment');
+                header('Location: ../item/indexuser/' . $id_item . '/1/#addcomment');
                 exit;
             }
         } else {
             $errors['errors']   = 'Merci de renseigner tous les champs';
             $_SESSION['errors'] = $errors;
-            header('Location: ../item/indexuser/' . $item_id . '/1/#addcomment');
+            header('Location: ../item/indexuser/' . $id_item . '/1/#addcomment');
             exit;
         }
     }
@@ -181,18 +181,18 @@ class ControllerItem extends Controller
     // Affichage d'un commentaire :
     public function readcomment()
     {
-        $item_id                  = $this->calculate->getItemId();
-        $item                     = $this->item->getItem($item_id);
+        $id_item                  = $this->calculate->getItemId();
+        $item                     = $this->item->getItem($id_item);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $number_of_items_pages    = $this->calculate->getNumberOfPages();
-        $number_of_comments       = $this->calculate->countComments($item_id);
+        $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
-        $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
+        $comments                 = $this->comment->getPaginationComments($id_item, $comments_current_page);
         $id_comment               = $this->calculate->getCommentId();
         $comment                  = $this->comment->getComment($id_comment);
-        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($item_id);
+        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($id_item);
         $default                  = "default.png";
         $this->generateView(array(
             'comment' => $comment,
@@ -224,18 +224,18 @@ class ControllerItem extends Controller
     // Signaler un commentaire :
     public function reportcomment()
     {
-        $item_id                  = $this->calculate->getItemId();
-        $item                     = $this->item->getItem($item_id);
+        $id_item                  = $this->calculate->getItemId();
+        $item                     = $this->item->getItem($id_item);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $number_of_items_pages    = $this->calculate->getNumberOfPages();
-        $number_of_comments       = $this->calculate->countComments($item_id);
+        $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
-        $comments                 = $this->comment->getPaginationComments($item_id, $comments_current_page);
+        $comments                 = $this->comment->getPaginationComments($id_item, $comments_current_page);
         $id_comment               = $this->calculate->getCommentId();
         $comment                  = $this->comment->getComment($id_comment);
-        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($item_id);
+        $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($id_item);
         $this->comment->reportBadComment($id_comment);
         $default = "default.png";
         $this->generateView(array(

@@ -89,7 +89,7 @@ class Item extends Model
 
 
     // Afficher un Article en particulier :
-    public function getItem($item_id)
+    public function getItem($id_item)
     {
         $sql  = 'SELECT extended_cards.id, extended_cards.title AS title, extended_cards.image AS image,
         DATE_FORMAT(extended_cards.date_native, \'%Y-%m-%d\') AS date_native,
@@ -105,7 +105,7 @@ class Item extends Model
         ON extended_cards.id_user = users.id_user
         WHERE extended_cards.id = ? ';
         $req  = $this->dbConnect($sql, array(
-            $item_id
+            $id_item
         ));
         $item = $req->fetch();
         return $item;
@@ -133,7 +133,7 @@ class Item extends Model
     // UPDATE
 
     // Modification d'un article avec photo :
-    public function changeItemImage($title, $itemimagename, $date_native, $licence, $langage, $links, $content, $item_id)
+    public function changeItemImage($title, $itemimagename, $date_native, $licence, $langage, $links, $content, $id_item)
     {
         $title   = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $date_native = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
@@ -146,7 +146,7 @@ class Item extends Model
         content = :content,
         date_update = NOW() WHERE id = :id';
         $item    = $this->dbConnect($sql, array(
-            ':id' => $item_id,
+            ':id' => $id_item,
             ':title' => $title,
             ':image' => $itemimagename,
             ':date_native' => $date_native,
@@ -158,13 +158,13 @@ class Item extends Model
         $messages['confirmation'] = 'Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readitem/' . $item_id);
+            header('Location: ../readitem/' . $id_item);
             exit;
         }
     }
 
     // Modification d'un article sans photo :
-    public function changeItem($title, $date_native, $licence, $langage, $links, $content, $item_id)
+    public function changeItem($title, $date_native, $licence, $langage, $links, $content, $id_item)
     {
         $title   = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $date_native = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
@@ -176,7 +176,7 @@ class Item extends Model
         date_native = :date_native, licence = :licence, langage = :langage, links = :links,
         content = :content, date_update = NOW() WHERE id = :id';
         $item    = $this->dbConnect($sql, array(
-            ':id' => $item_id,
+            ':id' => $id_item,
             ':title' => $title,
             ':date_native' => $date_native,
             ':licence' => $licence,
@@ -187,18 +187,18 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! Votre article a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readitem/' . $item_id);
+            header('Location: ../readitem/' . $id_item);
             exit;
         }
     }
 
     // Restaurer un item depuis la Corbeille
-    public function restoreItem($item_id)
+    public function restoreItem($id_item)
     {
         $bin                      = "no";
         $sql                      = 'UPDATE extended_cards SET bin = :bin, date_update = NOW() WHERE id = :id';
         $newComment               = $this->dbConnect($sql, array(
-            ':id' => $item_id,
+            ':id' => $id_item,
             ':bin' => $bin
         ));
         $messages['confirmation'] = 'Merci ! L\'Extended Card a bien été restaurée !';
@@ -212,12 +212,12 @@ class Item extends Model
     // DELETE
 
     // Déplacement d'un item vers la Corbeille
-    public function moveItem($item_id)
+    public function moveItem($id_item)
     {
         $bin                      = "yes";
         $sql                      = 'UPDATE extended_cards SET bin = :bin, date_update = NOW() WHERE id = :id';
         $newComment               = $this->dbConnect($sql, array(
-            ':id' => $item_id,
+            ':id' => $id_item,
             ':bin' => $bin
         ));
         $messages['confirmation'] = 'Merci ! L\'Extended Card a été déplacée dans la corbeille !';
@@ -229,9 +229,9 @@ class Item extends Model
     }
 
     // Suppression définitive d'un article :
-    public function eraseItem($item_id)
+    public function eraseItem($id_item)
     {
-        $sql = 'DELETE FROM extended_cards WHERE id = ' . (int) $item_id;
+        $sql = 'DELETE FROM extended_cards WHERE id = ' . (int) $id_item;
         $req = $this->dbConnect($sql);
         $req->execute();
         // Ici on affiche le message de confirmation :

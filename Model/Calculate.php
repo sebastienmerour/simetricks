@@ -45,8 +45,8 @@ class Calculate extends Model
   {
       $q       = explode("/", $_SERVER['REQUEST_URI']);
       $value   = $q[4];
-      $item_id = (int) $value;
-      return $item_id;
+      $id_item = (int) $value;
+      return $id_item;
   }
 
 
@@ -91,11 +91,11 @@ class Calculate extends Model
   // FRONT
 
   // Calculer le nombre de Commentaires d'un article en particulier :
-  public function countComments($item_id)
+  public function countComments($id_item)
   {
       $sql                  = 'SELECT COUNT(id) as counter FROM comments WHERE id_item = ?';
       $this->comments_count = $this->dbConnect($sql, array(
-          $item_id
+          $id_item
       ));
       $comments             = $this->comments_count->fetch(\PDO::FETCH_ASSOC);
       $number_of_comments   = $comments['counter'];
@@ -130,9 +130,9 @@ class Calculate extends Model
   }
 
   // Obtenir le nombre de pages des commentaires sur un article en particulier :
-  public function getNumberOfCommentsPagesFromItem($item_id)
+  public function getNumberOfCommentsPagesFromItem($id_item)
   {
-      $number_of_comments       = $this->countComments($item_id);
+      $number_of_comments       = $this->countComments($id_item);
       $number_of_comments_pages = ceil($number_of_comments / $this->number_of_comments_by_page);
       return $number_of_comments_pages;
   }

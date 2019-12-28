@@ -14,12 +14,12 @@ class Comment extends Model
 
     // CREATE
     // Création d'un commentaire :
-    public function insertComment($item_id, $author, $content)
+    public function insertComment($id_item, $author, $content)
     {
-        $item_id;
+        $id_item;
         $sql     = 'INSERT INTO comments(id_item, author, content, date_creation) VALUES(?, ?, ?, NOW())';
         $comment = $this->dbConnect($sql, array(
-            $item_id,
+            $id_item,
             $author,
             $content
         ));
@@ -27,19 +27,19 @@ class Comment extends Model
         $messages['confirmation'] = 'Votre commentaire a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../item/' . $item_id . '/1/#comments');
+            header('Location: ../item/' . $id_item . '/1/#comments');
             exit;
         }
     }
 
     // Création d'un commentaire d'un utilisateur connecté :
-    public function insertCommentLoggedIn($item_id, $user_id, $author, $content)
+    public function insertCommentLoggedIn($id_item, $user_id, $author, $content)
     {
-        $item_id;
+        $id_item;
         $user_id                  = $_SESSION['id_user'];
         $sql                      = 'INSERT INTO comments(id_item, id_user, author, content, date_creation) VALUES(?, ?, ?, ?, NOW())';
         $comment                  = $this->dbConnect($sql, array(
-            $item_id,
+            $id_item,
             $user_id,
             $author,
             $content
@@ -47,7 +47,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Votre commentaire a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../item/indexuser/' . $item_id . '/1/#comments');
+            header('Location: ../item/indexuser/' . $id_item . '/1/#comments');
             exit;
         }
     }
@@ -56,7 +56,7 @@ class Comment extends Model
     // FRONT
 
     // Afficher la liste des commentaires d'un Article :
-    public function getComments($item_id)
+    public function getComments($id_item)
     {
         $comments_start = (int) (($comments_current_page - 1) * $this->number_of_comments_by_page);
         $sql            = 'SELECT comments.id AS id_comment, comments.id_user AS user_com, comments.author, comments.content,
@@ -70,13 +70,13 @@ class Comment extends Model
       ORDER BY date_creation
       DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
         $comments       = $this->dbConnect($sql, array(
-            $item_id
+            $id_item
         ));
         return $comments;
     }
 
     // Pagination des commentaires sur un article :
-    public function getPaginationComments($item_id, $comments_current_page)
+    public function getPaginationComments($id_item, $comments_current_page)
     {
         $comments_start = (int) (($comments_current_page - 1) * $this->number_of_comments_by_page);
         $sql            = 'SELECT comments.id AS id_comment, comments.id_user AS user_com, comments.author, comments.content,
@@ -90,7 +90,7 @@ class Comment extends Model
       ORDER BY date_creation
       DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
         $comments       = $this->dbConnect($sql, array(
-            $item_id
+            $id_item
         ));
         return $comments;
     }
