@@ -95,8 +95,8 @@ class ControllerUser extends Controller
     // Affichage du Profil d'un utilisateur :
     function profile()
     {
-        $user_id               = $this->request->getParameter("id");
-        $user                  = $this->user->getUser($user_id);
+        $id_user               = $this->request->getParameter("id");
+        $user                  = $this->user->getUser($id_user);
         $number_of_items       = $this->calculate->getTotalOfItems();
         $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
@@ -132,7 +132,7 @@ class ControllerUser extends Controller
         $date_birth = $this->request->getParameter("date_birth");
         $user       = $this->request->getSession()->getAttribut("user");
         $this->user->changeUser($pass, $email, $firstname, $name, $date_birth);
-        $user = $this->user->getUser($user_id);
+        $user = $this->user->getUser($id_user);
         if ($user === false) {
             throw new Exception('Impossible de modifier l\' utilisateur !');
         } else {
@@ -147,7 +147,7 @@ class ControllerUser extends Controller
         $username = $this->request->getParameter("username");
         $user     = $this->request->getSession()->getAttribut("user");
         $this->user->changeUsername($username);
-        $user = $this->user->getUser($user_id);
+        $user = $this->user->getUser($id_user);
         if ($user === false) {
             throw new Exception('Impossible de modifier l\' utilisateur !');
         } else {
@@ -174,11 +174,11 @@ class ControllerUser extends Controller
                 'gif',
                 'png'
             );
-            $user_id               = $_SESSION['id_user'];
+            $id_user               = $_SESSION['id_user'];
             $time                  = date("Y-m-d-H-i-s");
             $avatarname            = str_replace(' ', '-', strtolower($_FILES['avatar']['name']));
             $avatarname            = preg_replace("/\.[^.\s]{3,4}$/", "", $avatarname);
-            $avatarname            = "{$time}-{$user_id}-avatar.{$extension_upload}";
+            $avatarname            = "{$time}-{$id_user}-avatar.{$extension_upload}";
             $destination           = ROOT_PATH . 'public/images/avatars';
 
             if (!in_array($extension_upload, $extensions_authorized)) {

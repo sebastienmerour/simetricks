@@ -148,12 +148,12 @@ class ControllerItem extends Controller
                 $secretKey      = RECAPTCHA_SECRET_KEY;
                 $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $_POST['g-recaptcha-response']);
                 $responseData   = json_decode($verifyResponse);
-                $user_id        = $_SESSION['id_user'];
+                $id_user        = $_SESSION['id_user'];
                 $author         = $this->request->getParameter("author");
                 $content        = $this->request->getParameter("content");
 
                 if ($responseData->success) {
-                    $this->comment->insertCommentLoggedIn($id_item, $user_id, $author, $content);
+                    $this->comment->insertCommentLoggedIn($id_item, $id_user, $author, $content);
                 } else {
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {

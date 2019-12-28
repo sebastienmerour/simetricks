@@ -42,7 +42,7 @@ class ControllerAdmintricks extends Controller
         if (isset($_POST["modify"])) {
             $errors                = array();
             $messages              = array();
-            $user_id               = $_SESSION['id_user_admin'];
+            $id_user               = $_SESSION['id_user_admin'];
             $title                 = $_POST['title'];
             $date_native           = $_POST['date_native'];
             $licence               = $_POST['licence'];
@@ -76,7 +76,7 @@ class ControllerAdmintricks extends Controller
             }
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->item->insertItem($user_id, $title, $date_native, $licence, $langage, $links, $content);
+                $this->item->insertItem($id_user, $title, $date_native, $licence, $langage, $links, $content);
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -104,7 +104,7 @@ class ControllerAdmintricks extends Controller
 
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->insertItemImage($user_id, $title, $itemimagename, $date_native, $licence, $langage, $links, $content);
+                $this->item->insertItemImage($id_user, $title, $itemimagename, $date_native, $licence, $langage, $links, $content);
 
             }
         }
@@ -526,8 +526,8 @@ class ControllerAdmintricks extends Controller
     public function readuser()
     {
 
-        $user_id = $this->request->getParameter("id");
-        $user    = $this->user->getUser($user_id);
+        $id_user = $this->request->getParameter("id");
+        $user    = $this->user->getUser($id_user);
         $this->generateadminView(array(
             'user' => $user
         ));
@@ -540,7 +540,7 @@ class ControllerAdmintricks extends Controller
     // Modification d'un user :
     public function updateuser()
     {
-        $user_id               = $this->request->getParameter("id");
+        $id_user               = $this->request->getParameter("id");
 
         if (isset($_POST["modify"]) && !empty($_POST["firstname"]) && !empty($_POST["name"])) {
             $errors                = array();
@@ -563,42 +563,42 @@ class ControllerAdmintricks extends Controller
             $time                  = date("Y-m-d-H-i-s");
             $avatarname            = str_replace(' ', '-', strtolower($_FILES['avatar']['name']));
             $avatarname            = preg_replace("/\.[^.\s]{3,4}$/", "", $avatarname);
-            $avatarname            = "{$time}-{$user_id}-avatar.{$extension_upload}";
+            $avatarname            = "{$time}-{$id_user}-avatar.{$extension_upload}";
             $destination           = ROOT_PATH . 'public/images/avatars';
 
             if (!file_exists($_FILES["avatar"]["tmp_name"])) {
-                $this->user->changeUserFromAdmin($user_id, $status, $firstname, $name, $email, $date_birth);
+                $this->user->changeUserFromAdmin($id_user, $status, $firstname, $name, $email, $date_birth);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readuser/' . $user_id);
+                    header('Location: ../readuser/' . $id_user);
                     exit;
                 }
             } else if (($_FILES["avatar"]["size"] > 1000000)) {
                 $errors['errors'] = 'Le fichier est trop lourd.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readuser/' . $user_id);
+                    header('Location: ../readuser/' . $id_user);
                     exit;
                 }
             } else if ($width < "300" || $height < "200") {
                 $errors['errors'] = 'Le fichier n\'a pas les bonnes dimensions';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readuser/' . $user_id);
+                    header('Location: ../readuser/' . $id_user);
                     exit;
                 }
             } else {
                 move_uploaded_file($_FILES['avatar']['tmp_name'], $destination . "/" . $avatarname);
-                $this->user->changeUserImageFromAdmin($user_id, $status, $firstname, $name, $avatarname, $email, $date_birth);
+                $this->user->changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $date_birth);
             }
         }
         else {
           $errors['errors'] = 'Merci de renseigner tous les champs !';
           if (!empty($errors)) {
               $_SESSION['errors'] = $errors;
-              header('Location: ../readuser/' . $user_id);
+              header('Location: ../readuser/' . $id_user);
               exit;
           }
 
@@ -608,8 +608,8 @@ class ControllerAdmintricks extends Controller
     // Restaurer un user depuis la Corbeille :
     public function restorethisuser()
     {
-        $user_id = $this->request->getParameter("id");
-        $this->user->restoreUser($user_id);
+        $id_user = $this->request->getParameter("id");
+        $this->user->restoreUser($id_user);
     }
 
 
@@ -645,8 +645,8 @@ class ControllerAdmintricks extends Controller
     // Déplacer un user vers la Corbeille :
     public function moveusertobin()
     {
-        $user_id = $this->request->getParameter("id");
-        $this->user->moveUser($user_id);
+        $id_user = $this->request->getParameter("id");
+        $this->user->moveUser($id_user);
     }
 
     // Vider la Corbeille Utilisateurs
@@ -658,9 +658,9 @@ class ControllerAdmintricks extends Controller
     // Suppression d'un user définitivement :
     public function removeuser()
     {
-        $user_id = $this->request->getParameter("id");
-        $this->user->eraseUser($user_id);
-        if ($user_id === false) {
+        $id_user = $this->request->getParameter("id");
+        $this->user->eraseUser($id_user);
+        if ($id_user === false) {
             throw new Exception('Impossible de supprimer l\'Utilisateur !');
         } else {
             $messages['confirmation'] = 'L\'utilisateur bien été supprimé définitivement!';

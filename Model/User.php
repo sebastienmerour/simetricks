@@ -102,13 +102,13 @@ class User extends Model
     // READ
 
     // Affichage d'un utilisateur :
-    public function getUser($user_id)
+    public function getUser($id_user)
     {
         $sql   = 'SELECT id_user, status, username, firstname, name, avatar, pass, email, DATE_FORMAT(date_birth, \'%Y-%m-%d \')
        AS date_birth, DATE_FORMAT(date_register, \'%d/%m/%Y \') AS date_register
        FROM users WHERE id_user = :id_user';
         $query = $this->dbConnect($sql, array(
-            ':id_user' => $user_id
+            ':id_user' => $id_user
         ));
         $user  = $query->fetch(\PDO::FETCH_ASSOC);
         return $user;
@@ -199,12 +199,12 @@ class User extends Model
     }
 
     // Modification d'un utilisateur en Admin :
-    public function changeUserFromAdmin($user_id, $status, $firstname, $name, $email, $date_birth)
+    public function changeUserFromAdmin($id_user, $status, $firstname, $name, $email, $date_birth)
     {
 
         $errors         = array();
         $messages       = array();
-        $identification = $user_id;
+        $identification = $id_user;
         $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
         $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
         $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
@@ -218,7 +218,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../readuser/'.$user_id));
+            die(header('Location: ../readuser/'.$id_user));
             exit;
         }
 
@@ -238,18 +238,18 @@ class User extends Model
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readuser/'.$user_id);
+            header('Location: ../readuser/'.$id_user);
             exit;
         }
     }
 
 
     // Modification d'un utilisateur en front :
-    public function changeUserImageFromAdmin($user_id, $status, $firstname, $name, $avatarname, $email, $date_birth)
+    public function changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $date_birth)
     {
         $errors         = array();
         $messages       = array();
-        $identification = $user_id;
+        $identification = $id_user;
         $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
         $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
         $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
@@ -263,7 +263,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../user/'.$user_id));
+            die(header('Location: ../user/'.$id_user));
             exit;
         }
 
@@ -284,7 +284,7 @@ class User extends Model
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readuser/'.$user_id);
+            header('Location: ../readuser/'.$id_user);
             exit;
         }
     }
@@ -339,13 +339,13 @@ class User extends Model
     // Modification d'un avatar :
     public function changeAvatar($avatarname)
     {
-        $user_id                  = $_SESSION['id_user'];
+        $id_user                  = $_SESSION['id_user'];
         $sql                      = 'UPDATE users
            SET avatar = :avatar
            WHERE id_user = :id_user';
         $avatarCreation           = $this->dbConnect($sql, array(
             ':avatar' => htmlspecialchars($avatarname),
-            ':id_user' => htmlspecialchars($user_id)
+            ':id_user' => htmlspecialchars($id_user)
         ));
         $messages['confirmation'] = 'Votre avatar a bien été modifié !';
         if (!empty($messages)) {
@@ -356,12 +356,12 @@ class User extends Model
     }
 
     // Restaurer un user depuis la Corbeille
-    public function restoreUser($user_id)
+    public function restoreUser($id_user)
     {
         $bin                      = "no";
         $sql                      = 'UPDATE users SET bin = :bin, date_update = NOW() WHERE id_user = :id';
         $restore               = $this->dbConnect($sql, array(
-            ':id' => $user_id,
+            ':id' => $id_user,
             ':bin' => $bin
         ));
         $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été restauré !';
@@ -376,12 +376,12 @@ class User extends Model
     // DELETE
 
     // Déplacement d'un user vers la Corbeille
-    public function moveUser($user_id)
+    public function moveUser($id_user)
     {
         $bin                      = "yes";
         $sql                      = 'UPDATE users SET bin = :bin, date_update = NOW() WHERE id_user = :id';
         $move                     = $this->dbConnect($sql, array(
-            ':id' => $user_id,
+            ':id' => $id_user,
             ':bin' => $bin
         ));
         $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été déplacé dans la corbeille !';
@@ -393,9 +393,9 @@ class User extends Model
     }
 
     // Suppression définitive d'un user :
-    public function eraseUser($user_id)
+    public function eraseUser($id_user)
     {
-      $sql = 'DELETE FROM users WHERE id_user = ' . (int) $user_id;
+      $sql = 'DELETE FROM users WHERE id_user = ' . (int) $id_user;
       $req = $this->dbConnect($sql);
       $req->execute();
       // Ici on affiche le message de confirmation :

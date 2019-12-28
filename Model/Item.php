@@ -15,16 +15,16 @@ class Item extends Model
     // CREATE
 
     // Création d'un nouvel article sans photo :
-    public function insertItem($user_id, $title, $date_native, $licence, $langage, $links, $content)
+    public function insertItem($id_user, $title, $date_native, $licence, $langage, $links, $content)
     {
         $errors   = array();
         $messages = array();
-        $user_id  = $_SESSION['id_user_admin'];
+        $id_user  = $_SESSION['id_user_admin'];
         $sql      = 'INSERT INTO extended_cards (id_user, title, date_native, licence, langage, links, content, date_creation)
                       VALUES
                       (:id_user, :title, :date_native, :licence, :langage, :links, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
-            ':id_user' => $user_id,
+            ':id_user' => $id_user,
             ':title' => $title,
             ':date_native' => $date_native,
             ':licence' => $licence,
@@ -41,16 +41,16 @@ class Item extends Model
     }
 
     // Création d'un nouvel article avec photo :
-    public function insertItemImage($user_id, $title, $itemimagename, $content)
+    public function insertItemImage($id_user, $title, $itemimagename, $content)
     {
         $errors   = array();
         $messages = array();
-        $user_id  = $_SESSION['id_user_admin'];
+        $id_user  = $_SESSION['id_user_admin'];
         $sql      = 'INSERT INTO extended_cards (id_user, title, image, date_native, licence, langage, links, content, date_creation)
                       VALUES
                       (:id_user, :title, :image, :date_native, :licence, :langage, :links, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
-            ':id_user' => $user_id,
+            ':id_user' => $id_user,
             ':title' => $title,
             ':image' => $itemimagename,
             ':date_native' => $date_native,

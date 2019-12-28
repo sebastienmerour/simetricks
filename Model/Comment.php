@@ -33,14 +33,14 @@ class Comment extends Model
     }
 
     // Création d'un commentaire d'un utilisateur connecté :
-    public function insertCommentLoggedIn($id_item, $user_id, $author, $content)
+    public function insertCommentLoggedIn($id_item, $id_user, $author, $content)
     {
         $id_item;
-        $user_id                  = $_SESSION['id_user'];
+        $id_user                  = $_SESSION['id_user'];
         $sql                      = 'INSERT INTO comments(id_item, id_user, author, content, date_creation) VALUES(?, ?, ?, ?, NOW())';
         $comment                  = $this->dbConnect($sql, array(
             $id_item,
-            $user_id,
+            $id_user,
             $author,
             $content
         ));
