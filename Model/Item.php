@@ -204,7 +204,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! L\'Extended Card a bien été restaurée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../extendedcardsbin/');
+            header('Location: ../extendedcardsbin');
             exit;
         }
     }
@@ -223,7 +223,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! L\'Extended Card a été déplacée dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../extendedcards/');
+            header('Location: ../extendedcards');
             exit;
         }
     }

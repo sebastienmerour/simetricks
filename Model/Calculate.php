@@ -193,9 +193,6 @@ class Calculate extends Model
   }
 
 
-
-
-
   // USERS
   // ADMIN
 
@@ -216,5 +213,26 @@ class Calculate extends Model
       $total_users_count    = $this->users_count['counter'];
       return $total_users_count;
   }
+
+  // Calculer le nombre total d'utilisateurs supprimés :
+  public function getTotalOfUsersDeleted()
+  {
+      $sql                  = 'SELECT COUNT(id_user) as counter FROM users WHERE bin = :bin ';
+      $users_deleted           = $this->dbConnect($sql, array(
+          ':bin' => "yes"
+      ));
+      $this->users_deleted_count = $users_deleted->fetch(\PDO::FETCH_ASSOC);
+      $total_users_deleted_count = $this->users_deleted_count['counter'];
+      return $total_users_deleted_count;
+  }
+
+  // Calculer le nombre total de Pages d' utilisateurs supprimés pour l'admin :
+  public function getNumberOfUsersDeletedPagesFromAdmin()
+  {
+      $total_users_deleted_count     = $this->getTotalOfUsersDeleted();
+      $number_of_users_deleted_pages = ceil($total_users_deleted_count / $this->number_of_users_by_page);
+      return $number_of_users_deleted_pages;
+  }
+
 
 }

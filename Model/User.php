@@ -121,14 +121,29 @@ class User extends Model
         $sql            = 'SELECT id_user, firstname, name, avatar, email,
     DATE_FORMAT(date_register, \'%d/%m/%Y à %Hh%i\') AS date_register_fr
     FROM users
+    WHERE bin != "yes"
     ORDER BY date_register DESC LIMIT ' . $users_start . ', ' . $this->number_of_users_by_page . '';
         $users       = $this->dbConnect($sql);
         return $users;
     }
 
+    // Afficher la liste complète des users dans la Corbeille en Admin :
+    public function selectUsersDeleted($users_deleted_current_page)
+    {
+        $users_start = (int) (($users_deleted_current_page - 1) * $this->number_of_users_by_page);
+        $sql            = 'SELECT id_user, firstname, name, avatar, email,
+    DATE_FORMAT(date_register, \'%d/%m/%Y à %Hh%i\') AS date_register_fr
+    FROM users
+    WHERE bin = :bin
+    ORDER BY date_register DESC LIMIT ' . $users_start . ', ' . $this->number_of_users_by_page . '';
+        $users_deleted       = $this->dbConnect($sql, array(
+          ':bin' => "yes"
+      ));
+        return $users_deleted;
+    }
+
 
     // UPDATE
-
     // Modification d'un utilisateur en front :
     public function changeUser($pass, $email, $firstname, $name, $date_birth)
     {
@@ -178,7 +193,7 @@ class User extends Model
         $messages['confirmation'] = 'Votre compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../user/');
+            header('Location: ../user');
             exit;
         }
     }
@@ -335,20 +350,41 @@ class User extends Model
         $messages['confirmation'] = 'Votre avatar a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../user/');
+            header('Location: ../user');
             exit;
         }
     }
 
-    // DELETE
-    // Suppression d'un utilisateur :
-    public function eraseUser($user_id)
+    // Restaurer un user depuis la Corbeille
+    public function restoreUser($user_id)
     {
-        $sql = 'DELETE FROM users WHERE id_user = ' . (int) $user_id;
-        $req = $this->dbConnect($sql);
-        $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été supprimé !';
+        $bin                      = "no";
+        $sql                      = 'UPDATE users SET bin = :bin, date_update = NOW() WHERE id_user = :id';
+        $restore               = $this->dbConnect($sql, array(
+            ':id' => $user_id,
+            ':bin' => $bin
+        ));
+        $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été restauré !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: ../usersbin');
+            exit;
+        }
+    }
+
+
+    // DELETE
+
+    // Déplacement d'un user vers la Corbeille
+    public function moveUser($user_id)
+    {
+        $bin                      = "yes";
+        $sql                      = 'UPDATE users SET bin = :bin, date_update = NOW() WHERE id_user = :id';
+        $move                     = $this->dbConnect($sql, array(
+            ':id' => $user_id,
+            ':bin' => $bin
+        ));
+        $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été déplacé dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: ../users');
@@ -356,7 +392,38 @@ class User extends Model
         }
     }
 
+    // Suppression définitive d'un user :
+    public function eraseUser($user_id)
+    {
+      $sql = 'DELETE FROM users WHERE id_user = ' . (int) $user_id;
+      $req = $this->dbConnect($sql);
+      $req->execute();
+      // Ici on affiche le message de confirmation :
+      $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été supprimé !';
+      if (!empty($messages)) {
+          $_SESSION['messages'] = $messages;
+          header('Location:' . BASE_ADMIN_URL. 'users');
+          exit;
+      }
+    }
 
+    // Vidage de la Corbeille :
+    public function emptyusersbin()
+    {
+        $bin = "yes";
+        $sql = 'DELETE FROM users WHERE bin = :bin';
+        $req = $this->dbConnect($sql, array(
+            ':bin' => $bin
+        ));
+        $req->execute();
+        // Ici on affiche le message de confirmation :
+        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location:' . BASE_ADMIN_URL. 'usersbin');
+            exit;
+        }
+    }
 
 
     // CONNEXION ET DECONNEXION
@@ -411,7 +478,7 @@ class User extends Model
                     }
 
                     // On redirige l'utilisateur vers la page protégée :
-                    header('Location: ../user/');
+                    header('Location: ../user');
                     exit;
 
                 } else {

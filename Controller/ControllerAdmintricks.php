@@ -605,11 +605,57 @@ class ControllerAdmintricks extends Controller
         }
     }
 
+    // Restaurer un user depuis la Corbeille :
+    public function restorethisuser()
+    {
+        $user_id = $this->request->getParameter("id");
+        $this->user->restoreUser($user_id);
+    }
+
 
     // DELETE
     // USERS
 
-    // Suppression d'un user :
+    // Affichage de la Corbeille des utilisateurs :
+    public function usersbin()
+    {
+        if (null!= $this->request->ifParameter("id"))  {
+        $users_deleted_current_page    = $this->request->getParameter("id");
+        }
+        else {
+          $users_deleted_current_page  = 1;
+        }
+        $users_deleted_previous_page   = $users_deleted_current_page - 1;
+        $users_deleted_next_page       = $users_deleted_current_page + 1;
+        $users_deleted                 = $this->user->selectUsersDeleted($users_deleted_current_page);
+        $default                          = "default.png";
+        $number_of_users_deleted_pages = $this->calculate->getNumberOfUsersDeletedPagesFromAdmin();
+        $counter_users_deleted        = $this->calculate->getTotalOfUsersDeleted();
+        $this->generateadminView(array(
+            'users_deleted' => $users_deleted,
+            'default' => $default,
+            'users_deleted_current_page' => $users_deleted_current_page,
+            'users_deleted_previous_page' => $users_deleted_previous_page,
+            'users_deleted_next_page' => $users_deleted_next_page,
+            'number_of_users_deleted_pages' => $number_of_users_deleted_pages,
+            'counter_users_deleted' => $counter_users_deleted
+        ));
+    }
+
+    // Déplacer un user vers la Corbeille :
+    public function moveusertobin()
+    {
+        $user_id = $this->request->getParameter("id");
+        $this->user->moveUser($user_id);
+    }
+
+    // Vider la Corbeille Utilisateurs
+    public function emptyusers()
+    {
+        $this->user->emptyusersbin();
+    }
+
+    // Suppression d'un user définitivement :
     public function removeuser()
     {
         $user_id = $this->request->getParameter("id");
@@ -617,9 +663,10 @@ class ControllerAdmintricks extends Controller
         if ($user_id === false) {
             throw new Exception('Impossible de supprimer l\'Utilisateur !');
         } else {
-            $messages['confirmation'] = 'L\'Utilisateur bien été supprimé !';
+            $messages['confirmation'] = 'L\'utilisateur bien été supprimé définitivement!';
             $this->generateadminView();
         }
     }
+
 
 }

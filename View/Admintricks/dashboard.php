@@ -124,7 +124,7 @@
 			        <td><h6 class="mt-2 text-left"><a href="mailto:<?= $this->clean($user['email']); ?>"><?= $this->clean($user['email']); ?></a></h6></td>
 							<td><h6 class="mt-2 text-left"><?= $this->clean($user['date_register_fr']); ?></h6></td>
 			        <td><a href="<?= BASE_ADMIN_URL. 'readuser/' . $this->clean($user['id_user']) ;?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
-			        <td><a href="<?= BASE_ADMIN_URL. 'removeuser/' . $this->clean($user['id_user']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
+			        <td><a href="<?= BASE_ADMIN_URL. 'moveusertobin/' . $this->clean($user['id_user']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
 			      </tr>
 					<?php }	?>
 			    </tbody>
