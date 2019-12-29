@@ -31,9 +31,13 @@ class ControllerUser extends Controller
     public function adduser()
     {
         $number_of_items       = $this->calculate->getTotalOfItems();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
             'number_of_items_pages' => $number_of_items_pages
         ));
     }
@@ -84,10 +88,14 @@ class ControllerUser extends Controller
         //$user                  = $this->request->getSession()->setAttribut("user", $this->user);
         $user                  = $this->user->getUser($_SESSION['id_user']);
         $number_of_items       = $this->calculate->getTotalOfItems();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
             'user' => $user,
             'number_of_items' => $number_of_items,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
             'number_of_items_pages' => $number_of_items_pages
         ));
     }
@@ -98,11 +106,13 @@ class ControllerUser extends Controller
         $id_user               = $this->request->getParameter("id");
         $user                  = $this->user->getUser($id_user);
         $number_of_items       = $this->calculate->getTotalOfItems();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
             'user' => $user,
             'number_of_items' => $number_of_items,
-            'number_of_items_pages' => $number_of_items_pages
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count
         ));
     }
 

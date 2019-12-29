@@ -3,7 +3,7 @@
   <div class="btn-toolbar mb-3 mb-md-0">
     <div class="btn-group mr-2">
       <?php if(ISSET($_SESSION['id_user_admin'])){?>
-      <a href="<?= BASE_ADMIN_URL; ?>additem" role="button" class="btn btn-sm btn-success">Créer une Extended Card</a>
+      <a href="<?= BASE_ADMIN_URL; ?>extendedcardadditem" role="button" class="btn btn-sm btn-success">Créer une Extended Card</a>
       <a href="<?= BASE_ADMIN_URL; ?>extendedcards" role="button" class="btn btn-sm btn-primary">Cards Publiées</a>
       <a href="<?= BASE_ADMIN_URL; ?>extendedcardsbin" role="button" class="btn btn-sm btn-danger">Corbeille</a>
     <?php } else {}?>

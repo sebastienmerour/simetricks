@@ -101,6 +101,7 @@ if ($comments_current_page > $number_of_comments_pages) {
 </div>
 <?php };?>
 <!-- Fin des commentaires -->
-<?php $this->sidebar= 'Le site contient ' . $number_of_items .' articles<br>
-et '. $number_of_items_pages.' pages d\'articles.<br>
-Cette page contient ' . $number_of_comments .' commentaires et ' . $number_of_comments_pages. ' pages de commentaires'; ?>
+<?php $this->sidebar='Le site contient :<ul><li>' . $number_of_items .' extended cards</li>
+  <li>' . $total_comments_count .' commentaires</li>
+  <li>' . $total_users_count .' utilisateurs</li>
+</ul>'; ?>

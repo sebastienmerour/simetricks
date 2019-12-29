@@ -1,6 +1,7 @@
 <?php
 define("BASE_URL", "/simetricks/");
 define("BASE_ADMIN_URL", "/simetricks/admintricks/");
+define("ID_ADMIN", "18");
 define("ROOT_SERVER", $_SERVER["DOCUMENT_ROOT"] . "/");
 define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/simetricks/");
 define("WEBSITE_NAME", "Simetricks");

@@ -72,7 +72,8 @@ class ControllerItem extends Controller
         $item                     = $this->item->getItem($id_item);
         $user                     = $this->user->getUser($_SESSION['id_user']);
         $number_of_items          = $this->calculate->getTotalOfItems();
-        $number_of_items_pages    = $this->calculate->getNumberOfPages();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = $this->calculate->getCommentsCurrentPageUser();
         $page_previous_comments   = $comments_current_page - 1;
@@ -83,7 +84,8 @@ class ControllerItem extends Controller
         $this->generateView(array(
             'item' => $item,
             'number_of_items' => $number_of_items,
-            'number_of_items_pages' => $number_of_items_pages,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
             'user' => $user,
             'comments' => $comments,
             'default' => $default,
@@ -184,7 +186,8 @@ class ControllerItem extends Controller
         $id_item                  = $this->calculate->getItemId();
         $item                     = $this->item->getItem($id_item);
         $number_of_items          = $this->calculate->getTotalOfItems();
-        $number_of_items_pages    = $this->calculate->getNumberOfPages();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;
@@ -198,7 +201,8 @@ class ControllerItem extends Controller
             'comment' => $comment,
             'item' => $item,
             'number_of_items' => $number_of_items,
-            'number_of_items_pages' => $number_of_items_pages,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
             'comments_current_page' => $comments_current_page,
             'comments' => $comments,
             'default' => $default,

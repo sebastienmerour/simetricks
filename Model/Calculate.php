@@ -207,8 +207,13 @@ class Calculate extends Model
   // Calculer le nombre total de users :
   public function getTotalOfUsers()
   {
-      $sql                  = 'SELECT COUNT(id_user) as counter FROM users';
-      $users                = $this->dbConnect($sql);
+      $id_admin = ID_ADMIN;
+      $sql                  = 'SELECT COUNT(id_user) as counter
+      FROM users
+      WHERE id_user != :id_admin';
+      $users                = $this->dbConnect($sql, array(
+          ':id_admin' => "$id_admin"
+      ));
       $this->users_count    = $users->fetch(\PDO::FETCH_ASSOC);
       $total_users_count    = $this->users_count['counter'];
       return $total_users_count;

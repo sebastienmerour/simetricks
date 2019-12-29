@@ -39,7 +39,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>account">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>useraccount">
           <span data-feather="user"></span>
           Mon Compte
         </a>

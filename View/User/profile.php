@@ -51,5 +51,7 @@ else {?>
         				</table>
         				<hr>
 <?php };?>
-<?php $this->sidebar= 'Le site contient ' . $number_of_items .' articles<br>
-et '. $number_of_items_pages.' pages d\'articles.<br>'; ?>
+<?php $this->sidebar='Le site contient :<ul><li>' . $number_of_items .' extended cards</li>
+  <li>' . $total_comments_count .' commentaires</li>
+  <li>' . $total_users_count .' utilisateurs</li>
+</ul>'; ?>

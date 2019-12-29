@@ -31,7 +31,7 @@
 	      ?>
 	      <tr>
 	        <td><h6 class="mt-2 text-left"><?= $this->clean($item['date_creation_fr']); ?></h6></td>
-	        <td><h6 class="mt-2 text-left"><a target="_blank" href="<?= BASE_ADMIN_URL.'readuser/' . $this->clean($item['id_user']) ?>">
+	        <td><h6 class="mt-2 text-left"><a target="_blank" href="<?= BASE_ADMIN_URL.'userread/' . $this->clean($item['id_user']) ?>">
 	        <?= $this->clean($item['firstname']); ?>&nbsp;<?= $this->clean($item['name']);?></a></span></td>
 					<td><a href="<?= BASE_ADMIN_URL.'readitem/' . $this->clean($item['id'])?>/1">
 					<img width="125px" src="<?= BASE_URL. 'public/images/item_images/' .$this->clean($item['image'])?>" class="figure-img img-fluid rounded-right"

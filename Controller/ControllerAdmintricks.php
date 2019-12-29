@@ -31,7 +31,7 @@ class ControllerAdmintricks extends Controller
     // ITEMS
 
     // Affichage du formulaire de création d'un article :
-    public function additem()
+    public function extendedcardadditem()
     {
         $this->generateadminView();
     }
@@ -70,7 +70,7 @@ class ControllerAdmintricks extends Controller
                 $errors['errors'] = 'Veuillez remplir tous les champs';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: additem/');
+                    header('Location: extendedcardadditem');
                     exit;
                 }
             }
@@ -83,21 +83,21 @@ class ControllerAdmintricks extends Controller
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: additem/');
+                    header('Location: extendedcardadditem');
                     exit;
                 }
             } else if (($_FILES["image"]["size"] > 1000000)) {
                 $errors['errors'] = 'Le fichier est trop lourd.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: additem/');
+                    header('Location: extendedcardadditem');
                     exit;
                 }
             } else if ($width < "300" || $height < "200") {
                 $errors['errors'] = 'Le fichier n\'a pas les bonnes dimensions';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: additem/');
+                    header('Location: extendedcardadditem');
                     exit;
                 }
             }
@@ -523,7 +523,7 @@ class ControllerAdmintricks extends Controller
     }
 
     // Affichage du compte Admin :
-    public function account()
+    public function useraccount()
     {
         $id_user = $_SESSION['id_user_admin'];
         $user    = $this->user->getUser($id_user);
@@ -535,7 +535,7 @@ class ControllerAdmintricks extends Controller
 
 
     // Affichage d'un user seul :
-    public function readuser()
+    public function userread()
     {
 
         $id_user = $this->request->getParameter("id");
@@ -584,21 +584,21 @@ class ControllerAdmintricks extends Controller
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readuser/' . $id_user);
+                    header('Location: ../userread/' . $id_user);
                     exit;
                 }
             } else if (($_FILES["avatar"]["size"] > 1000000)) {
                 $errors['errors'] = 'Le fichier est trop lourd.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readuser/' . $id_user);
+                    header('Location: ../userread/' . $id_user);
                     exit;
                 }
             } else if ($width < "300" || $height < "200") {
                 $errors['errors'] = 'Le fichier n\'a pas les bonnes dimensions';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readuser/' . $id_user);
+                    header('Location: ../userread/' . $id_user);
                     exit;
                 }
             } else {
@@ -610,7 +610,7 @@ class ControllerAdmintricks extends Controller
           $errors['errors'] = 'Merci de renseigner tous les champs !';
           if (!empty($errors)) {
               $_SESSION['errors'] = $errors;
-              header('Location: ../readuser/' . $id_user);
+              header('Location: ../userread/' . $id_user);
               exit;
           }
 

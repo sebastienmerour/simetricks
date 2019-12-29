@@ -28,9 +28,13 @@ class ControllerLogin extends Controller
     public function index()
     {
         $number_of_items       = $this->calculate->getTotalOfItems();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
             'number_of_items_pages' => $number_of_items_pages
         ));
     }
@@ -61,7 +65,8 @@ class ControllerLogin extends Controller
     public function logout()
     {
         $number_of_items       = $this->calculate->getTotalOfItems();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         if (ISSET($_SESSION['id_user'])) {
             $this->request->getSession()->destroy();
             // Suppression des cookies de connexion automatique
@@ -69,7 +74,8 @@ class ControllerLogin extends Controller
             setcookie('pass', '');
             $this->generateView(array(
                 'number_of_items' => $number_of_items,
-                'number_of_items_pages' => $number_of_items_pages
+                'total_comments_count' => $total_comments_count,
+                'total_users_count' => $total_users_count
             ));
         } else {
             $this->redirect("login/invite");
@@ -94,10 +100,12 @@ class ControllerLogin extends Controller
     public function invite()
     {
         $number_of_items       = $this->calculate->getTotalOfItems();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
-            'number_of_items_pages' => $number_of_items_pages
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count
         ));
     }
 

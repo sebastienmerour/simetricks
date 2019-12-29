@@ -32,6 +32,8 @@ class ControllerHome extends Controller
         }
         $items                 = $this->item->getItems($items_current_page);
         $number_of_items       = $this->calculate->getTotalOfItems();
+        $total_comments_count     = $this->calculate->getTotalOfComments();
+        $total_users_count        = $this->calculate->getTotalOfUsers();
         $items_current_page    = 1;
         $previous_page         = $items_current_page - 1;
         $next_page             = $items_current_page + 1;
@@ -39,6 +41,8 @@ class ControllerHome extends Controller
         $this->generateView(array(
             'items' => $items,
             'number_of_items' => $number_of_items,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
             'items_current_page' => $items_current_page,
             'previous_page' => $previous_page,
             'next_page' => $next_page,

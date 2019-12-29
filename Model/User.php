@@ -117,13 +117,16 @@ class User extends Model
     // Afficher la liste complète de tous les users en Admin :
     public function selectUsers($users_current_page)
     {
+        $id_admin = ID_ADMIN;
         $users_start = (int) (($users_current_page - 1) * $this->number_of_users_by_page);
         $sql            = 'SELECT id_user, firstname, name, avatar, email,
     DATE_FORMAT(date_register, \'%d/%m/%Y à %Hh%i\') AS date_register_fr
     FROM users
-    WHERE bin != "yes" AND id_user != "18"
+    WHERE bin != "yes" AND id_user != :id_admin
     ORDER BY date_register DESC LIMIT ' . $users_start . ', ' . $this->number_of_users_by_page . '';
-        $users       = $this->dbConnect($sql);
+        $users       = $this->dbConnect($sql, array(
+            ':id_admin' => "$id_admin"
+        ));
         return $users;
     }
 
@@ -219,7 +222,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../readuser/'.$id_user));
+            die(header('Location: ../userread/'.$id_user));
             exit;
         }
 
@@ -240,7 +243,7 @@ class User extends Model
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readuser/'.$id_user);
+            header('Location: ../userread/'.$id_user);
             exit;
         }
     }
@@ -287,7 +290,7 @@ class User extends Model
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readuser/'.$id_user);
+            header('Location: ../userread/'.$id_user);
             exit;
         }
     }

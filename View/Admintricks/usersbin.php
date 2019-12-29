@@ -32,17 +32,17 @@
       ?>
       <tr>
 				<td><div class="media">
-					<a href="<?= BASE_ADMIN_URL. 'readuser/' . $this->clean($user['id_user']) ;?>"><img class="img-fluid mr-3 rounded avatar" src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean(isset($user['avatar'])) ? $this->clean($user['avatar']) : $default ;?>" alt="user"></a>
+					<a href="<?= BASE_ADMIN_URL. 'userread/' . $this->clean($user['id_user']) ;?>"><img class="img-fluid mr-3 rounded avatar" src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean(isset($user['avatar'])) ? $this->clean($user['avatar']) : $default ;?>" alt="user"></a>
 				</div>
 				</td>
 				<td><div class="media">
 					<div class="media-body">
-						<h6 class="mt-2 text-left"><a href="<?= BASE_ADMIN_URL. 'readuser/' . $this->clean($user['id_user']) ;?>"><?= $this->clean(isset($user['firstname'], $user['name']) ? $user['firstname'] . ' ' . $user['name'] : $user['author']);?></a></h6><br>
+						<h6 class="mt-2 text-left"><a href="<?= BASE_ADMIN_URL. 'userread/' . $this->clean($user['id_user']) ;?>"><?= $this->clean(isset($user['firstname'], $user['name']) ? $user['firstname'] . ' ' . $user['name'] : $user['author']);?></a></h6><br>
 					</div>
 				</div>
 			  </td>
         <td><h6 class="mt-2 text-left"><a href="mailto:<?= $this->clean($user['email']); ?>"><?= $this->clean($user['email']); ?></a></h6></td>
-        <td><a href="<?= BASE_ADMIN_URL. 'readuser/' . $this->clean($user['id_user']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
+        <td><a href="<?= BASE_ADMIN_URL. 'userread/' . $this->clean($user['id_user']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
 				<td><a href="<?= BASE_ADMIN_URL. 'restorethisuser/' . $this->clean($user['id_user'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
 			  <td><a href="<?= BASE_ADMIN_URL. 'removeuser/' . $this->clean($user['id_user']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer définitivement</a></td>
       </tr>
