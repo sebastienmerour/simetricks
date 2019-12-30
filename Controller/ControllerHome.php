@@ -31,12 +31,12 @@ class ControllerHome extends Controller
           $items_current_page = 1;
         }
         $items                 = $this->item->getItems($items_current_page);
+        $previous_page         = $items_current_page - 1;
+        $next_page             = $items_current_page + 1;
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
         $number_of_items       = $this->calculate->getTotalOfItems();
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
-        $items_current_page    = 1;
-        $previous_page         = $items_current_page - 1;
-        $next_page             = $items_current_page + 1;
         $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
             'items' => $items,

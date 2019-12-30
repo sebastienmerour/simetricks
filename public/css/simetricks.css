@@ -1,5 +1,13 @@
-/* The message box is shown when the user clicks on the password field */
+/* Style de la section globale */
+section {
+	padding : 2rem 0 !important;
+}
 
+section.has-divider .container {
+	padding : 2rem 0 !important;
+}
+
+/* The message box is shown when the user clicks on the password field */
 #feedback {
 	display: none;
 	color: #000;

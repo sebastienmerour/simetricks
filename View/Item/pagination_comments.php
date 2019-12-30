@@ -1,46 +1,43 @@
 <!-- Pagination des commentaires  -->
-  <nav class="blog-pagination">
-    &nbsp; <ul class="pagination">
-    <?php
-          if ($comments_current_page !=1  AND $comments_current_page <= $number_of_comments_pages)// Si la page active n'est pas la première page
-          {
-          ?>
-          <li>
-              <a class="btn btn-outline-secondary" href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id']) . "/" . $page_previous_comments : "item/indexuser/" . $this->clean($item['id']).
-              "/" . $page_previous_comments ?>/#comments" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>&nbsp;
-          </li>
+<div class="row justify-content-between align-items-center">
+        <div class="col-auto">
           <?php
-          }
-          for ($i = 1; $i <= $number_of_comments_pages; $i++)
-          {
-            echo '<li';
-            if($comments_current_page == $i)
-              {
-                echo ' class="btn btn-outline-secondary disabled">'.$i.' </li>&nbsp;';
+          if ($comments_current_page !=1  AND $comments_current_page <= $number_of_comments_pages)
+        {
+        ?>
+    <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id']) . "/" . $page_previous_comments : "item/indexuser/" . $this->clean($item['id']).
+    "/" . $page_previous_comments ?>/#comments" class="btn btn-outline-white">Préc</a>
+  <?php
+  }; ?>
+
+</div>
+  <div class="col-auto">
+    <nav>
+      <ul class="pagination mb-0">
+        <?php for ($i = 1; $i <= $number_of_comments_pages; $i++)
+        {
+          echo '<li';
+          if($comments_current_page == $i)
+            {
+              echo ' class="page-item disabled"><a class="page-link" href="#">'.$i.' </a></li>';
+            }
+            else {
+              if (!ISSET($_SESSION['id_user'])) {
+                echo ' class="page-item active"><a class="page-link" href="item/' .$this->clean($item['id']). '/'. $i . '/#comments">' . $i . '</a></li>';
               }
               else {
-                  if (!ISSET($_SESSION['id_user'])) {
-
-                  echo '><a class="btn btn-outline-primary" href="item/' .$this->clean($item['id']). '/'. $i . '/#comments">' . $i . '</a>&nbsp;</li>';
-                  }
-                  else {
-                  echo '><a class="btn btn-outline-primary" href="item/indexuser/' .$this->clean($item['id']). '/'. $i . '/#comments">' . $i . '</a>&nbsp;</li>';
-              }
-          }
+                echo ' class="page-item active"><a class="page-link" href="item/indexuser/' .$this->clean($item['id']). '/'. $i . '/#comments">' . $i . '</a></li>';
+            }
         }
-          if ($comments_current_page < $number_of_comments_pages)
-          {
-          ?>
-          <li>
-              <a class="btn btn-outline-secondary" href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id']) . "/" . $page_next_comments  : "item/indexuser/" . $this->clean($item['id']).
-              "/" . $page_next_comments ?>/#comments" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-          </li>
-          <?php
-          }
-        ?>
-      </ul>
-    </nav>
+      };?>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-auto">
+    <?php if ($comments_current_page < $number_of_comments_pages)
+        {
+        ?><a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id']) . "/" . $page_next_comments  : "item/indexuser/" . $this->clean($item['id']).
+        "/" . $page_next_comments ?>/#comments" class="btn btn-outline-white">Suiv</a><?php };?>
+      </div>
+
+</div>

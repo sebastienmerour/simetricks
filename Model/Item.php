@@ -78,11 +78,26 @@ class Item extends Model
         $sql   = 'SELECT extended_cards.id, extended_cards.title, extended_cards.image, extended_cards.content,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-     users.id_user, users.firstname, users.name FROM extended_cards
+     users.id_user, users.avatar, users.firstname, users.name FROM extended_cards
      LEFT JOIN users
      ON extended_cards.id_user = users.id_user
      WHERE extended_cards.bin != "yes"
      ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
+        $items = $this->dbConnect($sql);
+        return $items;
+    }
+
+    // Pagniation des Articles :
+    public function getPaginationItems($items_current_page)
+    {
+        $start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
+        $sql   = 'SELECT extended_cards.id, extended_cards.title, extended_cards.image, extended_cards.content,
+    DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+    DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+    users.id_user, users.avatar, users.firstname, users.name FROM extended_cards
+    LEFT JOIN users
+    ON extended_cards.id_user = users.id_user
+    ORDER BY date_creation DESC LIMIT ' . $start . ', ' . $this->number_of_items_by_page . '';
         $items = $this->dbConnect($sql);
         return $items;
     }
@@ -99,7 +114,7 @@ class Item extends Model
         extended_cards.content AS content,
         DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
         DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-        users.id_user, users.firstname, users.name
+        users.id_user, users.avatar, users.firstname, users.name
         FROM extended_cards
         LEFT JOIN users
         ON extended_cards.id_user = users.id_user

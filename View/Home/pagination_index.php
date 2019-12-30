@@ -1,46 +1,41 @@
 <!-- Pagination des items  -->
-  <nav class="blog-pagination">
-    &nbsp; <ul class="pagination">
-    <?php
-    if ($items_current_page > $number_of_items_pages) {
-      require __DIR__ . '/../errors/page_not_found.php';
-    }
-        else {
-
-          if ($items_current_page > 1  AND $items_current_page <= $number_of_items_pages)// Si la page active n'est pas la première page
-          {
-          ?>
-          <li>
-              <a class="btn btn-outline-secondary" href="<?= BASE_URL; $previous_page ;?>" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>&nbsp;
-          </li>
+<div class="row justify-content-between align-items-center">
+  <?php
+  if ($items_current_page > $number_of_items_pages) {
+    require __DIR__ . '/../errors/page_not_found.php';
+  }
+      else {;?>
+        <div class="col-auto">
           <?php
-          }
-
-          for ($i = 1; $i <= $number_of_items_pages; $i++)
-          {
-            echo '<li';
-            if($items_current_page == $i)
-              {
-                echo ' class="btn btn-outline-secondary disabled">'.$i.' </li>&nbsp;';
-              }
-              else {
-                echo '><a class="btn btn-outline-primary" href="'. BASE_URL . $i . '">' . $i . '</a>&nbsp;</li>';
-              }
-          }
-
-          if ($items_current_page < $number_of_items_pages)
-          {
-          ?>
-          <li>
-              <a class="btn btn-outline-secondary" href="<?= BASE_URL; ?><?= $next_page; ?>" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-          </li>
-          <?php
-          }
-        }
+        if ($items_current_page > 1  AND $items_current_page <= $number_of_items_pages)// Si la page active n'est pas la première page
+        {
         ?>
-      </ul>
-    </nav>
+    <a href="<?= BASE_URL; ?><?= $previous_page; ?>" class="btn btn-outline-white">Préc</a>
+  <?php
+  }; ?>
+
+</div>
+  <div class="col-auto">
+    <nav>
+      <ul class="pagination mb-0">
+        <?php for ($i = 1; $i <= $number_of_items_pages; $i++)
+        {
+          echo '<li';
+          if($items_current_page == $i)
+            {
+              echo ' class="page-item disabled"><a class="page-link" href="#">'.$i.' </a></li>';
+            }
+            else {
+              echo ' class="page-item active"><a class="page-link" href="'. BASE_URL . $i . '">' . $i . '</a></li>';
+            }
+        };?>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-auto">
+    <?php if ($items_current_page < $number_of_items_pages)
+        {
+        ?><a href="<?= BASE_URL; ?><?= $next_page; ?>" class="btn btn-outline-white">Suiv</a><?php };?>
+      </div>
+      <?php };?>
+</div>
