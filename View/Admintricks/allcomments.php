@@ -23,11 +23,14 @@
       <?php
       while ($comment = $comments->fetch())
       {
-					$content = $this->cleantinymce($comment['content']);
-					$maxlen = 50;
-					if ( strlen($content) > $maxlen ){
-				    $content = substr($content,0,strrpos($content,". ",$maxlen-strlen($content))+50);
-					}
+				        $intro = strip_tags($comment['content']);
+				        if (strlen($intro) > 40) {
+				            // truncate string
+				            $stringCut = substr($intro, 0, 40);
+				            $endPoint = strrpos($stringCut, ' ');
+				            //if the string doesn't contain any space then it will cut without word basis.
+				            $intro = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
+				        }
 
       ?>
       <tr>
@@ -38,8 +41,8 @@
             <h6 class="mt-2 text-left"><?= $this->clean(isset($comment['firstname_com'], $comment['name_com']) ? $comment['firstname_com'] . ' ' . $comment['name_com'] : $comment['author']);?></h6><br>
           </div>
         </div></td>
-        <td><h6 class="mt-2 text-left"><?= $content; ?> ...</h6></td>
-        <td><a href="<?= BASE_ADMIN_URL. 'readcomment/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
+        <td><h6 class="mt-2 text-left"><?= $intro; ?> ...</h6></td>
+        <td><a href="<?= BASE_ADMIN_URL. 'commentread/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
         <td><a href="<?= BASE_ADMIN_URL. 'movecommenttobin/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
       </tr>
             <?php

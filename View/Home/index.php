@@ -1,15 +1,17 @@
 <?php $this->title = WEBSITE_NAME; ?>
-
-<!-- Pour chaque post on met un foreach : -->
 <div class="row mb-4">
+    <div class="col-md-6 col-lg-8 d-flex" data-aos-delay="200">
+      <div class="row">
 <?php foreach ($items as $item):?>
 <?php
-      $content = $this->clean($item['content']);
-      $maxlen = 75;
-      if ( strlen($content) > $maxlen ){
-        $content = substr($content,0,strrpos($content,". ",$maxlen-strlen($content))+75);}
+        $intro = strip_tags($item['content']);
+        if (strlen($intro) > 75) {
+            $stringCut = substr($intro, 0, 75);
+            $endPoint = strrpos($stringCut, ' ');
+            $intro = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
+        }
 ?>
-  <div class="col-md-6 col-lg-4 d-flex" data-aos-delay="200">
+      <div class="col-md-12 col-lg-6 d-flex">
       <div class="card">
         <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id'])  . "/1/" : "item/indexuser/" . $this->clean($item['id']). "/1/" ?>">
           <img src="<?php echo BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="card-img-top">
@@ -27,7 +29,7 @@
             <h4><?= $this->clean($item['title']) ?></h4>
           </a>
           <p class="flex-grow-1">
-            <?= $content; ?> ...[<a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id']) . "/1/" : "item/indexuser/" . $this->clean($item['id']) . "/1/" ?>">lire la suite</a>]
+            <?= $this->clean($intro); ?> ...[<a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id']) . "/1/" : "item/indexuser/" . $this->clean($item['id']) . "/1/" ?>">lire la suite</a>]
           </p>
           <div class="d-flex align-items-center mt-3">
             <a href="<?= "user/profile/" . $this->clean($item['id_user']) ?>"><img src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean($item['avatar']);?>" alt="<?= $this->clean($item['firstname']) . '&nbsp;' . $this->clean($item['name']) ?>" class="avatar avatar-sm"></a>
@@ -39,24 +41,21 @@
           </div>
         </div>
       </div>
-  </div>
+    </div>
 <?php endforeach; ?>
-
+    </div>
+  </div>
+<div class="col-md-6 col-lg-4 d-none d-md-block">
+  <?php if(!ISSET($_SESSION['id_user']))
+          {require __DIR__ . '/../themes/front/template_module_login.php'; }
+       else { require __DIR__ . '/../themes/front/template_module_logout.php';}?>
 </div>
-
-
+</div>
     <?php
     if ($items_current_page > $number_of_items_pages) {
       require __DIR__ . '/../errors/items_not_found.php';
     }
     else {
-    require __DIR__ . '/../Home/pagination_index.php';
+    require __DIR__ . '/../Home/index_pagination.php';
     }
     ?>
-
-
-
-<?php $this->sidebar='Le site contient :<ul><li>' . $number_of_items .' extended cards</li>
-  <li>' . $total_comments_count .' commentaires</li>
-  <li>' . $total_users_count .' utilisateurs</li>
-</ul>'; ?>

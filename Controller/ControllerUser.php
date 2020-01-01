@@ -28,7 +28,7 @@ class ControllerUser extends Controller
     // Create
 
     // Affichage du formulaire d'inscription :
-    public function adduser()
+    public function useradd()
     {
         $number_of_items       = $this->calculate->getTotalOfItems();
         $total_comments_count     = $this->calculate->getTotalOfComments();
@@ -61,20 +61,20 @@ class ControllerUser extends Controller
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
                         $_SESSION['errors'] = $errors;
-                        header('Location: adduser');
+                        header('Location: useradd');
                         exit;
                     }
                 }
             } else {
                 $errors['errors']   = 'Merci de cocher la case reCAPTCHA.';
                 $_SESSION['errors'] = $errors;
-                header('Location: adduser');
+                header('Location: useradd');
                 exit;
             }
         } else {
             $errors['errors']   = 'Merci de renseigner tous les champs';
             $_SESSION['errors'] = $errors;
-            header('Location: adduser');
+            header('Location: useradd');
             exit;
         }
 
@@ -119,7 +119,7 @@ class ControllerUser extends Controller
     // Update
 
     // Affichage de la page de modification de user :
-    function modifyuser()
+    function useredit()
     {
         $number_of_items       = $this->calculate->getTotalOfItems();
         $number_of_items_pages = $this->calculate->getNumberOfPages();
@@ -169,7 +169,7 @@ class ControllerUser extends Controller
     // Modification de l'avatar :
     public function updateavatar()
     {
-        $user = $this->request->getSession()->getAttribut("user");
+      $user                     = $this->user->getUser($_SESSION['id_user']);
 
         if (isset($_POST["modifyavatar"])) {
             $errors                = array();

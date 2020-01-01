@@ -42,7 +42,7 @@
           <img class="img-fluid mr-3 rounded avatar" src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean(isset($comment['avatar_com'])) ? $this->clean($comment['avatar_com']) : $default ;?>" alt="user">
         </div></td>
         <td><h6 class="mt-2 text-left"><?= $content; ?> ...</h6></td>
-        <td><a href="<?= BASE_ADMIN_URL. 'readcomment/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
+        <td><a href="<?= BASE_ADMIN_URL. 'commentread/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
 				<td><a href="<?= BASE_ADMIN_URL. 'restorethiscomment/' . $this->clean($comment['id'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
 				<td><a href="<?= BASE_ADMIN_URL. 'removecomment/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer dédinitivement</a></td>
       </tr>

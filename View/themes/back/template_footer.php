@@ -15,5 +15,14 @@
 <!-- Icons -->
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 <script>feather.replace()</script>
+<script>
+    $('#uploadimage').on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        fileName = fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.length);
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+</script>
 </body>
 </html>

@@ -190,7 +190,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_URL. 'item/readcomment/' . $item . '/' . $comment);
+            header('Location: '. BASE_URL. 'item/commentread/' . $item . '/' . $comment);
             exit;
         }
     }
@@ -242,7 +242,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Votre commentaire a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readcomment/' . $comment);
+            header('Location: '. BASE_ADMIN_URL. 'commentread/' . $comment);
             exit;
         }
     }
@@ -260,7 +260,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Votre commentaire a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readcommentreported/' . $comment);
+            header('Location: '. BASE_ADMIN_URL. 'commentreportedread/' . $comment);
             exit;
         }
     }

@@ -10,7 +10,7 @@ if (empty($comment)) {
 <!-- Commentaires  -->
 <h2 id="comments">Commentaires</h2>
 <hr>
-<?php require('pagination_comments.php'); ?>
+<?php require('comments_pagination.php'); ?>
 <?php foreach ($comments as $comment): ?>
 	<div class="media mb-4">
 		<img class="img-fluid mr-3 rounded avatar" src="<?php echo BASE_URL; ?>public/images/avatars/<?php echo isset($comment['avatar_com']) ? $comment['avatar_com'] : $default ;?>" alt="user">
@@ -24,13 +24,13 @@ if (empty($comment)) {
 						<em class="fas fa-flag"></em>&nbsp;<a href="item/reportcomment/<?= $this->clean($item['id']) ?>/<?= $this->clean($comment['id_comment']) ;?>/">signaler le commentaire</a>&nbsp;
 						<?php if(ISSET($_SESSION['id_user']) AND  $_SESSION['id_user'] == $comment['user_com'])  {
 							?>
-							|&nbsp;<em class="fas fa-edit"></em>&nbsp;<a href="item/readcomment/<?= $this->clean($item['id']) ?>/<?= $this->clean($comment['id_comment']) ;?>/">modifier</a>
+							|&nbsp;<em class="fas fa-edit"></em>&nbsp;<a href="item/commentread/<?= $this->clean($item['id']) ?>/<?= $this->clean($comment['id_comment']) ;?>/">modifier</a>
 								<?php };?>
 	  </div>
 	</div>
 <?php endforeach; ?>
 
-<?php require('pagination_comments.php'); ?>
+<?php require('comments_pagination.php'); ?>
 <!-- Ajout  de nouveaux commentaires : -->
 <hr>
 <div class="card my-4">

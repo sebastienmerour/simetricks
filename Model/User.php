@@ -66,7 +66,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: adduser'));
+            die(header('Location: useradd'));
             exit;
         }
 
@@ -90,10 +90,10 @@ class User extends Model
             ':date_birth' => htmlspecialchars('1950-01-01 00:00:00')
         ));
         $messages['confirmation'] = 'Votre compte a bien été créé !';
-        header('Location: adduser');
+        header('Location: useradd');
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: adduser');
+            header('Location: useradd');
             exit;
         }
 
@@ -171,7 +171,7 @@ class User extends Model
         }
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../user/modifyuser'));
+            die(header('Location: ../user/useredit'));
             exit;
         }
         // Maintenant, on hashe le mot de passe, car on ne veut pas enregistrer
@@ -323,7 +323,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../user/modifyuser#username'));
+            die(header('Location: ../user/useredit#username'));
 
             exit;
         }
@@ -337,7 +337,7 @@ class User extends Model
         $messages['confirmation'] = 'Votre identifiant a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../user/modifyuser#username');
+            header('Location: ../user/useredit#username');
             exit;
         }
     }

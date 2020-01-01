@@ -34,9 +34,19 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="<?= BASE_URL; ?>public/js/scroll.js"></script>
 <script src="<?= BASE_URL; ?>public/js/tab.js"></script>
+
 <script type="text/javascript" src="<?= BASE_URL; ?>public/js/password_policy.js"></script>
 <script type="text/javascript">
   window.addEventListener("load", function () {    document.querySelector('body').classList.add('loaded');  });
+</script>
+<script>
+    $('#uploadimage').on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        fileName = fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.length);
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
 </script>
 </body>
 </html>

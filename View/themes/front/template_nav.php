@@ -11,18 +11,11 @@
             </div>
           </div>
         </form>
-          <div class="dropdown ml-2">
-            <img src="<?= BASE_URL; ?>public/images/avatars/default.png" alt="User" class="avatar avatar-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <div class="dropdown-menu dropdown-menu-right dropdown-content pl-2">
-              <h6>Mon compte</h6>
-              <a class="dropdown-item" href="<?= BASE_URL; ?>login">Se connecter</a>
-              <a class="dropdown-item" href="<?= BASE_URL; ?>user/adduser">Inscription</a>
-            </div>
-          </div>
+        <?= $sidebar ?>
         <div class="ml-2">
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
-            <img class="icon navbar-toggler-open" src="assets/img/icons/interface/menu.svg" alt="menu interface icon" data-inject-svg />
-            <img class="icon navbar-toggler-close" src="assets/img/icons/interface/cross.svg" alt="cross interface icon" data-inject-svg />
+            <img class="icon navbar-toggler-open" src="<?= BASE_URL; ?>public/images//icons/interface/menu.svg" alt="menu interface icon" data-inject-svg />
+            <img class="icon navbar-toggler-close" src="<?= BASE_URL; ?>public/images/icons/interface/cross.svg" alt="cross interface icon" data-inject-svg />
           </button>
         </div>
       </div>

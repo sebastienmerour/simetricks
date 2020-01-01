@@ -2,7 +2,6 @@
 	if(!ISSET($_SESSION['id_user'])){
 ?>
 <?php $this->title =  WEBSITE_NAME . ' | Inscription'; ?>
-
 <div class="row justify-content-center pt-3">
 	<div class="col-8">
 		<div class="text-center mb-4">
@@ -64,11 +63,6 @@
 		</form>
 	</div>
 </div>
-<?php $this->sidebar='Le site contient :<ul><li>' . $number_of_items .' extended cards</li>
-  <li>' . $total_comments_count .' commentaires</li>
-  <li>' . $total_users_count .' utilisateurs</li>
-</ul>'; ?>
-
 <?php
 }
 else

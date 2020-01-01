@@ -1,4 +1,3 @@
-<!-- Pagination des commentaires  -->
 <div class="row justify-content-between align-items-center">
         <div class="col-auto">
           <?php
@@ -9,7 +8,6 @@
     "/" . $page_previous_comments ?>/#comments" class="btn btn-outline-white">Préc</a>
   <?php
   }; ?>
-
 </div>
   <div class="col-auto">
     <nav>
@@ -39,5 +37,4 @@
         ?><a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id']) . "/" . $page_next_comments  : "item/indexuser/" . $this->clean($item['id']).
         "/" . $page_next_comments ?>/#comments" class="btn btn-outline-white">Suiv</a><?php };?>
       </div>
-
 </div>

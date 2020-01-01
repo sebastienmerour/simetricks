@@ -79,7 +79,7 @@
 		          </div>
 		        </div></td>
 		        <td><h6 class="mt-2 text-left"><?= $content; ?> ...</h6></td>
-		        <td><a href="<?= BASE_ADMIN_URL. 'readcomment/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
+		        <td><a href="<?= BASE_ADMIN_URL. 'commentread/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
 		        <td><a href="<?= BASE_ADMIN_URL. 'movecommenttobin/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
 		      </tr>
 		      <?php }	?>

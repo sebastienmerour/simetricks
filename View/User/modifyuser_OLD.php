@@ -102,7 +102,7 @@
         						<div class="form-group">
         								 <div class="col-xs-12">
         											<br>
-        											<button class="btn btn-md btn-success" name="modifyuser" type="submit">Enregistrer</button>
+        											<button class="btn btn-md btn-success" name="useredit" type="submit">Enregistrer</button>
         											<a href="#" class="btn btn-md btn-secondary" type="reset">Annuler</a>
         											<a href="<?= $_SERVER['HTTP_REFERER']; ?>" class="btn btn-md btn-primary" role="button">Retour</a>
         									</div>
@@ -130,7 +130,7 @@
             <div class="form-group">
                  <div class="col-xs-12">
                       <br>
-                      <button class="btn btn-md btn-success" name="modifyusername" type="submit">Enregistrer</button>
+                      <button class="btn btn-md btn-success" name="editusername" type="submit">Enregistrer</button>
                       <a href="#"><button class="btn btn-md btn-secondary" type="reset">Annuler</button></a>
                       <a href="<?= $_SERVER['HTTP_REFERER']; ?>"><button class="btn btn-md btn-primary" type="button">Retour</button></a>
                   </div>
@@ -140,8 +140,5 @@
         </div>
 				<hr>
 			</div><!-- fin du div tab-content -->
-
-			<?php $this->sidebar='Le site contient :<ul><li>' . $number_of_items .' extended cards</li>
-			  <li>' . $total_comments_count .' commentaires</li>
-			  <li>' . $total_users_count .' utilisateurs</li>
-			</ul>'; ?>
+			<?php
+		};?>

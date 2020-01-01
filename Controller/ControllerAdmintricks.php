@@ -362,7 +362,7 @@ class ControllerAdmintricks extends Controller
     }
 
     // Affichage d'un commentaire
-    public function readcomment()
+    public function commentread()
     {
         $id_comment = $this->request->getParameter("id");
         $comment    = $this->comment->getComment($id_comment);
@@ -374,7 +374,7 @@ class ControllerAdmintricks extends Controller
     }
 
     // Affichage d'un commentaire signalé :
-    public function readcommentreported()
+    public function commentreportedread()
     {
         $id_comment = $this->request->getParameter("id");
         $comment    = $this->comment->getComment($id_comment);

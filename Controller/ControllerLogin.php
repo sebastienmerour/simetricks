@@ -90,9 +90,9 @@ class ControllerLogin extends Controller
             // Suppression des cookies de connexion automatique
             setcookie('username', '');
             setcookie('pass', '');
-            $this->redirect("login/ended");
+            $this->redirect("login/adminended");
         } else {
-            $this->redirect("login/inviteadmin");
+            $this->redirect("login/admininvite");
         }
     }
 
@@ -110,13 +110,13 @@ class ControllerLogin extends Controller
     }
 
     // Fin de sessionn d'un admin :
-    public function ended()
+    public function adminended()
     {
         $this->generateadminView();
     }
 
     // On invite un admin non connecté à se connecter :
-    public function inviteadmin()
+    public function admininvite()
     {
         $this->generateadminView();
     }

@@ -1,4 +1,4 @@
-<div class="col-md-12 col-lg-12 d-flex mt-3">
+<div class="col-md-12 col-lg-12 d-flex">
   <div class="card card-body">
     <div class="flex-grow-1">
       <div class="h3">Connexion</div>

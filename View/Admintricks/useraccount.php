@@ -50,7 +50,7 @@
 								};
 								?>
 								<div class="custom-file">
-								<input type="file" name="avatar" class="custom-file-input">
+								<input type="file" name="avatar" class="custom-file-input" id="uploadimage">
 								<label class="custom-file-label" data-browse="Parcourir..." for="avatar"></label>
 								</div>
 								<label for="image" class="text-muted text-small">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label>

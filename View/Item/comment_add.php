@@ -1,7 +1,6 @@
 <hr>
 <div id="addcomment"></div>
 <?php require __DIR__ . '/../errors/errors.php'; ?>
-<!-- Ajout  de nouveaux commentaires : -->
 <h5 class="my-4">Ajoutez un commentaire :</h5>
 <div class="my-4">
 <form action="item/createcomment" method="post">

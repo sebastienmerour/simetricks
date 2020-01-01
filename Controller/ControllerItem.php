@@ -181,8 +181,9 @@ class ControllerItem extends Controller
     // Read
 
     // Affichage d'un commentaire :
-    public function readcomment()
+    public function commentread()
     {
+
         $id_item                  = $this->calculate->getItemId();
         $item                     = $this->item->getItem($id_item);
         $number_of_items          = $this->calculate->getTotalOfItems();
@@ -192,6 +193,7 @@ class ControllerItem extends Controller
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;
         $page_next_comments       = $comments_current_page + 1;
+        $user                     = $this->user->getUser($_SESSION['id_user']);
         $comments                 = $this->comment->getPaginationComments($id_item, $comments_current_page);
         $id_comment               = $this->calculate->getCommentId();
         $comment                  = $this->comment->getComment($id_comment);
@@ -205,6 +207,7 @@ class ControllerItem extends Controller
             'total_users_count' => $total_users_count,
             'comments_current_page' => $comments_current_page,
             'comments' => $comments,
+            'user' => $user,
             'default' => $default,
             'page_previous_comments' => $page_previous_comments,
             'page_next_comments' => $page_next_comments,
