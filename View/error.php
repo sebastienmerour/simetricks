@@ -1,1 +1,1 @@
-<p><?= $this->clean($msgError) ?></p>
+<?= $this->clean($generalerror) ?>

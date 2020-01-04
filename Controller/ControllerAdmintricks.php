@@ -93,8 +93,8 @@ class ControllerAdmintricks extends Controller
                     header('Location: extendedcardadditem');
                     exit;
                 }
-            } else if ($width < "300" || $height < "200") {
-                $errors['errors'] = 'Le fichier n\'a pas les bonnes dimensions';
+            } else if ($width < "800" && $height < "600") {
+                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
                     header('Location: extendedcardadditem');
@@ -229,8 +229,8 @@ class ControllerAdmintricks extends Controller
                     header('Location: ../readitem/' . $id_item);
                     exit;
                 }
-            } else if ($width < "300" || $height < "200") {
-                $errors['errors'] = 'Le fichier n\'a pas les bonnes dimensions';
+            } else if ($width < "800" && $height < "600") {
+                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
                     header('Location: ../readitem/' . $id_item);
@@ -594,8 +594,8 @@ class ControllerAdmintricks extends Controller
                     header('Location: ../userread/' . $id_user);
                     exit;
                 }
-            } else if ($width < "300" || $height < "200") {
-                $errors['errors'] = 'Le fichier n\'a pas les bonnes dimensions';
+            } else if ($width < "800" && $height < "600") {
+                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
                     header('Location: ../userread/' . $id_user);

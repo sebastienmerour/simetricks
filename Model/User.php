@@ -12,7 +12,6 @@ require_once 'Framework/Request.php';
 
 class User extends Model
 {
-
     public $number_of_users_by_page = 5;
 
     // CREATE
@@ -28,8 +27,8 @@ class User extends Model
         $name      = '';
         $pass      = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
         $email     = !empty($_POST['email']) ? trim($_POST['email']) : null;
-        // On vérifie d'abord si l'identifiant choisi existe déjà ou non :
 
+        // On vérifie d'abord si l'identifiant choisi existe déjà ou non :
         // Préparation de la reqûete SQL et déclaration de la requête :
         $sql  = 'SELECT COUNT(id_user) AS num FROM users WHERE username = :username';
         $stmt = $this->dbConnect($sql, array(
@@ -37,10 +36,6 @@ class User extends Model
         ));
 
         // Associer le username fourni avec la déclaration :
-        // $stmt->bindValue(':username', $username);
-
-        // Execution :
-        // $stmt->execute();
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         // Si l'identifiant est déjà pris, on affiche une erreur.
@@ -50,7 +45,7 @@ class User extends Model
         }
 
         // Ensuite on vérifie si l'adresse mail possède un format valide :
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // L'adresse e-mail a-t-elle une forme valide ? Regex ou non ?
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
         }
 
@@ -59,8 +54,7 @@ class User extends Model
         }
 
         // Ensuite on vérifie si les 2 mots de passe sont identiques :
-        if ($_POST['pass'] != $_POST['passcheck']) // Les deux mots de passe saisis sont-ils identiques ?
-            {
+        if ($_POST['pass'] != $_POST['passcheck']) {
             $errors['passdifferent'] = 'Désolé, les mots de passe ne correspondent pas !<br>';
         }
 
@@ -70,13 +64,12 @@ class User extends Model
             exit;
         }
 
-        // Maintenant, on hasshe le mot de passe, car on ne veut pas enregistrer
-        // le vrai mot de passe dans la basse de données :
+        // Maintenant, on hasshe le mot de passe :
         $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array(
             "cost" => 12
         ));
 
-        // OK, le formulaire est OK, on peut alors insérer le nouveau membre :
+        // OK, tout est correct, on peut alors insérer le nouveau membre :
         $sql2                    = 'INSERT INTO users (status, username, firstname, name, avatar, pass, email, date_birth, date_register)
            VALUES (:status, :username, :firstname, :name, :avatar, :pass, :email, :date_birth, NOW())';
         $userLines               = $this->dbConnect($sql2, array(
@@ -160,12 +153,12 @@ class User extends Model
         $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
 
         // Ensuite on vérifie si l'adresse mail possède un format valide :
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // L'adresse e-mail a-t-elle une forme valide ? Regex ou non ?
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
         }
 
         // Ensuite on vérifie si les 2 mots de passe sont identiques :
-        if ($_POST['pass'] != $_POST['passcheck']) // Les deux mots de passe saisis sont-ils identiques ?
+        if ($_POST['pass'] != $_POST['passcheck'])
             {
             $errors['passdifferent'] = 'Désolé, les mots de passe ne correspondent pas !<br>';
         }
@@ -174,8 +167,7 @@ class User extends Model
             die(header('Location: ../user/useredit'));
             exit;
         }
-        // Maintenant, on hashe le mot de passe, car on ne veut pas enregistrer
-        // le vrai mot de passe dans la basse de données :
+        // Maintenant, on hashe le mot de passe :
         $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array(
             "cost" => 12
         ));
@@ -193,7 +185,6 @@ class User extends Model
             ':date_birth' => htmlspecialchars($date_birth)
         ));
 
-        // Ici on affiche le message de confirmation :
         $messages['confirmation'] = 'Votre compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -205,7 +196,6 @@ class User extends Model
     // Modification d'un utilisateur en Admin :
     public function changeUserFromAdmin($id_user, $status, $firstname, $name, $email, $date_birth)
     {
-
         $errors         = array();
         $messages       = array();
         $identification = $id_user;
@@ -216,7 +206,7 @@ class User extends Model
         $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
 
         // Ensuite on vérifie si l'adresse mail possède un format valide :
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // L'adresse e-mail a-t-elle une forme valide ? Regex ou non ?
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
         }
 
@@ -239,7 +229,6 @@ class User extends Model
             ':date_birth' => htmlspecialchars($date_birth)
         ));
 
-        // Ici on affiche le message de confirmation :
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -247,7 +236,6 @@ class User extends Model
             exit;
         }
     }
-
 
     // Modification d'un utilisateur en front :
     public function changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $date_birth)
@@ -262,7 +250,7 @@ class User extends Model
         $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
 
         // Ensuite on vérifie si l'adresse mail possède un format valide :
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // L'adresse e-mail a-t-elle une forme valide ? Regex ou non ?
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
         }
 
@@ -286,7 +274,6 @@ class User extends Model
             ':date_birth' => htmlspecialchars($date_birth)
         ));
 
-        // Ici on affiche le message de confirmation :
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -308,13 +295,8 @@ class User extends Model
         ));
 
         // On vérifie d'abord si l'identifiant choisi existe déjà ou non :
-
-        // Associer le username fourni avec la déclaration :
-        // $stmt->bindValue(':username', $username);
-
-        // Execution :
-        // $stmt->execute();
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
         // Si l'identifiant est déjà pris, on affiche une erreur.
         // Si row est supérieur à 0 cela veut dire que l'identifiant se trouve déjà en bdd :
         if ($row['num'] > 0) {
@@ -423,7 +405,7 @@ class User extends Model
             ':bin' => $bin
         ));
         $req->execute();
-        // Ici on affiche le message de confirmation :
+
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -507,34 +489,43 @@ class User extends Model
             $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
             $passwordAttempt = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
 
-            // On prépare une rquête pour aller chercher le username dans la BBD :
+            // On prépare une requête pour aller chercher le username dans la BBD :
             $sql      = 'SELECT id_user, status, username, pass FROM users WHERE username = :username';
             $req      = $this->dbConnect($sql, array(
                 'username' => $username
             ));
-            $resultat = $req->fetch();
+            $result = $req->fetch();
+
+            // On récupère le mot de passe hashé dans la base, et on le déchiffre pour le comparer :
+            $validPassword = password_verify($passwordAttempt, $result['pass']);
+
+            // On vérifie si l'utilisateur est un admin :
+            $validAdmin    = $result['status'] == 5;
 
             // On vérifie si le username existe : .
-            if (!$resultat) { // si le resultat est False
-
+            if (!$result) {
                 // on indique à l'utilisateur qu'il s'est trompé de username ou de mot de passe.
-                // on ne préciser pas qu'il s'agit du username qui est faux, pour raison de sécurité :
+                // on ne précise pas qu'il s'agit du username qui est faux, pour raison de sécurité :
                 $errors['errors'] = 'Identifiant ou Mot de passe incorrect !';
                 $_SESSION['errors'] = $errors;
                 header('Location:' . BASE_ADMIN_URL);
-            } else {
+            }
+            else if (!$validPassword) {
+              $errors['errors'] = 'Identifiant ou Mot de passe incorrect !';
+              $_SESSION['errors'] = $errors;
+              header('Location:' . BASE_ADMIN_URL);
+            }
+            else if (!$validAdmin) {
+              $errors['errors'] = 'Vous n\'êtes pas autorisés à accéder à l\'administration !';
+              $_SESSION['errors'] = $errors;
+              header('Location:' . BASE_ADMIN_URL);
+            }
 
-                // Sinon, si le username a bien été trouvé, il faut vérifier que le mot de passe est correct.
-                // On récupère le mot de passe hashé dans la base, et on le déchiffre pour le comparer :
-
-                $validPassword = password_verify($passwordAttempt, $resultat['pass']);
-                $validAdmin    = $resultat['status'] == 5;
-
-                // Si $validPassword est True (donc correct), alors la connexion est réussie :
-                if ($validPassword && $validAdmin) {
+                // Si les 3 vérifications sont bonnes, alors la connexion est réussie :
+                else  if ($result && $validPassword && $validAdmin) {
 
                     // On déclenche alors l'ouverture d'une session :
-                    $_SESSION['id_user_admin'] = $resultat['id_user'];
+                    $_SESSION['id_user_admin'] = $result['id_user'];
                     if (!empty($_POST['rememberme'])) {
 
                         setcookie("username", $_POST['username'], time() + 365 * 24 * 3600, null, null, false, true);
@@ -561,7 +552,6 @@ class User extends Model
                 }
             }
         }
-    }
 
 
 }

@@ -205,8 +205,8 @@ class ControllerUser extends Controller
                     header('Location: ../user/');
                     exit;
                 }
-            } else if ($width < "300" || $height < "200") {
-                $errors['errors'] = 'Le fichier n\'a pas les bonnes dimensions';
+            } else if ($width < "800" && $height < "600") {
+                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
                     header('Location: ../user/');

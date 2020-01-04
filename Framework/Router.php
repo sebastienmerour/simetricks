@@ -65,7 +65,7 @@ class Router
     {
         $view = new View('error');
         $view->generateError(array(
-            'msgError' => $exception->getMessage()
+            'generalerror' => $exception->getMessage()
         ));
     }
 }

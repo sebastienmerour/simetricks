@@ -5,8 +5,8 @@
   <div class="container">
     <div class="row mb-4 justify-content-center">
       <div class="col-auto">
-        <a href="index.html">
-          <img src="<?= BASE_URL; ?>public/images/logo.svg" alt="Simetricks" class="icon icon-lg">
+        <a href="<?= BASE_URL; ?>">
+          <img src="<?= BASE_URL; ?>public/images/logos/logo-xl.png" alt="<?= WEBSITE_NAME; ?>" title="<?= WEBSITE_NAME; ?>" class="icon icon-lg">
         </a>
       </div>
     </div>
