@@ -173,7 +173,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../extendedcardread/' . $id_item);
+            header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
             exit;
         }
     }
@@ -202,7 +202,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! Votre article a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../extendedcardread/' . $id_item);
+            header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
             exit;
         }
     }
@@ -219,7 +219,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! L\'Extended Card a bien été restaurée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../extendedcardsbin');
+            header('Location: '. BASE_ADMIN_URL. 'extendedcardsbin');
             exit;
         }
     }
@@ -238,7 +238,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! L\'Extended Card a été déplacée dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../extendedcards');
+            header('Location: '. BASE_ADMIN_URL. 'extendedcards');
             exit;
         }
     }

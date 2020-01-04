@@ -27,7 +27,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Votre commentaire a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../item/' . $id_item . '/1/#comments');
+            header('Location: '. BASE_URL. 'item/' . $id_item . '/1/#comments');
             exit;
         }
     }
@@ -47,7 +47,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Votre commentaire a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../item/indexuser/' . $id_item . '/1/#comments');
+            header('Location: '. BASE_URL. 'item/indexuser/' . $id_item . '/1/#comments');
             exit;
         }
     }
@@ -235,7 +235,7 @@ class Comment extends Model
         $comment                  = $_GET['id'];
         $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE comments SET content = :content, date_update = NOW() WHERE id = :id';
-        $newComment               = $this->dbConnect($sql, array(
+        $this->dbConnect($sql, array(
             ':id' => $comment,
             ':content' => $content
         ));
@@ -253,7 +253,7 @@ class Comment extends Model
         $comment                  = $_GET['id'];
         $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE comments SET content = :content, date_update = NOW() WHERE id = :id';
-        $newComment               = $this->dbConnect($sql, array(
+        $this->dbConnect($sql, array(
             ':id' => $comment,
             ':content' => $content
         ));
@@ -271,14 +271,14 @@ class Comment extends Model
         // $comment                  = $_GET['id'];
         $report                   = "no";
         $sql                      = 'UPDATE comments SET report = :report, date_update = NOW() WHERE id = :id';
-        $newComment               = $this->dbConnect($sql, array(
+        $this->dbConnect($sql, array(
             ':id' => $id_comment,
             ':report' => $report
         ));
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été approuvé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../commentsreported');
+            header('Location: '. BASE_ADMIN_URL. 'commentsreported');
             exit;
         }
     }
@@ -288,14 +288,14 @@ class Comment extends Model
     {
         $bin                      = "no";
         $sql                      = 'UPDATE comments SET bin = :bin, date_update = NOW() WHERE id = :id';
-        $restore               = $this->dbConnect($sql, array(
+        $this->dbConnect($sql, array(
             ':id' => $id_comment,
             ':bin' => $bin
         ));
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été restauré !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../commentsbin');
+            header('Location: '. BASE_ADMIN_URL. 'commentsbin');
             exit;
         }
     }
@@ -315,7 +315,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le Commentaire a été déplacé dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../comments');
+            header('Location: '. BASE_ADMIN_URL. 'comments');
             exit;
         }
     }

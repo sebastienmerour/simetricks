@@ -16,17 +16,14 @@ class User extends Model
 
     // CREATE
 
-    // Création d'un utilisateur :
-    public function insertUser($username, $pass, $email)
+    // Vérification avant création de l'utilisateur :
+    public function checkUser($username, $pass, $email)
     {
-        $errors    = array();
-        $messages  = array();
-        $username  = !empty($_POST['username']) ? trim($_POST['username']) : null;
-        $avatar    = 'default.png';
-        $firstname = '';
-        $name      = '';
-        $pass      = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
-        $email     = !empty($_POST['email']) ? trim($_POST['email']) : null;
+        $errors   = array();
+        $messages = array();
+        $username = !empty($_POST['username']) ? trim($_POST['username']) : null;
+        $pass     = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
+        $email    = !empty($_POST['email']) ? trim($_POST['email']) : null;
 
         // On vérifie d'abord si l'identifiant choisi existe déjà ou non :
         // Préparation de la reqûete SQL et déclaration de la requête :
@@ -60,7 +57,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: useradd'));
+            die(header('Location: '. BASE_URL. 'useradd'));
             exit;
         }
 
@@ -70,9 +67,18 @@ class User extends Model
         ));
 
         // OK, tout est correct, on peut alors insérer le nouveau membre :
-        $sql2                    = 'INSERT INTO users (status, username, firstname, name, avatar, pass, email, date_birth, date_register)
-           VALUES (:status, :username, :firstname, :name, :avatar, :pass, :email, :date_birth, NOW())';
-        $userLines               = $this->dbConnect($sql2, array(
+        $this->insertUser($username, $passwordHash, $email);
+    }
+
+    // Insertion de l'utilisateur en base de données :
+    public function insertUser($username, $passwordHash, $email)
+    {
+        $avatar    = 'default.png';
+        $firstname = '';
+        $name      = '';
+        $sql       = 'INSERT INTO users (status, username, firstname, name, avatar, pass, email, date_birth, date_register)
+       VALUES (:status, :username, :firstname, :name, :avatar, :pass, :email, :date_birth, NOW())';
+        $this->dbConnect($sql, array(
             ':status' => htmlspecialchars(0),
             ':username' => htmlspecialchars($username),
             ':firstname' => htmlspecialchars($firstname),
@@ -83,14 +89,14 @@ class User extends Model
             ':date_birth' => htmlspecialchars('1950-01-01 00:00:00')
         ));
         $messages['confirmation'] = 'Votre compte a bien été créé !';
-        header('Location: useradd');
+        header('Location: '. BASE_URL. 'useradd');
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: useradd');
+            header('Location: '. BASE_URL. 'useradd');
             exit;
         }
-
     }
+
 
     // READ
 
@@ -110,9 +116,9 @@ class User extends Model
     // Afficher la liste complète de tous les users en Admin :
     public function selectUsers($users_current_page)
     {
-        $id_admin = ID_ADMIN;
+        $id_admin    = ID_ADMIN;
         $users_start = (int) (($users_current_page - 1) * $this->number_of_users_by_page);
-        $sql            = 'SELECT id_user, firstname, name, avatar, email,
+        $sql         = 'SELECT id_user, firstname, name, avatar, email,
     DATE_FORMAT(date_register, \'%d/%m/%Y à %Hh%i\') AS date_register_fr
     FROM users
     WHERE bin != "yes" AND id_user != :id_admin
@@ -126,15 +132,15 @@ class User extends Model
     // Afficher la liste complète des users dans la Corbeille en Admin :
     public function selectUsersDeleted($users_deleted_current_page)
     {
-        $users_start = (int) (($users_deleted_current_page - 1) * $this->number_of_users_by_page);
-        $sql            = 'SELECT id_user, firstname, name, avatar, email,
+        $users_start   = (int) (($users_deleted_current_page - 1) * $this->number_of_users_by_page);
+        $sql           = 'SELECT id_user, firstname, name, avatar, email,
     DATE_FORMAT(date_register, \'%d/%m/%Y à %Hh%i\') AS date_register_fr
     FROM users
     WHERE bin = :bin
     ORDER BY date_register DESC LIMIT ' . $users_start . ', ' . $this->number_of_users_by_page . '';
-        $users_deleted       = $this->dbConnect($sql, array(
-          ':bin' => "yes"
-      ));
+        $users_deleted = $this->dbConnect($sql, array(
+            ':bin' => "yes"
+        ));
         return $users_deleted;
     }
 
@@ -143,8 +149,6 @@ class User extends Model
     // Modification d'un utilisateur en front :
     public function changeUser($pass, $email, $firstname, $name, $date_birth)
     {
-        $errors         = array();
-        $messages       = array();
         $identification = $_SESSION['id_user'];
         $pass           = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
         $email          = !empty($_POST['email']) ? trim($_POST['email']) : null;
@@ -158,13 +162,12 @@ class User extends Model
         }
 
         // Ensuite on vérifie si les 2 mots de passe sont identiques :
-        if ($_POST['pass'] != $_POST['passcheck'])
-            {
+        if ($_POST['pass'] != $_POST['passcheck']) {
             $errors['passdifferent'] = 'Désolé, les mots de passe ne correspondent pas !<br>';
         }
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../user/useredit'));
+            die(header('Location: '. BASE_URL. 'user/useredit'));
             exit;
         }
         // Maintenant, on hashe le mot de passe :
@@ -188,7 +191,7 @@ class User extends Model
         $messages['confirmation'] = 'Votre compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../user');
+            header('Location: '. BASE_URL. 'user');
             exit;
         }
     }
@@ -196,8 +199,6 @@ class User extends Model
     // Modification d'un utilisateur en Admin :
     public function changeUserFromAdmin($id_user, $status, $firstname, $name, $email, $date_birth)
     {
-        $errors         = array();
-        $messages       = array();
         $identification = $id_user;
         $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
         $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
@@ -212,7 +213,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../userread/'.$id_user));
+            die(header('Location: '. BASE_ADMIN_URL. 'userread/' . $id_user));
             exit;
         }
 
@@ -232,7 +233,7 @@ class User extends Model
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../userread/'.$id_user);
+            header('Location: '. BASE_ADMIN_URL. 'userread/' . $id_user);
             exit;
         }
     }
@@ -240,8 +241,6 @@ class User extends Model
     // Modification d'un utilisateur en front :
     public function changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $date_birth)
     {
-        $errors         = array();
-        $messages       = array();
         $identification = $id_user;
         $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
         $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
@@ -256,7 +255,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../user/'.$id_user));
+            die(header('Location: '. BASE_ADMIN_URL. 'userread/' . $id_user));
             exit;
         }
 
@@ -277,16 +276,14 @@ class User extends Model
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../userread/'.$id_user);
+            header('Location: '. BASE_ADMIN_URL. 'userread/' . $id_user);
             exit;
         }
     }
 
-    // Modification d'un identifiant :
-    public function changeUsername($username)
+    // Vérification de disponibilité du username :
+    public function checkUsername($username)
     {
-        $errors         = array();
-        $messages       = array();
         $identification = $_SESSION['id_user'];
         $username       = !empty($_POST['username']) ? trim($_POST['username']) : null;
         $sql            = 'SELECT COUNT(id_user) AS num FROM users WHERE username = :username';
@@ -305,58 +302,67 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ../user/useredit#username'));
-
+            die(header('Location: '. BASE_URL. 'user/useredit#username'));
             exit;
         }
-        $sql2                     = 'UPDATE users
-         SET username= :username, date_update = NOW()
-         WHERE id_user= :id_user';
-        $userupdate               = $this->dbConnect($sql2, array(
+        $this->changeUsername($username);
+    }
+
+    // Modification d'un identifiant :
+    public function changeUsername($username)
+    {
+        $identification = $_SESSION['id_user'];
+
+        $sql        = 'UPDATE users
+     SET username= :username, date_update = NOW()
+     WHERE id_user= :id_user';
+        $userupdate = $this->dbConnect($sql, array(
             ':id_user' => htmlspecialchars($identification),
             ':username' => htmlspecialchars($username)
         ));
+
         $messages['confirmation'] = 'Votre identifiant a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../user/useredit#username');
+            header('Location: '. BASE_URL. 'user/useredit#username');
             exit;
         }
     }
 
+
     // Modification d'un avatar :
     public function changeAvatar($avatarname)
     {
-        $id_user                  = $_SESSION['id_user'];
-        $sql                      = 'UPDATE users
+        $id_user = $_SESSION['id_user'];
+        $sql     = 'UPDATE users
            SET avatar = :avatar,
            date_update = NOW()
            WHERE id_user = :id_user';
-        $avatarCreation           = $this->dbConnect($sql, array(
+        $this->dbConnect($sql, array(
             ':avatar' => htmlspecialchars($avatarname),
             ':id_user' => htmlspecialchars($id_user)
         ));
         $messages['confirmation'] = 'Votre avatar a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../user');
+            header('Location: '. BASE_URL. 'user');
             exit;
         }
     }
 
-    // Restaurer un user depuis la Corbeille
+    // Restaurer un user depuis la Corbeille :
     public function restoreUser($id_user)
     {
         $bin                      = "no";
         $sql                      = 'UPDATE users SET bin = :bin, date_update = NOW() WHERE id_user = :id';
-        $restore               = $this->dbConnect($sql, array(
+        $restore                  = $this->dbConnect($sql, array(
             ':id' => $id_user,
             ':bin' => $bin
         ));
         $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été restauré !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../usersbin');
+            header('Location: '. BASE_ADMIN_URL. 'usersbin');
             exit;
         }
     }
@@ -364,19 +370,19 @@ class User extends Model
 
     // DELETE
 
-    // Déplacement d'un user vers la Corbeille
+    // Déplacement d'un user vers la Corbeille :
     public function moveUser($id_user)
     {
         $bin                      = "yes";
         $sql                      = 'UPDATE users SET bin = :bin, date_update = NOW() WHERE id_user = :id';
-        $move                     = $this->dbConnect($sql, array(
+        $this->dbConnect($sql, array(
             ':id' => $id_user,
             ':bin' => $bin
         ));
         $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été déplacé dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../users');
+            header('Location: '. BASE_ADMIN_URL. 'users');
             exit;
         }
     }
@@ -384,16 +390,16 @@ class User extends Model
     // Suppression définitive d'un user :
     public function eraseUser($id_user)
     {
-      $sql = 'DELETE FROM users WHERE id_user = ' . (int) $id_user;
-      $req = $this->dbConnect($sql);
-      $req->execute();
-      // Ici on affiche le message de confirmation :
-      $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été supprimé !';
-      if (!empty($messages)) {
-          $_SESSION['messages'] = $messages;
-          header('Location:' . BASE_ADMIN_URL. 'users');
-          exit;
-      }
+        $sql = 'DELETE FROM users WHERE id_user = ' . (int) $id_user;
+        $req = $this->dbConnect($sql);
+        $req->execute();
+        // Ici on affiche le message de confirmation :
+        $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été supprimé !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location:' . BASE_ADMIN_URL . 'users');
+            exit;
+        }
     }
 
     // Vidage de la Corbeille :
@@ -409,149 +415,9 @@ class User extends Model
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'usersbin');
+            header('Location:' . BASE_ADMIN_URL . 'usersbin');
             exit;
         }
     }
-
-
-    // CONNEXION ET DECONNEXION
-
-    // Connexion d'un user :
-    public function logInUser($username, $passwordAttempt)
-    {
-        if (isset($_POST['login'])) {
-            // On récupère les valeurs saisies dans le formulaire de login :
-            $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
-            $passwordAttempt = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
-
-            // On prépare une requête pour aller chercher le username dans la BBD :
-            $sql    = 'SELECT id_user, username, pass FROM users WHERE username = :username';
-            $req    = $this->dbConnect($sql, array(
-                'username' => $username
-            ));
-            $result = $req->fetch();
-
-            // On vérifie si le username existe : .
-            if (!$result) { // si le resultat est False
-
-                // on indique à l'utilisateur qu'il s'est trompé de username ou de mot de passe.
-                // on ne précise pas qu'il s'agit du username qui est faux, pour raison de sécurité :
-                $_SESSION['errors']['loginfailed'] = 'Identifiant ou Mot de passe incorrect !';
-                header('Location: ../login/');
-
-            } else {
-
-                // Sinon, si le username a bien été trouvé, il faut vérifier que le mot de passe est correct.
-                // On récupère le mot de passe hashé dans la base, et on le déchiffre pour le comparer :
-
-                $validPassword = password_verify($passwordAttempt, $result['pass']);
-
-
-                // Si $validPassword est True (donc correct), alors la connexion est réussie :
-                if ($validPassword) {
-
-                    // On déclenche alors l'ouverture d'une session :
-                    $_SESSION['id_user'] = $result['id_user'];
-                    if (!empty($_POST['rememberme'])) {
-
-                        setcookie("username", $_POST['username'], time() + 365 * 24 * 3600, null, null, false, true);
-                        setcookie("pass", $_POST['pass'], time() + 365 * 24 * 3600, null, null, false, true);
-                    } else {
-                        if (ISSET($_COOKIE['username'])) {
-                            setcookie("username", "");
-                        }
-                        if (ISSET($_COOKIE['pass'])) {
-                            setcookie("pass", "");
-                        }
-                    }
-
-                    // On redirige l'utilisateur vers la page protégée :
-                    header('Location: ../user');
-                    exit;
-
-                } else {
-                    // Dans le cas où le mot de passe est faux, on envoie un message :
-                    $_SESSION['errors']['loginfailed'] = 'Identifiant ou Mot de passe incorrect !';
-                    header('Location: ../login/');
-                }
-            }
-        }
-    } // fin de logInUser
-
-
-    // Connexion d'un Admin :
-    public function logInUserAdmin($username, $passwordAttempt)
-    {
-        if (isset($_POST['login'])) {
-
-            // On récupère les valeurs saisies dans le formulaire de login :
-            $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
-            $passwordAttempt = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
-
-            // On prépare une requête pour aller chercher le username dans la BBD :
-            $sql      = 'SELECT id_user, status, username, pass FROM users WHERE username = :username';
-            $req      = $this->dbConnect($sql, array(
-                'username' => $username
-            ));
-            $result = $req->fetch();
-
-            // On récupère le mot de passe hashé dans la base, et on le déchiffre pour le comparer :
-            $validPassword = password_verify($passwordAttempt, $result['pass']);
-
-            // On vérifie si l'utilisateur est un admin :
-            $validAdmin    = $result['status'] == 5;
-
-            // On vérifie si le username existe : .
-            if (!$result) {
-                // on indique à l'utilisateur qu'il s'est trompé de username ou de mot de passe.
-                // on ne précise pas qu'il s'agit du username qui est faux, pour raison de sécurité :
-                $errors['errors'] = 'Identifiant ou Mot de passe incorrect !';
-                $_SESSION['errors'] = $errors;
-                header('Location:' . BASE_ADMIN_URL);
-            }
-            else if (!$validPassword) {
-              $errors['errors'] = 'Identifiant ou Mot de passe incorrect !';
-              $_SESSION['errors'] = $errors;
-              header('Location:' . BASE_ADMIN_URL);
-            }
-            else if (!$validAdmin) {
-              $errors['errors'] = 'Vous n\'êtes pas autorisés à accéder à l\'administration !';
-              $_SESSION['errors'] = $errors;
-              header('Location:' . BASE_ADMIN_URL);
-            }
-
-                // Si les 3 vérifications sont bonnes, alors la connexion est réussie :
-                else  if ($result && $validPassword && $validAdmin) {
-
-                    // On déclenche alors l'ouverture d'une session :
-                    $_SESSION['id_user_admin'] = $result['id_user'];
-                    if (!empty($_POST['rememberme'])) {
-
-                        setcookie("username", $_POST['username'], time() + 365 * 24 * 3600, null, null, false, true);
-                        setcookie("pass", $_POST['pass'], time() + 365 * 24 * 3600, null, null, false, true);
-                    } else {
-                        if (ISSET($_COOKIE['username'])) {
-                            setcookie("username", "");
-                        }
-                        if (ISSET($_COOKIE['pass'])) {
-                            setcookie("pass", "");
-                        }
-                    }
-
-                    // On redirige l'utilisateur vers la page protégée :
-                    header('Location:' . BASE_ADMIN_URL. 'dashboard');
-                    exit;
-
-                } else {
-                    // Dans le cas où le mot de passe est faux, on envoie un message :
-                    $errors['errors'] = 'Vous n\'êtes pas autorisés à accéder à l\'administration !';
-                    $_SESSION['errors'] = $errors;
-
-                    header('Location:' . BASE_ADMIN_URL);
-                }
-            }
-        }
-
 
 }

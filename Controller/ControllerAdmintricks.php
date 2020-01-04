@@ -70,7 +70,7 @@ class ControllerAdmintricks extends Controller
                 $errors['errors'] = 'Veuillez remplir tous les champs';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: extendedcardadditem');
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardadditem');
                     exit;
                 }
             }
@@ -83,21 +83,21 @@ class ControllerAdmintricks extends Controller
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: extendedcardadditem');
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardadditem');
                     exit;
                 }
             } else if (($_FILES["image"]["size"] > 1000000)) {
                 $errors['errors'] = 'Le fichier est trop lourd.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: extendedcardadditem');
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardadditem');
                     exit;
                 }
             } else if ($width < "800" && $height < "600") {
                 $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: extendedcardadditem');
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardadditem');
                     exit;
                 }
             }
@@ -219,21 +219,21 @@ class ControllerAdmintricks extends Controller
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../extendedcardread/' . $id_item);
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
                     exit;
                 }
             } else if (($_FILES["image"]["size"] > 1000000)) {
                 $errors['errors'] = 'Le fichier est trop lourd.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../extendedcardread/' . $id_item);
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
                     exit;
                 }
             } else if ($width < "800" && $height < "600") {
                 $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../extendedcardread/' . $id_item);
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
                     exit;
                 }
             } else {
@@ -474,10 +474,11 @@ class ControllerAdmintricks extends Controller
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé définitivement!';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../comments');
+            header('Location: '. BASE_ADMIN_URL. 'comments');
             exit;
         }
     }
+
 
     // Suppression d'un commentaire signalé :
     public function removecommentreported()
@@ -488,7 +489,7 @@ class ControllerAdmintricks extends Controller
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../commentsreported');
+            header('Location: '. BASE_ADMIN_URL. 'commentsreported');
             exit;
         }
     }
@@ -584,21 +585,21 @@ class ControllerAdmintricks extends Controller
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../userread/' . $id_user);
+                    header('Location: '. BASE_ADMIN_URL. 'userread/' . $id_user);
                     exit;
                 }
             } else if (($_FILES["avatar"]["size"] > 1000000)) {
                 $errors['errors'] = 'Le fichier est trop lourd.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../userread/' . $id_user);
+                    header('Location: '. BASE_ADMIN_URL. 'userread/' . $id_user);
                     exit;
                 }
             } else if ($width < "800" && $height < "600") {
                 $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../userread/' . $id_user);
+                    header('Location: '. BASE_ADMIN_URL. 'userread/' . $id_user);
                     exit;
                 }
             } else {
@@ -610,7 +611,7 @@ class ControllerAdmintricks extends Controller
           $errors['errors'] = 'Merci de renseigner tous les champs !';
           if (!empty($errors)) {
               $_SESSION['errors'] = $errors;
-              header('Location: ../userread/' . $id_user);
+              header('Location: '. BASE_ADMIN_URL. 'userread/' . $id_user);
               exit;
           }
 

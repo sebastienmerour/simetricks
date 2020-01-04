@@ -24,10 +24,10 @@ class ControllerItem extends Controller
      */
     public function __construct()
     {
-        $this->item    = new Item();
-        $this->comment = new Comment();
-        $this->user    = new User();
-        $this->calculate    = new Calculate();
+        $this->item      = new Item();
+        $this->comment   = new Comment();
+        $this->user      = new User();
+        $this->calculate = new Calculate();
     }
 
     // ITEMS //
@@ -120,20 +120,20 @@ class ControllerItem extends Controller
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
                         $_SESSION['errors'] = $errors;
-                        header('Location: ../item/' . $id_item . '/1/#addcomment');
+                        header('Location: '. BASE_URL. 'item/' . $id_item . '/1/#addcomment');
                         exit;
                     }
                 }
             } else {
                 $errors['errors']   = 'Merci de cocher la case reCAPTCHA.';
                 $_SESSION['errors'] = $errors;
-                header('Location: ../item/' . $id_item . '/1/#addcomment');
+                header('Location: '. BASE_URL. 'item/' . $id_item . '/1/#addcomment');
                 exit;
             }
         } else {
             $errors['errors']   = 'Merci de renseigner tous les champs';
             $_SESSION['errors'] = $errors;
-            header('Location: ../item/' . $id_item . '/1/#addcomment');
+            header('Location: '. BASE_URL. 'item/' . $id_item . '/1/#addcomment');
             exit;
         }
     }
@@ -160,20 +160,20 @@ class ControllerItem extends Controller
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
                         $_SESSION['errors'] = $errors;
-                        header('Location: ../item/indexuser/' . $id_item . '/1/#addcomment');
+                        header('Location: '. BASE_URL. 'item/indexuser/' . $id_item . '/1/#addcomment');
                         exit;
                     }
                 }
             } else {
                 $errors['errors']   = 'Merci de cocher la case reCAPTCHA.';
                 $_SESSION['errors'] = $errors;
-                header('Location: ../item/indexuser/' . $id_item . '/1/#addcomment');
+                header('Location: '. BASE_URL. 'item/indexuser/' . $id_item . '/1/#addcomment');
                 exit;
             }
         } else {
             $errors['errors']   = 'Merci de renseigner tous les champs';
             $_SESSION['errors'] = $errors;
-            header('Location: ../item/indexuser/' . $id_item . '/1/#addcomment');
+            header('Location: '. BASE_URL. 'item/indexuser/' . $id_item . '/1/#addcomment');
             exit;
         }
     }

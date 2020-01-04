@@ -1,5 +1,6 @@
 <?php
 require_once 'Framework/Controller.php';
+require_once 'Model/Login.php';
 require_once 'Model/User.php';
 require_once 'Model/Item.php';
 require_once 'Model/Calculate.php';
@@ -13,14 +14,16 @@ require_once 'Model/Calculate.php';
 
 class ControllerLogin extends Controller
 {
+    private $login;
     private $user;
     private $item;
     private $calculate;
 
     public function __construct()
     {
-        $this->user = new User();
-        $this->item = new Item();
+        $this->login     = new Login();
+        $this->user      = new User();
+        $this->item      = new Item();
         $this->calculate = new Calculate();
     }
 
@@ -28,8 +31,8 @@ class ControllerLogin extends Controller
     public function index()
     {
         $number_of_items       = $this->calculate->getTotalOfItems();
-        $total_comments_count     = $this->calculate->getTotalOfComments();
-        $total_users_count        = $this->calculate->getTotalOfUsers();
+        $total_comments_count  = $this->calculate->getTotalOfComments();
+        $total_users_count     = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
@@ -45,7 +48,7 @@ class ControllerLogin extends Controller
         if ($this->request->ifParameter("username") && $this->request->ifParameter("pass")) {
             $username        = $this->request->getParameter("username");
             $passwordAttempt = $this->request->getParameter("pass");
-            $this->user->logInUser($username, $passwordAttempt);
+            $this->login->logInUser($username, $passwordAttempt);
         } else
             throw new Exception("Action impossible : identifiant ou mot de passe non défini");
     }
@@ -56,7 +59,7 @@ class ControllerLogin extends Controller
         if ($this->request->ifParameter("username") && $this->request->ifParameter("pass")) {
             $username        = $this->request->getParameter("username");
             $passwordAttempt = $this->request->getParameter("pass");
-            $this->user->logInUserAdmin($username, $passwordAttempt);
+            $this->login->logInUserAdmin($username, $passwordAttempt);
         } else
             throw new Exception("Action impossible : identifiant ou mot de passe non défini");
     }
@@ -64,9 +67,9 @@ class ControllerLogin extends Controller
     // Appui sur le bouton Deconnexion d'un user :
     public function logout()
     {
-        $number_of_items       = $this->calculate->getTotalOfItems();
-        $total_comments_count     = $this->calculate->getTotalOfComments();
-        $total_users_count        = $this->calculate->getTotalOfUsers();
+        $number_of_items      = $this->calculate->getTotalOfItems();
+        $total_comments_count = $this->calculate->getTotalOfComments();
+        $total_users_count    = $this->calculate->getTotalOfUsers();
         if (ISSET($_SESSION['id_user'])) {
             $this->request->getSession()->destroy();
             // Suppression des cookies de connexion automatique
@@ -99,9 +102,9 @@ class ControllerLogin extends Controller
     // On invite un utilisateur non connecté à se connecter :
     public function invite()
     {
-        $number_of_items       = $this->calculate->getTotalOfItems();
-        $total_comments_count     = $this->calculate->getTotalOfComments();
-        $total_users_count        = $this->calculate->getTotalOfUsers();
+        $number_of_items      = $this->calculate->getTotalOfItems();
+        $total_comments_count = $this->calculate->getTotalOfComments();
+        $total_users_count    = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'total_comments_count' => $total_comments_count,
