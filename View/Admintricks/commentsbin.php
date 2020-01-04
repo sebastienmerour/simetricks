@@ -5,7 +5,7 @@
 	else {
 ?>
 <?php $this->title =  WEBSITE_NAME . ' |  Panneau d\'Administration'; ?>
-<?php require('allcomments_menu.php'); ?>
+<?php require('comments_menu.php'); ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
   <h2 id="commentsbin">Corbeille</h2>
 	<?php
@@ -51,7 +51,7 @@
   ?>
     </tbody>
   </table>
-	<?php require('allcommentsbin_pagination.php');?>
+	<?php require('commentsbin_pagination.php');?>
 	<div class="d-flex flex-row-reverse btn-toolbar mb-3 mb-md-0">
 		<div class="btn-group mr-2">
 			<a href="<?= BASE_ADMIN_URL; ?>emptycomments" role="button" class="float-right btn btn-sm btn-dark">Vider la Corbeille</a>

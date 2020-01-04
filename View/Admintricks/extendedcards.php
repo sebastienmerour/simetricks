@@ -8,7 +8,7 @@
 <?php require('extendedcards_menu.php'); ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="table-responsive">
-  <h2 id="lastitems">Cards Publiées</h2>
+  <h2 id="lastitems">Extended Cards Publiées</h2>
   <div class="table-responsive">
   <table class="table table-striped table-sm">
     <thead>
@@ -29,12 +29,12 @@
         <td><h6 class="mt-2 text-left"><?= $this->clean($item['date_creation_fr']); ?></h6></td>
         <td><h6 class="mt-2 text-left"><a target="_blank" href="<?= BASE_ADMIN_URL.'userread/' . $this->clean($item['id_user']) ?>">
         <?= $this->clean($item['firstname']); ?>&nbsp;<?= $this->clean($item['name']);?></a></span></td>
-				<td><a href="<?= BASE_ADMIN_URL.'readitem/' . $this->clean($item['id'])?>/1">
+				<td><a href="<?= BASE_ADMIN_URL.'extendedcardread/' . $this->clean($item['id'])?>/1">
 				<img width="125px" src="<?= BASE_URL. 'public/images/item_images/' .$this->clean($item['image'])?>" class="figure-img img-fluid rounded-right"
 				alt="<?= $this->clean($item['title']) ?>" title="<?= $this->clean($item['title']) ?>"></a></td>
-        <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'readitem/' . $this->clean($item['id'])?>/1">
+        <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'extendedcardread/' . $this->clean($item['id'])?>/1">
 				<h6 class="mt-2 text-left"><?= $this->clean($item['title']); ?></h6></a></span></td>
-        <td><a href="<?= BASE_ADMIN_URL. 'readitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
+        <td><a href="<?= BASE_ADMIN_URL. 'extendedcardread/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
         <td><a href="<?= BASE_ADMIN_URL. 'moveitemtobin/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
       </tr>
       <?php

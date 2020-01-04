@@ -5,9 +5,9 @@
 	else {
 ?>
 <?php $this->title =  WEBSITE_NAME . ' |  Panneau d\'Administration'; ?>
-<?php require('allcomments_menu.php'); ?>
+<?php require('comments_menu.php'); ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
-<h2 id="allcomments">Commentaires Publiés</h2>
+<h2 id="comments">Commentaires Publiés</h2>
 <div class="table-responsive">
   <table class="table table-striped table-sm">
     <thead>
@@ -56,7 +56,7 @@ if ($counter_comments < 1) {
   require __DIR__ . '/../view/errors/comments_not_found.php';
 }
 else {
-	require('allcomments_pagination.php');}
+	require('comments_pagination.php');}
 ?>
 </div>
 <?php

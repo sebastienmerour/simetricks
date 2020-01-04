@@ -27,13 +27,13 @@
       </li>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>allcomments">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>comments">
           <span data-feather="message-square"></span>
           Commentaires
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>tomoderate">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>commentsreported">
           <span data-feather="alert-triangle"></span>
           Commentaires signalés
         </a>

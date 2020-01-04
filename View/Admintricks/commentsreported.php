@@ -5,9 +5,9 @@
 	else {
 ?>
 <?php $this->title =  WEBSITE_NAME . ' | Panneau d\'Administration'; ?>
-<?php require('allcomments_menu.php'); ?>
+<?php require('comments_menu.php'); ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
-<h2 id="tomoderate">Commentaires signalés</h2>
+<h2 id="commentsreported">Commentaires signalés</h2>
 	<div class="table-responsive">
 	  <table class="table table-striped table-sm">
 	    <thead>
@@ -56,7 +56,7 @@
 	  require __DIR__ . '/../view/errors/comments_not_found.php';
 	}
 	else {
-	require('tomoderate_pagination.php');}
+	require('commentsreported_pagination.php');}
 	?>
 </div>
 <?php

@@ -173,7 +173,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readitem/' . $id_item);
+            header('Location: ../extendedcardread/' . $id_item);
             exit;
         }
     }
@@ -202,7 +202,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! Votre article a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../readitem/' . $id_item);
+            header('Location: ../extendedcardread/' . $id_item);
             exit;
         }
     }

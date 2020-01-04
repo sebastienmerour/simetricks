@@ -278,7 +278,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été approuvé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../tomoderate');
+            header('Location: ../commentsreported');
             exit;
         }
     }
@@ -295,7 +295,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été restauré !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../allcommentsbin');
+            header('Location: ../commentsbin');
             exit;
         }
     }
@@ -315,7 +315,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le Commentaire a été déplacé dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../allcomments');
+            header('Location: ../comments');
             exit;
         }
     }
@@ -341,7 +341,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'allcommentsbin');
+            header('Location:' . BASE_ADMIN_URL. 'commentsbin');
             exit;
         }
     }

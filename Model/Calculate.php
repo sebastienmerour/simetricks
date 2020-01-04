@@ -80,16 +80,14 @@ class Calculate extends Model
   // Calculer le nombre total de commentaires :
   public function getTotalOfComments()
   {
-      $sql                  = 'SELECT COUNT(id) as counter FROM comments';
+      $sql                  = 'SELECT COUNT(id) as counter FROM comments
+      WHERE bin != "yes"
+      ';
       $comments             = $this->dbConnect($sql);
       $this->comments_count = $comments->fetch(\PDO::FETCH_ASSOC);
       $total_comments_count = $this->comments_count['counter'];
       return $total_comments_count;
   }
-
-
-  // COMMENTAIRES
-  // FRONT
 
   // Calculer le nombre de Commentaires d'un article en particulier :
   public function countComments($id_item)

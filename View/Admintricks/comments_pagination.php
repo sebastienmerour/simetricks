@@ -6,7 +6,7 @@
   {
   ?>
   <li>
-      <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>allcomments/<?= $comments_previous_page; ?>" aria-label="Previous">
+      <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>comments/<?= $comments_previous_page; ?>" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>&nbsp;
   </li>
@@ -23,7 +23,7 @@
       }
       else {
 
-        echo '><a class="btn btn-outline-primary" href="'. BASE_ADMIN_URL .'allcomments/' . $i . '">' . $i . '</a>&nbsp;</li>';
+        echo '><a class="btn btn-outline-primary" href="'. BASE_ADMIN_URL .'comments/' . $i . '">' . $i . '</a>&nbsp;</li>';
       }
   }
 
@@ -31,7 +31,7 @@
   {
   ?>
   <li>
-      <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>allcomments/<?= $comments_next_page; ?>" aria-label="Next">
+      <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>comments/<?= $comments_next_page; ?>" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
   </li>

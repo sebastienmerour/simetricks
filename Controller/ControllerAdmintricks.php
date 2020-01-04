@@ -162,7 +162,7 @@ class ControllerAdmintricks extends Controller
     }
 
     // Affichage d'un article seul :
-    public function readitem()
+    public function extendedcardread()
     {
 
         $id_item = $this->request->getParameter("id");
@@ -219,21 +219,21 @@ class ControllerAdmintricks extends Controller
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readitem/' . $id_item);
+                    header('Location: ../extendedcardread/' . $id_item);
                     exit;
                 }
             } else if (($_FILES["image"]["size"] > 1000000)) {
                 $errors['errors'] = 'Le fichier est trop lourd.';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readitem/' . $id_item);
+                    header('Location: ../extendedcardread/' . $id_item);
                     exit;
                 }
             } else if ($width < "800" && $height < "600") {
                 $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ../readitem/' . $id_item);
+                    header('Location: ../extendedcardread/' . $id_item);
                     exit;
                 }
             } else {
@@ -310,7 +310,7 @@ class ControllerAdmintricks extends Controller
     // COMMENTS
 
     // Affichage des commentaires à modérer :
-    public function tomoderate()
+    public function commentsreported()
     {
       if (null!= $this->request->ifParameter("id"))  {
         $comments_reported_current_page  = $this->request->getParameter("id");
@@ -336,7 +336,7 @@ class ControllerAdmintricks extends Controller
     }
 
     // Affichage de l'ensemble des commentaires :
-    public function allcomments()
+    public function comments()
     {
         if (null!= $this->request->ifParameter("id"))  {
         $comments_current_page    = $this->request->getParameter("id");
@@ -427,7 +427,7 @@ class ControllerAdmintricks extends Controller
     // COMMENTS
 
     // Affichage de la Corbeille des commentaires :
-    public function allcommentsbin()
+    public function commentsbin()
     {
         if (null!= $this->request->ifParameter("id"))  {
         $comments_deleted_current_page    = $this->request->getParameter("id");
@@ -474,7 +474,7 @@ class ControllerAdmintricks extends Controller
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé définitivement!';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../allcomments');
+            header('Location: ../comments');
             exit;
         }
     }
@@ -488,7 +488,7 @@ class ControllerAdmintricks extends Controller
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ../tomoderate');
+            header('Location: ../commentsreported');
             exit;
         }
     }

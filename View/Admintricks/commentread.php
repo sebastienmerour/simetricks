@@ -5,7 +5,7 @@
 	else {
 ?>
 <?php $this->title =  WEBSITE_NAME . ' | Modification d\'un commentaire'; ?>
-<?php require('allcomments_menu.php'); ?>
+<?php require('comments_menu.php'); ?>
 <?php if (empty($comment)) {
 							require __DIR__ . '/../errors/comment_not_found.php';
 			    }
