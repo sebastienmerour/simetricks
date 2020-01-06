@@ -10,7 +10,7 @@
       </div>
       <div class="form-group">
         <input type="password" id="pass" name="pass" placeholder="Mot de passe" class="form-control" value = "<?php if(ISSET($_COOKIE['pass'])){echo $_COOKIE['pass'];}?>" required>
-        <small><a href="#">Mot de passe oublié?</a>
+        <small><a href="<?= BASE_URL; ?>login/forgottenpassword">Mot de passe oublié?</a>
         </small>
       </div>
       <div class="form-group">

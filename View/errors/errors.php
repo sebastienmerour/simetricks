@@ -43,8 +43,15 @@ if (!empty($_SESSION['errors']['email'])) {
    </div>
  <?php
 }
+if (!empty($_SESSION['errors']['invalidlink'])) {
 ?>
-
+<div class="alert alert-danger alert-dismissable">
+   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+   <strong>Erreur !</strong> <?= $_SESSION['errors']['invalidlink']; ?>
+   </div>
+ <?php
+}
+?>
 <?php
 unset($_SESSION['errors']);
 ?>

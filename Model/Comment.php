@@ -58,8 +58,8 @@ class Comment extends Model
     // Afficher la liste des commentaires d'un Article :
     public function getComments($id_item)
     {
-        $comments_start = (int) (($comments_current_page - 1) * $this->number_of_comments_by_page);
-        $sql            = 'SELECT comments.id AS id_comment, comments.id_user AS user_com, comments.author, comments.content,
+      $comments_start = (int) (($comments_current_page - 1) * $this->number_of_comments_by_page);
+      $sql            = 'SELECT comments.id AS id_comment, comments.id_user AS user_com, comments.author, comments.content,
       DATE_FORMAT(comments.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
       DATE_FORMAT(comments.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
       users.id_user, users.firstname AS firstname_com, users.name AS name_com, users.avatar AS avatar_com
@@ -69,17 +69,17 @@ class Comment extends Model
       WHERE id_item = ? AND comments.bin != "yes"
       ORDER BY date_creation
       DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
-        $comments       = $this->dbConnect($sql, array(
+      $comments       = $this->dbConnect($sql, array(
             $id_item
         ));
-        return $comments;
+      return $comments;
     }
 
     // Pagination des commentaires sur un article :
     public function getPaginationComments($id_item, $comments_current_page)
     {
-        $comments_start = (int) (($comments_current_page - 1) * $this->number_of_comments_by_page);
-        $sql            = 'SELECT comments.id AS id_comment, comments.id_user AS user_com, comments.author, comments.content,
+      $comments_start = (int) (($comments_current_page - 1) * $this->number_of_comments_by_page);
+      $sql            = 'SELECT comments.id AS id_comment, comments.id_user AS user_com, comments.author, comments.content,
       DATE_FORMAT(comments.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
       DATE_FORMAT(comments.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
       users.id_user, users.firstname AS firstname_com, users.name AS name_com, users.avatar AS avatar_com
@@ -89,10 +89,10 @@ class Comment extends Model
       WHERE id_item = ? AND comments.bin != "yes"
       ORDER BY date_creation
       DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
-        $comments       = $this->dbConnect($sql, array(
+      $comments       = $this->dbConnect($sql, array(
             $id_item
         ));
-        return $comments;
+      return $comments;
     }
 
     // Affichage d'un commentaire pour le modifier ensuite :
@@ -163,10 +163,10 @@ class Comment extends Model
     ON comments.id_user = users.id_user
     WHERE comments.bin = :bin
     ORDER BY date_creation DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
-        $comments_deleted       = $this->dbConnect($sql, array(
+    $comments_deleted    = $this->dbConnect($sql, array(
           ':bin' => "yes"
       ));
-        return $comments_deleted;
+    return $comments_deleted;
     }
 
 

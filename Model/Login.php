@@ -30,7 +30,7 @@ class Login extends Model
             if (!$result) { // si le resultat est False
 
                 // on indique à l'utilisateur qu'il s'est trompé de username ou de mot de passe.
-                // on ne précise pas qu'il s'agit du username qui est faux, pour raison de sécurité :
+                // on ne précise pas s'il s'agit du username qui est faux, pour raison de sécurité :
                 $_SESSION['errors']['loginfailed'] = 'Identifiant ou Mot de passe incorrect !';
                 header('Location: '. BASE_URL. 'login/');
 

@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/User.php';
+require_once 'Model/Cgu.php';
 require_once 'Model/Item.php';
 require_once 'Model/Calculate.php';
 
@@ -15,12 +16,14 @@ require_once 'Model/Calculate.php';
 class ControllerUser extends Controller
 {
     private $user;
+    private $cgu;
     private $item;
     private $calculate;
 
     public function __construct()
     {
         $this->user      = new User();
+        $this->cgu      = new Cgu();
         $this->item      = new Item();
         $this->calculate = new Calculate();
     }
@@ -61,20 +64,20 @@ class ControllerUser extends Controller
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
                         $_SESSION['errors'] = $errors;
-                        header('Location: '. BASE_URL. 'useradd');
+                        header('Location: ' . BASE_URL . 'user/useradd');
                         exit;
                     }
                 }
             } else {
                 $errors['errors']   = 'Merci de cocher la case reCAPTCHA.';
                 $_SESSION['errors'] = $errors;
-                header('Location: '. BASE_URL. 'useradd');
+                header('Location: ' . BASE_URL . 'user/useradd');
                 exit;
             }
         } else {
             $errors['errors']   = 'Merci de renseigner tous les champs';
             $_SESSION['errors'] = $errors;
-            header('Location: '. BASE_URL. 'useradd');
+            header('Location: ' . BASE_URL . 'user/useradd');
             exit;
         }
 
@@ -217,6 +220,21 @@ class ControllerUser extends Controller
                 $newAvatar = $this->user->changeAvatar($avatarname);
             }
         }
+    }
+
+    // Affichage des CGU :
+    public function cgu()
+    {
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $total_comments_count  = $this->calculate->getTotalOfComments();
+        $total_users_count     = $this->calculate->getTotalOfUsers();
+        $text                  = $this->cgu->conditions();
+        $this->generateView(array(
+            'number_of_items' => $number_of_items,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
+            'text' => $text
+        ));
     }
 
 }

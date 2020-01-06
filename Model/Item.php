@@ -243,12 +243,17 @@ class Item extends Model
         }
     }
 
-    // Suppression définitive d'un article :
+    // Suppression définitive d'un article avec ses commentaires associés.
     public function eraseItem($id_item)
     {
-        $sql = 'DELETE FROM extended_cards WHERE id = ' . (int) $id_item;
+        $sql = 'DELETE extended_cards.*, comments.*
+        FROM extended_cards
+        LEFT JOIN comments
+        ON extended_cards.id = comments.id_item
+        WHERE extended_cards.id = ' . (int) $id_item ;
         $req = $this->dbConnect($sql);
         $req->execute();
+
         // Ici on affiche le message de confirmation :
         $messages['confirmation'] = 'Merci ! Votre article a bien été supprimé !';
         if (!empty($messages)) {
@@ -258,11 +263,15 @@ class Item extends Model
         }
     }
 
-    // Vidage de la Corbeille :
+    // Vidage de la Corbeille des articles avec ses commentaires associés.
     public function emptybin()
     {
         $bin = "yes";
-        $sql = 'DELETE FROM extended_cards WHERE bin = :bin';
+        $sql = 'DELETE extended_cards.*, comments.*
+        FROM extended_cards
+        LEFT JOIN comments
+        ON extended_cards.id = comments.id_item
+        WHERE extended_cards.bin = :bin';
         $req = $this->dbConnect($sql, array(
             ':bin' => $bin
         ));

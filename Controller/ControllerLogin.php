@@ -4,6 +4,7 @@ require_once 'Model/Login.php';
 require_once 'Model/User.php';
 require_once 'Model/Item.php';
 require_once 'Model/Calculate.php';
+require_once 'PHPMailer/PHPMailerAutoload.php';
 
 /**
  * Contrôleur gérant la connexion au site
@@ -18,6 +19,7 @@ class ControllerLogin extends Controller
     private $user;
     private $item;
     private $calculate;
+    private $mail;
 
     public function __construct()
     {
@@ -25,6 +27,7 @@ class ControllerLogin extends Controller
         $this->user      = new User();
         $this->item      = new Item();
         $this->calculate = new Calculate();
+        $this->mail      = new PHPMailer();
     }
 
     // Affichage de la page de connexion :
@@ -122,6 +125,181 @@ class ControllerLogin extends Controller
     public function admininvite()
     {
         $this->generateadminView();
+    }
+
+    // Affichage de la page Forgotten Password :
+    public function forgottenpassword()
+    {
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $total_comments_count  = $this->calculate->getTotalOfComments();
+        $total_users_count     = $this->calculate->getTotalOfUsers();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $this->generateView(array(
+            'number_of_items' => $number_of_items,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
+            'number_of_items_pages' => $number_of_items_pages
+        ));
+    }
+
+    // Processus de Connexion d'un user :
+    public function generatepassword()
+    {
+        if ($this->request->ifParameter("username")) {
+            $username  = $this->request->getParameter("username");
+            $email     = $this->user->checkUsernameReset($username);
+            $random    = rand(999, 99999);
+            // autre option : $random = 2418*2+$username
+            $key       = password_hash($random, PASSWORD_DEFAULT, array(
+                "cost" => 12
+            ));
+            //$key = password_hash($random, PASSWORD_DEFAULT);
+            $expformat = mktime(date("H"), date("i"), date("s"), date("m"), date("d") + 1, date("Y"));
+            $expdate   = date("Y-m-d H:i:s", $expformat);
+            $this->user->insertResetTemp($email, $key, $expdate);
+            $output = '<p>Cher utilisateur,</p>';
+            $output .= '<p>Pour ré-initialiser ton mot de passe, clique sur le lien ci-dessous :</p>';
+            $output .= '<p><a href="' . DOMAIN_NAME . 'login/resetpassword/?key=' . $key . '&email=' . $email . '&username=' . $username . '" target="_blank">
+            Reset</a></p>';
+            $output .= '<p>Ce lien expire au bout de 24H pour des raisons de sécurité.</p>';
+            $output .= '<p>Si vous n\'êtes pas à l\'origine de la réception de cet e-mail, n\'en tenez
+            pas compte. Votre mot de passe ne sera pas ré-initialisé.
+            Cependant, nous vous conseillons de vous connecter à votre compte et
+            de modifier votre mot de passe, car il se peut que quelqu\'un tente
+            de deviner votre mot de passe.</p>';
+            $output .= '<p>Merci,</p>';
+            $output .= '<p>' . WEBSITE_NAME . '</p>';
+            $body                = $output;
+            $subject             = "Ré-initialisation de mot de passe - Simetricks.com";
+            $email_to            = $email;
+            $fromserver          = WEBMASTER_EMAIL;
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->IsSMTP();
+            $this->mail->Host     = "smtp.mailtrap.io"; // Enter your host here
+            $this->mail->SMTPAuth = true;
+            $this->mail->Username = "e2ba656157aa9b"; // Enter your email here
+            $this->mail->Password = "b48f6403df97b3"; //Enter your password here
+            $this->mail->Port     = 25;
+            $this->mail->IsHTML(true);
+            $this->mail->From     = "noreply@simetricks.com";
+            $this->mail->FromName = "Simetricks.com";
+            $this->mail->Sender   = $fromserver; // indicates ReturnPath header
+            $this->mail->Subject  = $subject;
+            $this->mail->Body     = $body;
+            $this->mail->AddAddress($email_to);
+            if (!$this->mail->Send()) {
+                $errors['errors']   = $this->mail->ErrorInfo;
+                $_SESSION['errors'] = $errors;
+                header('Location: ' . BASE_URL . 'login/forgottenpassword');
+                exit;
+            } else {
+                $messages['confirmation'] = 'Un e-mail vous a été envoyé <br>
+              avec les instructions nécessaires<br>
+              pour ré-initialiser votre mot de passe.';
+                $_SESSION['messages']     = $messages;
+                header('Location: ' . BASE_URL . 'login/forgottenpassword');
+                exit;
+            }
+        } else
+            throw new Exception("Action impossible : identifiant non défini");
+    }
+
+
+    // Affichage de la page Reset Password :
+    public function resetpassword()
+    {
+      //if (isset($_GET["key"]) && isset($_GET["email"]) && isset($_GET["action"])
+      //&& isset($_GET["username"])
+      //&& ($_GET["action"]=="reset")){
+      $key = $_GET["key"];
+      $email = $_GET["email"];
+      $username = $_GET["username"];
+      $current_date = date("Y-m-d H:i:s");
+      $this->user->checkResetLink($key, $email, $username, $current_date);
+      //}
+      //else {
+      //      die(header('Location:' . BASE_URL.'login'));
+      //      exit;
+        //}
+    }
+
+    // Affichage de la page Reset Password :
+    public function createnewpassword()
+    {
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $total_comments_count  = $this->calculate->getTotalOfComments();
+        $total_users_count     = $this->calculate->getTotalOfUsers();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $this->generateView(array(
+            'number_of_items' => $number_of_items,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
+            'number_of_items_pages' => $number_of_items_pages
+        ));
+    }
+
+
+    // Affichage de la page Reset Password :
+    public function validnewpassword()
+    {
+        $number_of_items       = $this->calculate->getTotalOfItems();
+        $total_comments_count  = $this->calculate->getTotalOfComments();
+        $total_users_count     = $this->calculate->getTotalOfUsers();
+        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        if (isset($_POST["email"]) && isset($_POST["username"])) {
+
+            if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+                $secretKey      = RECAPTCHA_SECRET_KEY;
+                $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $_POST['g-recaptcha-response']);
+                $responseData   = json_decode($verifyResponse);
+                $email          = $_POST["email"];
+                $username       = $_POST["username"];
+                $current_date   = date("Y-m-d H:i:s");
+                $pass           = $this->request->getParameter("pass");
+                if ($responseData->success) {
+                    // Ensuite on vérifie si les 2 mots de passe sont identiques :
+                    if ($_POST['pass'] != $_POST['passcheck']) {
+                        $errors['passdifferent'] = 'Désolé, les mots de passe ne correspondent pas !<br>';
+                    }
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        die(header('Location: ' . BASE_URL . 'login/createnewpassword'));
+                        exit;
+                    }
+                    // Maintenant, on hasshe le mot de passe :
+                    $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array(
+                        "cost" => 12
+                    ));
+                    // OK, tout est correct, on peut alors insérer le nouveau mot de passe :
+                    $this->user->updatePassword($username, $passwordHash);
+                    $this->user->deleteToken($email);
+
+                } else {
+                    $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_URL . 'login/createnewpassword');
+                        exit;
+                    }
+                }
+            } else {
+                $errors['errors']   = 'Merci de cocher la case reCAPTCHA.';
+                $_SESSION['errors'] = $errors;
+                header('Location: ' . BASE_URL . 'login/createnewpassword');
+                exit;
+            }
+        } else {
+            $errors['errors']   = 'Merci de renseigner tous les champs';
+            $_SESSION['errors'] = $errors;
+            header('Location: ' . BASE_URL . 'login/createnewpassword');
+            exit;
+        }
+        $this->generateView(array(
+            'number_of_items' => $number_of_items,
+            'total_comments_count' => $total_comments_count,
+            'total_users_count' => $total_users_count,
+            'number_of_items_pages' => $number_of_items_pages
+        ));
     }
 
 }
