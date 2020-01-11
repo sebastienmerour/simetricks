@@ -34,8 +34,31 @@
 					</div>
 				</div>
 				<div class="row">
+					<div class="col-6">
+						<label for="sgbdr">SGBDR :</label><br>
+						<input class="form-control" id="sgbdr" name="sgbdr" placeholder="<?= $this->clean($item['sgbdr']);?>" value="<?= $this->clean($item['sgbdr']);?>" type="text"><br>
+					</div>
+					<div class="col-6">
+						<label for="pdm">Part de Marché :</label><br>
+						<input class="form-control" id="pdm" name="pdm" placeholder="<?= $this->clean($item['pdm']);?>" value="<?= $this->clean($item['pdm']);?>" type="text"><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<label for="sgbdr">Langage :</label><br>
+						<input class="form-control" id="langage" name="langage" type="text" placeholder="<?= $this->clean($item['langage']);?>" value="<?= $this->clean($item['langage']);?>"><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<label for="features">Fonctionnalités :</label><br>
+						<textarea rows="5" cols="10" class="form-control" name="features" id="features"
+						placeholder="<?= $this->clean($item['features']);?>"
+						title="Modifiez les fonctionnalités si besoin"><?= $this->clean($item['features']);?></textarea><br>
+					</div>
+				</div>
+				<div class="row">
 				<div class="col-12">
-					<input class="form-control" id="langage" name="langage" type="text" placeholder="<?= $this->clean($item['langage']);?>" value="<?= $this->clean($item['langage']);?>"><br>
 					<label for="links">Liens :</label><br>
 					<textarea class="form-control" id="links" name="links" rows="5">https://</textarea>
 						<hr>

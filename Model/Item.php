@@ -15,20 +15,23 @@ class Item extends Model
     // CREATE
 
     // Création d'un nouvel article sans photo :
-    public function insertItem($id_user, $title, $date_native, $licence, $langage, $links, $content)
+    public function insertItem($id_user, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO extended_cards (id_user, title, date_native, licence, langage, links, content, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, title, date_native, licence, sgbdr, pdm, langage, features, links, content, date_creation)
                       VALUES
-                      (:id_user, :title, :date_native, :licence, :langage, :links, :content, NOW())';
+                      (:id_user, :title, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :links, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
             ':id_user' => $id_user,
             ':title' => $title,
             ':date_native' => $date_native,
             ':licence' => $licence,
+            ':sgbdr' => $sgbdr,
+            ':pdm' => $pdm,
             ':langage' => $langage,
+            ':features' => $features,
             ':links' => $links,
             ':content' => $content
         ));
@@ -46,16 +49,19 @@ class Item extends Model
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO extended_cards (id_user, title, image, date_native, licence, langage, links, content, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, title, image, date_native, licence, sgbdr, pdm, langage, features, links, content, date_creation)
                       VALUES
-                      (:id_user, :title, :image, :date_native, :licence, :langage, :links, :content, NOW())';
+                      (:id_user, :title, :image, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :links, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
             ':id_user' => $id_user,
             ':title' => $title,
             ':image' => $itemimagename,
             ':date_native' => $date_native,
             ':licence' => $licence,
+            ':sgbdr' => $sgbdr,
+            ':pdm' => $pdm,
             ':langage' => $langage,
+            ':features' => $features,
             ':links' => $links,
             ':content' => $content
         ));
@@ -109,7 +115,10 @@ class Item extends Model
         $sql  = 'SELECT extended_cards.id, extended_cards.title AS title, extended_cards.image AS image,
         DATE_FORMAT(extended_cards.date_native, \'%Y-%m-%d\') AS date_native,
         extended_cards.licence AS licence,
+        extended_cards.sgbdr AS sgbdr,
+        extended_cards.pdm AS pdm,
         extended_cards.langage AS langage,
+        extended_cards.features AS features,
         extended_cards.links AS links,
         extended_cards.content AS content,
         DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
@@ -148,16 +157,19 @@ class Item extends Model
     // UPDATE
 
     // Modification d'un article avec photo :
-    public function changeItemImage($title, $itemimagename, $date_native, $licence, $langage, $links, $content, $id_item)
+    public function changeItemImage($title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item)
     {
         $title   = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $date_native = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
         $licence = !empty($_POST['licence']) ? trim($_POST['licence']) : null;
+        $sgbdr = !empty($_POST['sgbdr']) ? trim($_POST['sgbdr']) : null;
+        $pdm = !empty($_POST['pdm']) ? trim($_POST['pdm']) : null;
+        $features = !empty($_POST['features']) ? trim($_POST['features']) : null;
         $langage = !empty($_POST['langage']) ? trim($_POST['langage']) : null;
         $links = !empty($_POST['links']) ? trim($_POST['links']) : null;
         $content = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql     = 'UPDATE extended_cards SET title = :title, image = :image,
-        date_native = :date_native, licence = :licence, langage = :langage, links = :links,
+        date_native = :date_native, licence = :licence, sgbdr = :sgbdr, pdm = :pdm,  langage = :langage, features = :features, links = :links,
         content = :content,
         date_update = NOW() WHERE id = :id';
         $item    = $this->dbConnect($sql, array(
@@ -166,7 +178,10 @@ class Item extends Model
             ':image' => $itemimagename,
             ':date_native' => $date_native,
             ':licence' => $licence,
+            ':sgbdr' => $sgbdr,
+            ':pdm' => $pdm,
             ':langage' => $langage,
+            ':features' => $features,
             ':links' => $links,
             ':content' => $content
         ));
@@ -179,23 +194,29 @@ class Item extends Model
     }
 
     // Modification d'un article sans photo :
-    public function changeItem($title, $date_native, $licence, $langage, $links, $content, $id_item)
+    public function changeItem($title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item)
     {
         $title   = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $date_native = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
         $licence = !empty($_POST['licence']) ? trim($_POST['licence']) : null;
+        $sgbdr = !empty($_POST['sgbdr']) ? trim($_POST['sgbdr']) : null;
+        $pdm = !empty($_POST['pdm']) ? trim($_POST['pdm']) : null;
         $langage = !empty($_POST['langage']) ? trim($_POST['langage']) : null;
+        $features = !empty($_POST['features']) ? trim($_POST['features']) : null;
         $links = !empty($_POST['links']) ? trim($_POST['links']) : null;
         $content = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql     = 'UPDATE extended_cards SET title = :title,
-        date_native = :date_native, licence = :licence, langage = :langage, links = :links,
+        date_native = :date_native, licence = :licence, sgbdr = :sgbdr, pdm = :pdm, langage = :langage, features = :features, links = :links,
         content = :content, date_update = NOW() WHERE id = :id';
         $item    = $this->dbConnect($sql, array(
             ':id' => $id_item,
             ':title' => $title,
             ':date_native' => $date_native,
             ':licence' => $licence,
+            ':sgbdr' => $sgbdr,
+            ':pdm' => $pdm,
             ':langage' => $langage,
+            ':features' => $features,
             ':links' => $links,
             ':content' => $content
         ));

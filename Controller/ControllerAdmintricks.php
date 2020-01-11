@@ -46,7 +46,10 @@ class ControllerAdmintricks extends Controller
             $title                 = $_POST['title'];
             $date_native           = $_POST['date_native'];
             $licence               = $_POST['licence'];
+            $sgbdr                 = $_POST['sgbdr'];
+            $pdm                   = $_POST['pdm'];
             $langage               = $_POST['langage'];
+            $features              = $_POST['features'];
             $links                 = $_POST['links'];
             $content               = $_POST['content'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
@@ -76,7 +79,7 @@ class ControllerAdmintricks extends Controller
             }
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->item->insertItem($id_user, $title, $date_native, $licence, $langage, $links, $content);
+                $this->item->insertItem($id_user, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content);
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -104,7 +107,7 @@ class ControllerAdmintricks extends Controller
 
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->insertItemImage($id_user, $title, $itemimagename, $date_native, $licence, $langage, $links, $content);
+                $this->item->insertItemImage($id_user, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content);
 
             }
         }
@@ -183,10 +186,13 @@ class ControllerAdmintricks extends Controller
             $messages              = array();
             $id_item               = $this->request->getParameter("id");
             $title                 = $this->request->getParameter("title");
-            $date_native  = $this->request->getParameter("date_native");
-            $licence  = $this->request->getParameter("licence");
-            $langage  = $this->request->getParameter("langage");
-            $links  = $this->request->getParameter("links");
+            $date_native           = $this->request->getParameter("date_native");
+            $licence               = $this->request->getParameter("licence");
+            $sgbdr                 = $this->request->getParameter("sgdr");
+            $pdm                   = $this->request->getParameter("pdm");
+            $langage               = $this->request->getParameter("langage");
+            $features              = $this->request->getParameter("features");
+            $links                 = $this->request->getParameter("links");
             $content               = $this->request->getParameter("content");
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];
@@ -211,10 +217,13 @@ class ControllerAdmintricks extends Controller
                 $title    = $this->request->getParameter("title");
                 $date_native  = $this->request->getParameter("date_native");
                 $licence  = $this->request->getParameter("licence");
+                $sgbdr                 = $this->request->getParameter("sgdr");
+                $pdm                   = $this->request->getParameter("pdm");
                 $langage  = $this->request->getParameter("langage");
+                $features              = $this->request->getParameter("features");
                 $links  = $this->request->getParameter("links");
                 $content  = $this->request->getParameter("content");
-                $this->item->changeItem($title, $date_native, $licence, $langage, $links, $content, $id_item);
+                $this->item->changeItem($title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -238,7 +247,7 @@ class ControllerAdmintricks extends Controller
                 }
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->changeItemImage($title, $itemimagename, $date_native, $licence, $langage, $links, $content, $id_item);
+                $this->item->changeItemImage($title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item);
             }
         }
     }
@@ -465,12 +474,12 @@ class ControllerAdmintricks extends Controller
         $this->comment->emptycommentsbin();
     }
 
+
     // Suppression d'un commentaire définitivement :
     public function removecomment()
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->eraseComment($id_comment);
-        // Ici on affiche le message de confirmation :
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé définitivement!';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -485,7 +494,6 @@ class ControllerAdmintricks extends Controller
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->eraseComment($id_comment);
-        // Ici on affiche le message de confirmation :
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -673,12 +681,6 @@ class ControllerAdmintricks extends Controller
     {
         $id_user = $this->request->getParameter("id");
         $this->user->eraseUser($id_user);
-        if ($id_user === false) {
-            throw new Exception('Impossible de supprimer l\'Utilisateur !');
-        } else {
-            $messages['confirmation'] = 'L\'utilisateur bien été supprimé définitivement!';
-            $this->generateadminView();
-        }
     }
 
 

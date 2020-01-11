@@ -1,0 +1,72 @@
+###########################
+#			  #
+#	ROADMAP		  #
+#			  #
+###########################
+
+>>>>> Simetricks.com <<<<<
+
+
+######################################### FACILE
+- Compléter les champs (SGBDR / Part de marché / Fonctionnalités) : OK
+
+- Scroll avec liens interne à corriger
+- Ai-je mis des Erreurs vers le routeur partout ?
+
+
+
+######################################### - BASE DE DONNEES - 11 et 12 Janvier
++ Créer une page Mot de passe oublié
++ Construire les sections Cards et 2.0
++ Pouvoir ajouter jusqu'à 5 Liens pour une Extended Card (faire comme pour les commentaires)
++ Rajouter des Catégories (revoir les notions de Key étrangères / index...)
++ Envoi d'un e-mail après création de compte.
+
+######################################### - SNIPPETS (voir page Demos) - 18 et 19 Janvier
+Software Library - JS Typing (simulation de code saisi sur éditeur)
+Course - Texte qui se saisit tout seul
+Cryptocurrency - flèches animées et ombre sur card
+Carrers - cards superposées et animées
+
+Elements
+Avatars
+Icons Reference
+Modals
+Typed Text
+
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+Corrections à faire sur le P4 : 
+-Refaire toute la pagination (Front et Admin)
+-supprimer les Echo
+
+
+
+
+#########################################
+      	$messages['itemupdated'] = 'L\'article a bien été modifié !';
+    	$messages['itemdeleted'] = 'L\'article a bien été supprimé !';
+    	$messages['commentupdated'] = 'Le commentaire a bien été modifié !';
+    	$messages['commentdeleted'] = 'Le commentaire a bien été supprimé !';
+        $messages['itemcreated'] = 'Votre article a bien été ajouté !';
+        $messages['usercreated'] = 'Votre compte a bien été créé !';
+        $messages['userupdated'] = 'Votre compte a bien été mis à jour !';
+        $messages['usernameupdated'] = 'Votre identifiant a bien été modifié !';
+        $messages['avatarupdated'] = 'Votre avatar a bien été modifié !';
+
+#########################################
+
+
+
+
+
+###########################
+#			  #
+#			  #
+#			  #
+###########################
+
+
+
+

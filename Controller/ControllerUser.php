@@ -162,7 +162,7 @@ class ControllerUser extends Controller
         $this->user->checkUsername($username);
         $user = $this->user->getUser($id_user);
         if ($user === false) {
-            throw new Exception('Impossible de modifier l\' utilisateur !');
+            throw new Exception('Impossible de modifier l\' identifiant !');
         } else {
             $this->request->getSession()->setAttribut("user", $user);
             $this->generateView();

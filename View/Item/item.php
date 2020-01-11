@@ -7,7 +7,7 @@
     <div class="text-small text-muted">publié le <?= $this->clean($item['date_creation_fr']) ?> | <?php if (isset($item['date_update']) AND $item['date_update'] > 0 ) {?>
       modifé le&nbsp;<?= $this->clean($item['date_update']) ?>
     <?php } ?><br>
-      <em><a href="<?= "item/" . $this->clean($item['id']). "/1/"  ?>#comments">Commentaires (<?= $number_of_comments ;?>)</a></em><br>
+      <em><a data-smooth-scroll href="<?= "item/" . $this->clean($item['id']). "/1"  ?>/#comments">Commentaires (<?= $number_of_comments ;?>)</a></em><br>
     </div>
   </div>
 </div>
@@ -27,8 +27,14 @@
           <dd class="col-sm-9"><?= strftime('%d/%m/%Y', strtotime($item['date_native'])); ?></dd>
           <dt class="col-sm-3"><h6>Licence</h6></dt>
           <dd class="col-sm-9"><?= $this->clean($item['licence']); ?></dd>
+          <dt class="col-sm-3"><h6>SGBDR</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['sgbdr']); ?></dd>
+          <dt class="col-sm-3"><h6>Part de Marché</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['pdm']); ?></dd>
           <dt class="col-sm-3"><h6>Langage</h6></dt>
           <dd class="col-sm-9"><?= $this->clean($item['langage']); ?></dd>
+          <dt class="col-sm-3"><h6>Fonctionnalités</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['features']); ?></dd>
           <dt class="col-sm-3"><h6>Aux dernières nouvelles</h6></dt>
           <dd class="col-sm-9"><?= $this->cleantinymce($item['content']); ?></dd>
         </dl>

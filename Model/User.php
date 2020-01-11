@@ -88,7 +88,8 @@ class User extends Model
             ':email' => htmlspecialchars($email),
             ':date_birth' => htmlspecialchars('1950-01-01 00:00:00')
         ));
-        $messages['confirmation'] = 'Votre compte a bien été créé !';
+        $messages['confirmation'] = 'Votre compte a bien été créé !<br>
+        Pour vous identifier, <a href="'.BASE_URL.'login">cliquez ici</a><br>';
         header('Location: ' . BASE_URL . 'useradd');
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -397,7 +398,6 @@ class User extends Model
         WHERE users.id_user = ' . (int) $id_user;
         $req = $this->dbConnect($sql);
         $req->execute();
-        // Ici on affiche le message de confirmation :
         $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été supprimé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
