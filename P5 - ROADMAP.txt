@@ -8,8 +8,6 @@
 
 
 ######################################### FACILE
-- Compléter les champs (SGBDR / Part de marché / Fonctionnalités) : OK
-
 - Scroll avec liens interne à corriger
 - Ai-je mis des Erreurs vers le routeur partout ?
 

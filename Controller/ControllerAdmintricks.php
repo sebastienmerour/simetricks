@@ -188,7 +188,7 @@ class ControllerAdmintricks extends Controller
             $title                 = $this->request->getParameter("title");
             $date_native           = $this->request->getParameter("date_native");
             $licence               = $this->request->getParameter("licence");
-            $sgbdr                 = $this->request->getParameter("sgdr");
+            $sgbdr                 = $this->request->getParameter("sgbdr");
             $pdm                   = $this->request->getParameter("pdm");
             $langage               = $this->request->getParameter("langage");
             $features              = $this->request->getParameter("features");
@@ -217,7 +217,7 @@ class ControllerAdmintricks extends Controller
                 $title    = $this->request->getParameter("title");
                 $date_native  = $this->request->getParameter("date_native");
                 $licence  = $this->request->getParameter("licence");
-                $sgbdr                 = $this->request->getParameter("sgdr");
+                $sgbdr                 = $this->request->getParameter("sgbdr");
                 $pdm                   = $this->request->getParameter("pdm");
                 $langage  = $this->request->getParameter("langage");
                 $features              = $this->request->getParameter("features");

@@ -44,7 +44,8 @@ class Item extends Model
     }
 
     // Création d'un nouvel article avec photo :
-    public function insertItemImage($id_user, $title, $itemimagename, $content)
+    public function insertItemImage($id_user, $title, $itemimagename, $date_native,
+    $licence, $sgbdr, $pmd, $langage, $features, $links,$content) 
     {
         $errors   = array();
         $messages = array();

@@ -35,6 +35,8 @@
           <dd class="col-sm-9"><?= $this->clean($item['langage']); ?></dd>
           <dt class="col-sm-3"><h6>Fonctionnalités</h6></dt>
           <dd class="col-sm-9"><?= $this->clean($item['features']); ?></dd>
+          <dt class="col-sm-3"><h6>Liens</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['links']); ?></dd>
           <dt class="col-sm-3"><h6>Aux dernières nouvelles</h6></dt>
           <dd class="col-sm-9"><?= $this->cleantinymce($item['content']); ?></dd>
         </dl>

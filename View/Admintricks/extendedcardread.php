@@ -60,7 +60,7 @@
 				<div class="row">
 				<div class="col-12">
 					<label for="links">Liens :</label><br>
-					<textarea class="form-control" id="links" name="links" rows="5">https://</textarea>
+					<textarea class="form-control" id="links" name="links" rows="5"><?= $this->clean($item['links']);?></textarea>
 						<hr>
 						<label for="itemimage"><h5>Image principale de l'article :</h5></label><br>
 						<?php if (empty($item['image'])) {
