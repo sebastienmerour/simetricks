@@ -88,16 +88,7 @@ class User extends Model
             ':email' => htmlspecialchars($email),
             ':date_birth' => htmlspecialchars('1950-01-01 00:00:00')
         ));
-        $messages['confirmation'] = 'Votre compte a bien été créé !<br>
-        Pour vous identifier, <a href="'.BASE_URL.'login">cliquez ici</a><br>';
-        header('Location: ' . BASE_URL . 'useradd');
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_URL . 'user/useradd');
-            exit;
-        }
     }
-
 
     // READ
 

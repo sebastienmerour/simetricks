@@ -103,7 +103,8 @@
 
       <h4 class="text-center" style="margin-top: 0; margin-bottom: 0; font-weight: 500; color: inherit; vertical-align: baseline; font-size: 24px; line-height: 28.8px;" align="center">Hey, Simetricker !</h4>
       <br>
-      <p class="text-center" style="line-height: 24px; font-size: 16px; margin: 0;" align="center">Pour ré-initialiser ton mot de passe, clique sur le lien ci-dessous :</p>
+      <p class="text-center" style="line-height: 24px; font-size: 16px; margin: 0;" align="center">Merci d'avoir rejoint Simetricks.com !</p>
+      <p class="text-center" style="line-height: 24px; font-size: 16px; margin: 0;" align="center">Ton identifiant est : <strong><?= $username ;?></strong></p>
       <table class="s-2 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
   <tbody>
     <tr>
@@ -118,20 +119,13 @@
   <tbody>
     <tr>
       <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-radius: 4px; margin: 0;" align="center" bgcolor="#007bff">
-        <a href="<?= DOMAIN_NAME . 'index.php?controller=login&action=resetpassword&token=' . $token . '&email=' . $email . '&username=' . $username ;?>" target="_blank"
-          style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; text-decoration: none; border-radius: 4.8px; line-height: 30px; display: inline-block; font-weight: normal; white-space: nowrap; background-color: #007bff; color: #ffffff;
-          padding: 8px 16px; border: 1px solid #007bff;">Choisir un nouveau mot de passe</a><br>
+        <a href="<?= DOMAIN_NAME; ?>login" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; text-decoration: none; border-radius: 4.8px; line-height: 30px; display: inline-block; font-weight: normal; white-space: nowrap; background-color: #007bff; color: #ffffff;
+          padding: 8px 16px; border: 1px solid #007bff;">Se connecter</a><br>
       </td>
     </tr>
     <tr>
       <td>
           <br>
-    <p>Ce lien expire au bout de 24H pour des raisons de sécurité.</p>
-    <p>Si tu n'es pas à  l'origine de la réception de cet e-mail, n'en tiens
-    pas compte. Ton mot de passe ne sera pas ré-initialisé.
-    Cependant, nous te conseillons de te connecter à ton compte et
-    de modifier ton mot de passe, car il se peut que quelqu'un tente
-    de deviner ton mot de passe.</p>
     <?= $content ?>
     </td>
   </tr>

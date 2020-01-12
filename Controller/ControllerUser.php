@@ -4,7 +4,7 @@ require_once 'Model/User.php';
 require_once 'Model/Cgu.php';
 require_once 'Model/Item.php';
 require_once 'Model/Calculate.php';
-
+require_once 'PHPMailer/PHPMailerAutoload.php';
 
 /**
  * Contrôleur des actions liées aux utilisateurs
@@ -19,6 +19,7 @@ class ControllerUser extends Controller
     private $cgu;
     private $item;
     private $calculate;
+    private $mail;
 
     public function __construct()
     {
@@ -26,6 +27,8 @@ class ControllerUser extends Controller
         $this->cgu      = new Cgu();
         $this->item      = new Item();
         $this->calculate = new Calculate();
+        $this->mail      = new PHPMailer();
+
     }
 
     // Create
@@ -60,7 +63,40 @@ class ControllerUser extends Controller
 
                 if ($responseData->success) {
                     $this->user->checkUser($username, $pass, $email);
-                } else {
+                    ob_start();
+                    include 'View/themes/front/template_newuser.php';
+                    $body = ob_get_contents();
+                    ob_end_clean();
+                    $subject             = "Bienvenue sur Simetricks.com";
+                    $email_to            = $email;
+                    $fromserver          = WEBMASTER_EMAIL;
+                    $this->mail->CharSet = 'UTF-8';
+                    $this->mail->IsSMTP();
+                    $this->mail->Host     = SMTP_HOST;
+                    $this->mail->SMTPAuth = true;
+                    $this->mail->Username = SMTP_USERNAME;
+                    $this->mail->Password = SMTP_PASSWORD;
+                    $this->mail->Port     = SMTP_PORT;
+                    $this->mail->IsHTML(true);
+                    $this->mail->From     = WEBMASTER_EMAIL;
+                    $this->mail->FromName = WEBSITE_NAME;
+                    $this->mail->Sender   = $fromserver; // indicates ReturnPath header
+                    $this->mail->Subject  = $subject;
+                    $this->mail->Body     = $body;
+                    $this->mail->AddAddress($email_to);
+                    if (!$this->mail->Send()) {
+                        $errors['errors']   = $this->mail->ErrorInfo;
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_URL . 'user/useradd');
+                        exit;
+                    } else {
+                    $messages['confirmation'] = 'Votre compte a bien été créé !<br>
+                    Un e-mail de confirmation vous a été envoyé.<br>
+                    Pour vous identifier, <a href="'.BASE_URL.'login">cliquez ici</a><br>';
+                    $_SESSION['messages'] = $messages;
+                    header('Location: ' . BASE_URL . 'user/useradd');
+                }
+              } else {
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
                         $_SESSION['errors'] = $errors;
