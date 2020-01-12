@@ -40,6 +40,25 @@ Corrections à faire sur le P4 :
 -supprimer les Echo
 
 
+            $this->mail->Host     = "smtp.mailtrap.io"; // Enter your host here
+            $this->mail->SMTPAuth = true;
+            $this->mail->Username = "e2ba656157aa9b"; // Enter your email here
+            $this->mail->Password = "b48f6403df97b3"; //Enter your password here
+            $this->mail->Port     = 25;
+
+
+
+            $this->mail->Host     = "smtp.phpnet.org"; // Enter your host here
+            $this->mail->SMTPAuth = true;
+            $this->mail->Username = "webmaster@robbiewilliamslive.com"; // Enter your email here
+            $this->mail->Password = "76SidewindX"; //Enter your password here
+            $this->mail->Port     = 587;
+            $this->mail->IsHTML(true);
+            $this->mail->From     = "webmaster@robbiewilliamslive.com";
+
+
+
+
 
 
 #########################################

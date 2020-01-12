@@ -1,8 +1,8 @@
 <?php
-define("BASE_URL", "/simetricks/");
-define("BASE_ADMIN_URL", "/simetricks/admintricks/");
+define("BASE_URL", "/");
+define("BASE_ADMIN_URL", "/admintricks/");
 define("ROOT_SERVER", $_SERVER["DOCUMENT_ROOT"] . "/");
-define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/simetricks/");
+define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/");
 define("WEBSITE_NAME", "Simetricks");
 define("COPYRIGHT_YEAR", "2020");
 

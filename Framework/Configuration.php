@@ -24,10 +24,10 @@ class Configuration {
   // Renvoie le tableau des paramètres en le chargeant au besoin
   private static function getParameters() {
     if (self::$parameters == null) {
-      $pathFile = ROOT_SERVER . 'mesimagic/tricks.ini';
+      $pathFile = 'mesimagic/tricks.ini';
 
       if (!file_exists($pathFile)) {
-        $pathFile = ROOT_SERVER . 'mesimagic/dev.ini';
+        $pathFile = 'mesimagic/dev.ini';
       }
       if (!file_exists($pathFile)) {
         throw new Exception("Aucun fichier de configuration trouvé");

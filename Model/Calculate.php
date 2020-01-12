@@ -116,7 +116,7 @@ class Calculate extends Model
   public function getCommentsCurrentPage()
   {
       $q                     = explode("/", $_SERVER['REQUEST_URI']);
-      $value                 = $q[4];
+      $value                 = $q[3];
       $comments_current_page = (int) $value;
       return $comments_current_page;
   }

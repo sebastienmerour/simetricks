@@ -1,10 +1,10 @@
 <?php
-define("BASE_URL", "/simetricks/");
-define("DOMAIN_NAME", "http://p4547.phpnet.org/simetricks/");
-define("BASE_ADMIN_URL", "/simetricks/admintricks/");
+define("BASE_URL", "/");
+define("DOMAIN_NAME", "http://www.simetricks.com/");
+define("BASE_ADMIN_URL", "/admintricks/");
 define("ID_ADMIN", "18");
 define("ROOT_SERVER", $_SERVER["DOCUMENT_ROOT"] . "/");
-define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/simetricks/");
+define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/");
 define("WEBSITE_NAME", "Simetricks");
 define("WEBMASTER_EMAIL", "contact@simetricks.com");
 define("COPYRIGHT_YEAR", "2020");

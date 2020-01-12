@@ -13,14 +13,14 @@ RewriteEngine on
 # Règles de réécriture d'URL :
 #--------------------------------------------------
 
-# Réécrit une URL de type xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz&id_comment=iii
-RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&id=$3&id_comment=$4 [NC,L]
-
-# Réécrit une URL de type xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz&pageitems=iii
+# Réécrit une URL de type xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz
 RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&id=$3 [NC,L]
 
-# Rewrite --- http://p4547.phpnet.org/simetricks/login/resetpassword/?key=$1&email=$2&username=$3 => http://p4547.phpnet.org/simetricks/login/resetpassword/$1/$2/$3
-RewriteCond %{QUERY_STRING} (^|&)key=\$1($|&)
-RewriteCond %{QUERY_STRING} (^|&)email=\$2($|&)
-RewriteCond %{QUERY_STRING} (^|&)username=\$3($|&)
-RewriteRule ^simetricks/login/resetpassword/$ /simetricks/login/resetpassword/$1/$2/$3?&%{QUERY_STRING}
+# Réécrit une URL de type xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz&pageitems=iii
+RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&id=$3&page=$4 [NC,L]
+
+# Réécrit une URL pour Reset Password
+RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&token=$3&email=$4&username=$5 [NC,L]
+
+# Réécrit une URL de type xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz&id_comment=iii
+RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&id=$3&id_comment=$4 [NC,L]

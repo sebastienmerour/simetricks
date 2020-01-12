@@ -18,8 +18,8 @@
 				<input type="password" id="passcheck" name="passcheck" placeholder="Confirmez le mot de passe" class="form-control" required>
 			</div>
 			<div class="g-recaptcha mb-3" data-sitekey="<?= RECAPTCHA_SITE_KEY; ?>"></div>
-      <input type="hidden" name="email" value="<?= $email;?>">
-			<input type="hidden" name="username" value="<?= $username;?>">
+			<input type="hidden" name="username" value="<?= $_SESSION['username']; ?>">
+			<input type="hidden" name="email" value="<?= $_SESSION['email']; ?>">
 			<div class="form-group">
 				<button class="btn btn-primary btn-block" type="submit" name="register">Envoyer</button>
 			</div>
@@ -30,16 +30,6 @@
 			  <span id="number" class="invalid">- au moins <b>1 chiffre</b></span><br>
 			  <span id="length" class="invalid">- au minimum <b>8 caractères</b></span><br>
 			</div>
-		<?php
-		if (!empty($_SESSION['messages']['confirmation']))
-				{
-				require __DIR__ . '/../errors/confirmation.php';
-				?>
-				Pour accéder à votre compte, veuillez vous identifier :
-				<a href="login">cliquez ici</a>
-				<?php
-				}
-			?>
 			<hr>
 		</form>
 	</div>

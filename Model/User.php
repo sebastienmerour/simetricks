@@ -459,46 +459,55 @@ class User extends Model
     }
 
     // Insérer le Token de ré-initialisation en base de données :
-    public function insertResetTemp($email, $key, $expdate)
+    public function insertResetTemp($email, $token, $expdate)
     {
-        $sql = 'INSERT INTO password_reset_temp (email, secret, expdate)
-        VALUES (:email, :key, :expdate)';
+        $sql = 'INSERT INTO password_reset_temp (email, token, expdate)
+        VALUES (:email, :token, :expdate)';
         $this->dbConnect($sql, array(
             ':email' => htmlspecialchars($email),
-            ':key' => htmlspecialchars($key),
+            ':token' => htmlspecialchars($token),
             ':expdate' => htmlspecialchars($expdate)
         ));
     }
 
     // Vérifier si le token de reset est valable :
-    public function checkResetLink($key, $email, $username, $current_date)
+    public function checkResetLink($token, $email, $username, $current_date)
     {
-        $sql     = 'SELECT COUNT(id) AS num FROM password_reset_temp WHERE secret = :secret
-          AND email = :email';
+        $sql     = 'SELECT expdate, COUNT(id) AS num FROM password_reset_temp WHERE email = :email
+        AND token = :token';
         $stmt    = $this->dbConnect($sql, array(
-            ':secret' => $key,
-            ':email' => $email
+            ':email' => $email,
+            ':token' => $token,
         ));
 
         $row     = $stmt->fetch(\PDO::FETCH_ASSOC);
-        //$expiration = $row['expdate'];
-        //$now = date("Y-m-d H:i:s");
-        if ($row['num'] < 0) {
-            $errors['invalidlink'] = 'Ce lien est invalide ou bien a expiré.<br>
+        $expiration = $row['expdate'];
+        if ($row['num'] == 0) {
+            $errors['invalidlink'] = 'Ce lien est invalide.<br>
             Veuillez redemander un nouveau <br>
             mot de passe ci-dessous.';
             $_SESSION['errors']    = $errors;
             die(header('Location:' . BASE_URL . 'login/forgottenpassword'));
             exit;
         }
+         else if ($expiration <= $current_date) {
+              $errors['invalidlink'] = 'Ce lien a expiré.<br>
+              Veuillez redemander un nouveau <br>
+              mot de passe ci-dessous.';
+              $_SESSION['errors']    = $errors;
+              die(header('Location:' . BASE_URL . 'login/forgottenpassword'));
+              exit;
+          }
         else {
-            header('Location:' . BASE_URL . 'login/createnewpassword/' .$email.'/' .$username);
-            exit;
+          $_SESSION['username']    = $username;
+          $_SESSION['email']    = $email;
+          die(header('Location:' . BASE_URL . 'login/createnewpassword'));
+          exit;
         }
     }
 
     // Mise à jour du mot de passe depuis la page de reset :
-    public function updatePassword($username, $passwordHash)
+    public function updatePassword($username, $passwordHash, $email)
     {
         $sql                      = 'UPDATE users
          SET pass = :pass
@@ -507,6 +516,9 @@ class User extends Model
             ':pass' => htmlspecialchars($passwordHash),
             ':username' => htmlspecialchars($username)
         ));
+        $this->deleteToken($email);
+        unset($_SESSION['username']);
+        unset($_SESSION['email']);
         $messages['confirmation'] = 'Votre mot de passe a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -517,11 +529,14 @@ class User extends Model
 
     public function deleteToken($email)
     {
-        $sql = 'DELETE FROM password_reset_temp WHERE e-mail = :email';
-        $req = $this->dbConnect($sql, array(
-            ':email' => $email
-        ));
-        $req->execute();
+
+      $sql = 'DELETE
+      FROM password_reset_temp
+      WHERE email = :email';
+      $req = $this->dbConnect($sql, array(
+          ':email' => $email
+      ));
+      $req->execute();
     }
 
 }

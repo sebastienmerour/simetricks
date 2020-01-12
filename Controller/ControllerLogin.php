@@ -150,16 +150,16 @@ class ControllerLogin extends Controller
             $email     = $this->user->checkUsernameReset($username);
             $random    = rand(999, 99999);
             // autre option : $random = 2418*2+$username
-            $key       = password_hash($random, PASSWORD_DEFAULT, array(
+            $token      = password_hash($random, PASSWORD_DEFAULT, array(
                 "cost" => 12
             ));
             //$key = password_hash($random, PASSWORD_DEFAULT);
             $expformat = mktime(date("H"), date("i"), date("s"), date("m"), date("d") + 1, date("Y"));
             $expdate   = date("Y-m-d H:i:s", $expformat);
-            $this->user->insertResetTemp($email, $key, $expdate);
+            $this->user->insertResetTemp($email, $token, $expdate);
             $output = '<p>Cher utilisateur,</p>';
             $output .= '<p>Pour ré-initialiser ton mot de passe, clique sur le lien ci-dessous :</p>';
-            $output .= '<p><a href="' . DOMAIN_NAME . 'login/resetpassword/?key=' . $key . '&email=' . $email . '&username=' . $username . '" target="_blank">
+            $output .= '<p><a href="' . DOMAIN_NAME . 'index.php?controller=login&action=resetpassword&token=' . $token . '&email=' . $email . '&username=' . $username . '" target="_blank">
             Reset</a></p>';
             $output .= '<p>Ce lien expire au bout de 24H pour des raisons de sécurité.</p>';
             $output .= '<p>Si vous n\'êtes pas à l\'origine de la réception de cet e-mail, n\'en tenez
@@ -169,7 +169,10 @@ class ControllerLogin extends Controller
             de deviner votre mot de passe.</p>';
             $output .= '<p>Merci,</p>';
             $output .= '<p>' . WEBSITE_NAME . '</p>';
-            $body                = $output;
+            ob_start();
+            include 'View/themes/front/template_resetpassword.php';
+            $body = ob_get_clean();
+            //$body                = $output;
             $subject             = "Ré-initialisation de mot de passe - Simetricks.com";
             $email_to            = $email;
             $fromserver          = WEBMASTER_EMAIL;
@@ -181,7 +184,7 @@ class ControllerLogin extends Controller
             $this->mail->Password = "b48f6403df97b3"; //Enter your password here
             $this->mail->Port     = 25;
             $this->mail->IsHTML(true);
-            $this->mail->From     = "noreply@simetricks.com";
+            $this->mail->From     = "webmaster@robbiewilliamslive.com";
             $this->mail->FromName = "Simetricks.com";
             $this->mail->Sender   = $fromserver; // indicates ReturnPath header
             $this->mail->Subject  = $subject;
@@ -208,19 +211,19 @@ class ControllerLogin extends Controller
     // Affichage de la page Reset Password :
     public function resetpassword()
     {
-      //if (isset($_GET["key"]) && isset($_GET["email"]) && isset($_GET["action"])
-      //&& isset($_GET["username"])
-      //&& ($_GET["action"]=="reset")){
-      $key = $_GET["key"];
-      $email = $_GET["email"];
-      $username = $_GET["username"];
-      $current_date = date("Y-m-d H:i:s");
-      $this->user->checkResetLink($key, $email, $username, $current_date);
-      //}
-      //else {
-      //      die(header('Location:' . BASE_URL.'login'));
-      //      exit;
-        //}
+      if ($this->request->ifParameter("token") && $this->request->ifParameter("email") && $this->request->ifParameter("username")) {
+        $token        = $this->request->getParameter("token");
+        $email = $this->request->getParameter("email");
+        $username = $this->request->getParameter("username");
+        $current_date = date("Y-m-d H:i:s");
+        $this->user->checkResetLink($token, $email, $username, $current_date);
+      }
+      else {
+        die(header('Location:' . BASE_URL.'login'));
+        exit;
+        }
+
+
     }
 
     // Affichage de la page Reset Password :
@@ -231,6 +234,8 @@ class ControllerLogin extends Controller
         $total_users_count     = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPages();
         $this->generateView(array(
+            'username' => $username,
+            'email' => $email,
             'number_of_items' => $number_of_items,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
@@ -271,9 +276,7 @@ class ControllerLogin extends Controller
                         "cost" => 12
                     ));
                     // OK, tout est correct, on peut alors insérer le nouveau mot de passe :
-                    $this->user->updatePassword($username, $passwordHash);
-                    $this->user->deleteToken($email);
-
+                    $this->user->updatePassword($username, $passwordHash, $email);
                 } else {
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {

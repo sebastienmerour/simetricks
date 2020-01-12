@@ -10,7 +10,7 @@ require_once 'Framework/Model.php';
 
 class Comment extends Model
 {
-    public $number_of_comments, $comments_current_page, $number_of_comments_by_page = 5, $number_of_comments_reported_by_page = 5;
+    public $number_of_comments, $comments_current_page, $number_of_comments_by_page = 5, $number_of_comments_reported_by_page = 3;
 
     // CREATE
     // Création d'un commentaire :
