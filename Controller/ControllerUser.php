@@ -67,7 +67,7 @@ class ControllerUser extends Controller
                     include 'View/themes/front/template_newuser.php';
                     $body = ob_get_contents();
                     ob_end_clean();
-                    $subject             = "Bienvenue sur Simetricks.com";
+                    $subject             = "Bienvenue sur ". WEBSITE_NAME ;
                     $email_to            = $email;
                     $fromserver          = WEBMASTER_EMAIL;
                     $this->mail->CharSet = 'UTF-8';

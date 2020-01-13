@@ -161,7 +161,7 @@ class ControllerLogin extends Controller
             include 'View/themes/front/template_resetpassword.php';
             $body = ob_get_contents();
             ob_end_clean();
-            $subject             = "Ré-initialisation de mot de passe - Simetricks.com";
+            $subject             = "Ré-initialisation de mot de passe - ". WEBSITE_NAME ;
             $email_to            = $email;
             $fromserver          = WEBMASTER_EMAIL;
             $this->mail->CharSet = 'UTF-8';

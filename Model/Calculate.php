@@ -45,7 +45,7 @@ class Calculate extends Model
   public function getItemId()
   {
       $q       = explode("/", $_SERVER['REQUEST_URI']);
-      $value   = $q[4];
+      $value   = $q[3];
       $id_item = (int) $value;
       return $id_item;
   }
@@ -107,7 +107,7 @@ class Calculate extends Model
   public function getCommentId()
   {
       $q          = explode("/", $_SERVER['REQUEST_URI']);
-      $value      = $q[5];
+      $value      = $q[4];
       $id_comment = (int) $value;
       return $id_comment;
   }
@@ -125,7 +125,7 @@ class Calculate extends Model
   public function getCommentsCurrentPageUser()
   {
       $q                     = explode("/", $_SERVER['REQUEST_URI']);
-      $value                 = $q[5];
+      $value                 = $q[4];
       $comments_current_page = (int) $value;
       return $comments_current_page;
   }

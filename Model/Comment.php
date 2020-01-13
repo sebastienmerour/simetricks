@@ -177,8 +177,8 @@ class Comment extends Model
     public function changeComment($content)
     {
         $q                        = explode("/", $_SERVER['REQUEST_URI']);
-        $valuei                   = $q[4];
-        $valuec                   = $q[5];
+        $valuei                   = $q[3];
+        $valuec                   = $q[4];
         $item                     = (int) $valuei;
         $comment                  = (int) $valuec;
         $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
@@ -203,8 +203,8 @@ class Comment extends Model
     public function reportBadComment($id_comment)
     {
         $q                        = explode("/", $_SERVER['REQUEST_URI']);
-        $valuei                   = $q[4];
-        $valuec                   = $q[5];
+        $valuei                   = $q[3];
+        $valuec                   = $q[4];
         $item                     = (int) $valuei;
         $comment                  = (int) $valuec;
         $sql                      = 'UPDATE comments SET report = :report WHERE id = :id';
