@@ -2,7 +2,7 @@
 require_once 'Framework/Model.php';
 
 /**
- * Fournit les fonctions liées aux commentaires
+ * Fournit les fonctions liées aux Calculs
  *
  * @version 1.0
  * @author Sébastien Merour
@@ -16,7 +16,9 @@ class Calculate extends Model
   $number_of_items_by_page = 5,
   $number_of_comments_by_page = 5,
   $number_of_comments_reported_by_page = 5,
-  $number_of_users_by_page = 5;
+  $number_of_users_by_page = 5,
+  $number_of_categories,
+  $number_of_categories_by_page = 5;
 
   // ITEMS
   // FRONT
@@ -235,6 +237,33 @@ class Calculate extends Model
       $total_users_deleted_count     = $this->getTotalOfUsersDeleted();
       $number_of_users_deleted_pages = ceil($total_users_deleted_count / $this->number_of_users_by_page);
       return $number_of_users_deleted_pages;
+  }
+
+  // CATEGORIES
+  // ADMIN
+
+  // Obtenir le nombre total des Catégories :
+  public function getTotalOfCategories()
+  {
+      $sql               = 'SELECT COUNT(id) AS counter FROM categories
+      WHERE bin != "yes"';
+      $this->categories_count = $this->dbConnect($sql);
+      $categories             = $this->categories_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_categories   = $categories['counter'];
+      return $number_of_categories;
+  }
+
+
+  // Obtenir le nombre total des Catégories supprimées :
+  public function getTotalOfCategoriesDeleted()
+  {
+      $sql                  = 'SELECT COUNT(id) AS counter FROM categories WHERE bin = :bin ';
+      $categories_deleted_count = $this->dbConnect($sql, array(
+          ':bin' => "yes"
+      ));
+      $this->categories_deleted_count = $categories_deleted_count->fetch(\PDO::FETCH_ASSOC);
+      $total_categories_deleted_count = $this->categories_deleted_count['counter'];
+      return $total_categories_deleted_count;
   }
 
 

@@ -17,7 +17,20 @@
     <div class="card-body">
 				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>updateitem/<?= $this->clean($item['id']);?>" method="post"
 	        id="itemmodification" enctype="multipart/form-data" novalidate>
+
 				<div class="form-group">
+					<div class="row">
+						<div class="col-12">
+							<label for="category">Catégorie :</label>
+							<select class="form-control" id="category" name="category">
+								<option selected><?= $this->clean($category['name']); ?></option>
+								<?php
+								foreach ($categories as $category):?>
+								<option value="<?= $this->clean($category['id']);?>"><?= $this->clean($category['name']); ?></option>
+							<?php endforeach; ?>
+						</select><br>
+						</div>
+					</div>
 						<div class="row">
 						<div class="col-12">
 							<input class="form-control" id="title" name="title" type="text" placeholder="<?= $this->clean($item['title']);?>" value="<?= $this->clean($item['title']);?>"><br>
@@ -91,7 +104,7 @@
 		<div class="form-group">
 				 <div class="col-xs-12">
 							<br>
-							<button class="btn btn-md btn-success" name="modify" type="submit">Enregistrer</button>
+							<button class="btn btn-md btn-success" name="update" type="submit">Enregistrer</button>
 							<a href="#" role="button" class="btn btn-md btn-secondary" type="reset">Annuler</a>
 							<a href="<?= BASE_ADMIN_URL. 'removeitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
 							<a href="<?= $_SERVER['HTTP_REFERER']; ?>" role="button" class="btn btn-md btn-primary" type="button">Retour</a>

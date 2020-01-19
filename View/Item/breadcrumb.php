@@ -2,10 +2,13 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="#">Accueil</a>
+        <a href="<?= DOMAIN_NAME; ?>">Accueil</a>
       </li>
       <li class="breadcrumb-item">
-        <a href="#">Catégorie</a>
+        <a href="#"><?= $category['name']; ?></a>
+      </li>
+      <li class="breadcrumb-item">
+        <?= $item['title']; ?>
       </li>
     </ol>
   </nav>

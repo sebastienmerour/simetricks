@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
+require_once 'Model/Category.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
@@ -15,12 +16,14 @@ require_once 'Model/Calculate.php';
 class ControllerHome extends Controller
 {
     private $item;
+    private $category;
     private $user;
     private $calculate;
 
     public function __construct()
     {
         $this->item = new Item();
+        $this->category   = new Category();
         $this->user = new User();
         $this->calculate = new Calculate();
     }

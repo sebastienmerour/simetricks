@@ -210,7 +210,7 @@ class ControllerUser extends Controller
     {
         $user = $this->user->getUser($_SESSION['id_user']);
 
-        if (isset($_POST["modifyavatar"])) {
+        if (isset($_POST["update"])) {
             $errors                = array();
             $messages              = array();
             $fileinfo              = @getimagesize($_FILES["avatar"]["tmp_name"]);

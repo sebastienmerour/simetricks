@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
+require_once 'Model/Category.php';
 require_once 'Model/Comment.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
@@ -16,6 +17,7 @@ class ControllerAdmintricks extends Controller
 {
     private $user;
     private $item;
+    private $category;
     private $comment;
     private $calculate;
 
@@ -23,6 +25,7 @@ class ControllerAdmintricks extends Controller
     {
         $this->user    = new User();
         $this->item    = new Item();
+        $this->category   = new Category();
         $this->comment = new Comment();
         $this->calculate = new Calculate();
     }
@@ -33,16 +36,21 @@ class ControllerAdmintricks extends Controller
     // Affichage du formulaire de création d'un article :
     public function extendedcardadditem()
     {
-        $this->generateadminView();
+      $categories_current_page    = 1;
+      $categories                 = $this->category->getCategories($categories_current_page);
+        $this->generateadminView(array(
+            'categories' => $categories
+          ));
     }
 
     // Processus de création d'un article :
     public function createitem()
     {
-        if (isset($_POST["modify"])) {
+        if (isset($_POST["create"])) {
             $errors                = array();
             $messages              = array();
             $id_user               = $_SESSION['id_user_admin'];
+            $id_category           = $_POST['category'];
             $title                 = $_POST['title'];
             $date_native           = $_POST['date_native'];
             $licence               = $_POST['licence'];
@@ -79,7 +87,7 @@ class ControllerAdmintricks extends Controller
             }
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->item->insertItem($id_user, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content);
+                $this->item->insertItem($id_user, $id_category, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content);
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -107,11 +115,30 @@ class ControllerAdmintricks extends Controller
 
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->insertItemImage($id_user, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content);
+                $this->item->insertItemImage($id_user, $id_category, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content);
 
             }
         }
     }
+
+    // CATEGORIES
+
+    // Affichage du formulaire de création d'une catégorie :
+    public function categoryadd()
+    {
+          $this->generateadminView();
+      }
+
+    // Processus de création d'une catégorie :
+    public function createcategory()
+    {
+        if (isset($_POST["create"])) {
+            $name                   = $_POST['name'];
+            $description            = $_POST['description'];
+            $this->category->insertCategory($name, $description);
+            }
+    }
+
 
     // READ
     // ITEMS
@@ -168,154 +195,40 @@ class ControllerAdmintricks extends Controller
     public function extendedcardread()
     {
 
-        $id_item = $this->request->getParameter("id");
-        $item    = $this->item->getItem($id_item);
+        $id_item                    = $this->request->getParameter("id");
+        $categories                 = $this->category->getCategories();
+        $item                       = $this->item->getItem($id_item);
+        $id_category                = $item['category'];
+        $category                   = $this->category->getCategory($id_category);
         $this->generateadminView(array(
-            'item' => $item
+            'item' => $item,
+            'category' => $category,
+            'categories' => $categories
         ));
     }
 
-    // UPDATE
-    // ITEMS
-
-    // Modification d'un article :
-    public function updateitem()
+    // Affichage de la page Catégories : :
+    public function categories()
     {
-        if (isset($_POST["modify"])) {
-            $errors                = array();
-            $messages              = array();
-            $id_item               = $this->request->getParameter("id");
-            $title                 = $this->request->getParameter("title");
-            $date_native           = $this->request->getParameter("date_native");
-            $licence               = $this->request->getParameter("licence");
-            $sgbdr                 = $this->request->getParameter("sgbdr");
-            $pdm                   = $this->request->getParameter("pdm");
-            $langage               = $this->request->getParameter("langage");
-            $features              = $this->request->getParameter("features");
-            $links                 = $this->request->getParameter("links");
-            $content               = $this->request->getParameter("content");
-            $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
-            $width                 = $fileinfo[0];
-            $height                = $fileinfo[1];
-            $extensions_authorized = array(
-                "gif",
-                "png",
-                "jpg",
-                "jpeg"
-            );
-            $extension_upload      = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-            $time                  = date("Y-m-d-H-i-s") . "-";
-            $newtitle              = str_replace(' ', '-', strtolower($title));
-            $itemimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
-            $itemimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $itemimagename);
-            $itemimagename         = "{$time}$newtitle.{$extension_upload}";
-            $destination           = ROOT_PATH . 'public/images/item_images';
-
-            if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $messages = array();
-                $id_item  = $this->request->getParameter("id");
-                $title    = $this->request->getParameter("title");
-                $date_native  = $this->request->getParameter("date_native");
-                $licence  = $this->request->getParameter("licence");
-                $sgbdr                 = $this->request->getParameter("sgbdr");
-                $pdm                   = $this->request->getParameter("pdm");
-                $langage  = $this->request->getParameter("langage");
-                $features              = $this->request->getParameter("features");
-                $links  = $this->request->getParameter("links");
-                $content  = $this->request->getParameter("content");
-                $this->item->changeItem($title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item);
-            } else if (!in_array($extension_upload, $extensions_authorized)) {
-                $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
-                    exit;
-                }
-            } else if (($_FILES["image"]["size"] > 1000000)) {
-                $errors['errors'] = 'Le fichier est trop lourd.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
-                    exit;
-                }
-            } else if ($width < "800" && $height < "600") {
-                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
-                    exit;
-                }
-            } else {
-                move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->changeItemImage($title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item);
-            }
-        }
+        $number_of_categories       = $this->calculate->getTotalOfCategories();
+        $categories                 = $this->category->getCategories();
+        $this->generateadminView(array(
+            'categories' => $categories,
+            'number_of_categories' => $number_of_categories
+        ));
     }
 
-    // Restaurer un item depuis la Corbeille :
-    public function restorethisitem()
+    // Affichage d'une catégorie seule :
+    public function categoryread()
     {
-        $id_item = $this->request->getParameter("id");
-        $this->item->restoreItem($id_item);
+
+        $id_category = $this->request->getParameter("id");
+        $category    = $this->category->getCategory($id_category);
+        $this->generateadminView(array(
+            'category' => $category
+        ));
     }
 
-
-    // DELETE
-    // ITEMS
-
-    // Affichage de la Corbeille :
-    public function extendedcardsbin()
-    {
-      $number_of_items_deleted       = $this->calculate->getTotalOfItemsDeleted();
-      if (null!= $this->request->ifParameter("id"))  {
-        $items_deleted_current_page  = $this->request->getParameter("id");
-        }
-        else {
-          $items_deleted_current_page = 1;
-        }
-      $items_deleted                 = $this->item->getItemsDeleted($items_deleted_current_page);
-      $page_previous_items_deleted   = $items_deleted_current_page - 1;
-      $page_next_items_deleted       = $items_deleted_current_page + 1;
-      $number_of_items_deleted_pages = $this->calculate->getNumberOfPagesDeleted();
-      $this->generateadminView(array(
-          'items_deleted' => $items_deleted,
-          'number_of_items_deleted' => $number_of_items_deleted,
-          'items_deleted_current_page' => $items_deleted_current_page,
-          'page_previous_items_deleted' => $page_previous_items_deleted,
-          'page_next_items_deleted' => $page_next_items_deleted,
-          'number_of_items_deleted_pages' => $number_of_items_deleted_pages
-      ));
-    }
-
-
-    // Déplacer un item vers la Corbeille :
-    public function moveitemtobin()
-    {
-        $id_item = $this->request->getParameter("id");
-        $this->item->moveItem($id_item);
-    }
-
-    // Suppression définitive d'un article :
-    public function removeitem()
-    {
-        $id_item = $this->request->getParameter("id");
-        $this->item->eraseItem($id_item);
-        if ($id_item === false) {
-            throw new Exception('Impossible de supprimer l\' article !');
-        } else {
-            $messages['confirmation'] = 'L\'article a bien été supprimé !';
-            $this->generateadminView();
-        }
-    }
-
-    // Vider la Corbeille Extended Cards :
-    public function empty()
-    {
-        $this->item->emptybin();
-    }
-
-
-    // READ
     // COMMENTS
 
     // Affichage des commentaires à modérer :
@@ -394,114 +307,6 @@ class ControllerAdmintricks extends Controller
         ));
     }
 
-
-
-    // UPDATE
-    // COMMENTS
-
-    // Modification d'un commentaire :
-    public function updatecomment()
-    {
-        $id_comment = $this->request->getParameter("id");
-        $comment    = $this->comment->getComment($id_comment);
-        $content    = $comment['content'];
-        $this->comment->changeCommentAdmin($content);
-    }
-
-    // Modification d'un commentaire :
-    public function updatecommentreported()
-    {
-        $id_comment = $this->request->getParameter("id");
-        $comment    = $this->comment->getComment($id_comment);
-        $content    = $comment['content'];
-        $this->comment->changeCommentReportedAdmin($content);
-    }
-
-    // Approuver un commentaire signalé :
-    public function approve()
-    {
-        $id_comment = $this->request->getParameter("id");
-        $this->comment->approveComment($id_comment);
-    }
-
-    // Restaurer un commentaire depuis la Corbeille :
-    public function restorethiscomment()
-    {
-        $id_comment = $this->request->getParameter("id");
-        $this->comment->restoreComment($id_comment);
-    }
-
-
-    // DELETE
-    // COMMENTS
-
-    // Affichage de la Corbeille des commentaires :
-    public function commentsbin()
-    {
-        if (null!= $this->request->ifParameter("id"))  {
-        $comments_deleted_current_page    = $this->request->getParameter("id");
-        }
-        else {
-          $comments_deleted_current_page  = 1;
-        }
-        $comments_deleted_previous_page   = $comments_deleted_current_page - 1;
-        $comments_deleted_next_page       = $comments_deleted_current_page + 1;
-        $comments_deleted                 = $this->comment->selectCommentsDeleted($comments_deleted_current_page);
-        $default                          = "default.png";
-        $number_of_comments_deleted_pages = $this->calculate->getNumberOfCommentsDeletedPagesFromAdmin();
-        $counter_comments_deleted        = $this->calculate->getTotalOfCommentsDeleted();
-        $this->generateadminView(array(
-            'comments_deleted' => $comments_deleted,
-            'default' => $default,
-            'comments_deleted_current_page' => $comments_deleted_current_page,
-            'comments_deleted_previous_page' => $comments_deleted_previous_page,
-            'comments_deleted_next_page' => $comments_deleted_next_page,
-            'number_of_comments_deleted_pages' => $number_of_comments_deleted_pages,
-            'counter_comments_deleted' => $counter_comments_deleted
-        ));
-    }
-
-    // Déplacer un commentaire vers la Corbeille :
-    public function movecommenttobin()
-    {
-        $id_comment = $this->request->getParameter("id");
-        $this->comment->moveComment($id_comment);
-    }
-
-    // Vider la Corbeille Commentaires
-    public function emptycomments()
-    {
-        $this->comment->emptycommentsbin();
-    }
-
-
-    // Suppression d'un commentaire définitivement :
-    public function removecomment()
-    {
-        $id_comment = $this->request->getParameter("id");
-        $this->comment->eraseComment($id_comment);
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé définitivement!';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'comments');
-            exit;
-        }
-    }
-
-
-    // Suppression d'un commentaire signalé :
-    public function removecommentreported()
-    {
-        $id_comment = $this->request->getParameter("id");
-        $this->comment->eraseComment($id_comment);
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'commentsreported');
-            exit;
-        }
-    }
-
     // READ
     // USERS
 
@@ -556,6 +361,144 @@ class ControllerAdmintricks extends Controller
 
 
     // UPDATE
+    // ITEMS
+
+    // Modification d'un article :
+    public function updateitem()
+    {
+        if (isset($_POST["update"])) {
+            $id_item               = $this->request->getParameter("id");
+            $id_category           = $this->request->getParameter("category");
+            $title                 = $this->request->getParameter("title");
+            $date_native           = $this->request->getParameter("date_native");
+            $licence               = $this->request->getParameter("licence");
+            $sgbdr                 = $this->request->getParameter("sgbdr");
+            $pdm                   = $this->request->getParameter("pdm");
+            $langage               = $this->request->getParameter("langage");
+            $features              = $this->request->getParameter("features");
+            $links                 = $this->request->getParameter("links");
+            $content               = $this->request->getParameter("content");
+            $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
+            $width                 = $fileinfo[0];
+            $height                = $fileinfo[1];
+            $extensions_authorized = array(
+                "gif",
+                "png",
+                "jpg",
+                "jpeg"
+            );
+            $extension_upload      = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+            $time                  = date("Y-m-d-H-i-s") . "-";
+            $newtitle              = str_replace(' ', '-', strtolower($title));
+            $itemimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
+            $itemimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $itemimagename);
+            $itemimagename         = "{$time}$newtitle.{$extension_upload}";
+            $destination           = ROOT_PATH . 'public/images/item_images';
+
+            if (!file_exists($_FILES["image"]["tmp_name"])) {
+                $messages = array();
+                $id_item  = $this->request->getParameter("id");
+                $title    = $this->request->getParameter("title");
+                $date_native  = $this->request->getParameter("date_native");
+                $licence  = $this->request->getParameter("licence");
+                $sgbdr                 = $this->request->getParameter("sgbdr");
+                $pdm                   = $this->request->getParameter("pdm");
+                $langage  = $this->request->getParameter("langage");
+                $features              = $this->request->getParameter("features");
+                $links  = $this->request->getParameter("links");
+                $content  = $this->request->getParameter("content");
+                $this->item->changeItem($id_category, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item);
+            } else if (!in_array($extension_upload, $extensions_authorized)) {
+                $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
+                    exit;
+                }
+            } else if (($_FILES["image"]["size"] > 1000000)) {
+                $errors['errors'] = 'Le fichier est trop lourd.';
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
+                    exit;
+                }
+            } else if ($width < "800" && $height < "600") {
+                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: '. BASE_ADMIN_URL. 'extendedcardread/' . $id_item);
+                    exit;
+                }
+            } else {
+                move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
+                $this->item->changeItemImage($id_category, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item);
+            }
+        }
+    }
+
+    // Restaurer un item depuis la Corbeille :
+    public function restorethisitem()
+    {
+        $id_item = $this->request->getParameter("id");
+        $this->item->restoreItem($id_item);
+    }
+
+
+    // CATEGORIES
+
+    // Modification d'une catégorie :
+    public function updatecategory()
+    {
+        if (isset($_POST["update"])) {
+            $id_category              = $this->request->getParameter("id");
+            $name                = $this->request->getParameter("name");
+            $description         = $this->request->getParameter("description");
+            $this->category->changeCategory($id_category, $name, $description);
+            }
+    }
+
+    // Restaurer une Catégorie depuis la Corbeille :
+    public function restorethiscategory()
+    {
+        $id_category = $this->request->getParameter("id");
+        $this->category->restoreCategory($id_category);
+    }
+
+
+    // COMMENTS
+
+    // Modification d'un commentaire :
+    public function updatecomment()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $comment    = $this->comment->getComment($id_comment);
+        $content    = $comment['content'];
+        $this->comment->changeCommentAdmin($content);
+    }
+
+    // Modification d'un commentaire :
+    public function updatecommentreported()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $comment    = $this->comment->getComment($id_comment);
+        $content    = $comment['content'];
+        $this->comment->changeCommentReportedAdmin($content);
+    }
+
+    // Approuver un commentaire signalé :
+    public function approve()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $this->comment->approveComment($id_comment);
+    }
+
+    // Restaurer un commentaire depuis la Corbeille :
+    public function restorethiscomment()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $this->comment->restoreComment($id_comment);
+    }
+
     // USERS
 
     // Modification d'un user :
@@ -563,7 +506,7 @@ class ControllerAdmintricks extends Controller
     {
         $id_user               = $this->request->getParameter("id");
 
-        if (isset($_POST["modify"]) && !empty($_POST["firstname"]) && !empty($_POST["name"])) {
+        if (isset($_POST["update"]) && !empty($_POST["firstname"]) && !empty($_POST["name"])) {
             $errors                = array();
             $messages              = array();
             $status                = $this->request->getParameter("status");
@@ -635,6 +578,169 @@ class ControllerAdmintricks extends Controller
 
 
     // DELETE
+    // ITEMS
+
+    // Affichage de la Corbeille :
+    public function extendedcardsbin()
+    {
+      $number_of_items_deleted       = $this->calculate->getTotalOfItemsDeleted();
+      if (null!= $this->request->ifParameter("id"))  {
+        $items_deleted_current_page  = $this->request->getParameter("id");
+        }
+        else {
+          $items_deleted_current_page = 1;
+        }
+      $items_deleted                 = $this->item->getItemsDeleted($items_deleted_current_page);
+      $page_previous_items_deleted   = $items_deleted_current_page - 1;
+      $page_next_items_deleted       = $items_deleted_current_page + 1;
+      $number_of_items_deleted_pages = $this->calculate->getNumberOfPagesDeleted();
+      $this->generateadminView(array(
+          'items_deleted' => $items_deleted,
+          'number_of_items_deleted' => $number_of_items_deleted,
+          'items_deleted_current_page' => $items_deleted_current_page,
+          'page_previous_items_deleted' => $page_previous_items_deleted,
+          'page_next_items_deleted' => $page_next_items_deleted,
+          'number_of_items_deleted_pages' => $number_of_items_deleted_pages
+      ));
+    }
+
+    // Déplacer un item vers la Corbeille :
+    public function moveitemtobin()
+    {
+        $id_item = $this->request->getParameter("id");
+        $this->item->moveItem($id_item);
+    }
+
+    // Suppression définitive d'un article :
+    public function removeitem()
+    {
+        $id_item = $this->request->getParameter("id");
+        $this->item->eraseItem($id_item);
+        if ($id_item === false) {
+            throw new Exception('Impossible de supprimer l\' article !');
+        } else {
+            $messages['confirmation'] = 'L\'article a bien été supprimé !';
+            $this->generateadminView();
+        }
+    }
+
+    // Vider la Corbeille Extended Cards :
+    public function empty()
+    {
+        $this->item->emptybin();
+    }
+
+
+    // CATEGORIES
+    // Affichage de la Corbeille Catégories :
+    public function categoriesbin()
+    {
+      $number_of_categories_deleted       = $this->calculate->getTotalOfCategoriesDeleted();
+      $categories_deleted                 = $this->category->getCategoriesDeleted();
+      $this->generateadminView(array(
+          'categories_deleted' => $categories_deleted,
+          'number_of_categories_deleted' => $number_of_categories_deleted
+      ));
+    }
+
+
+    // Déplacer un catégorie vers la Corbeille :
+    public function movecategorytobin()
+    {
+        $id_category = $this->request->getParameter("id");
+        $this->category->moveCategory($id_category);
+    }
+
+    // Suppression définitive d'une Catégories :
+    public function removecategory()
+    {
+        $id_category = $this->request->getParameter("id");
+        $this->category->eraseCategory($id_category);
+        if ($id_category === false) {
+            throw new Exception('Impossible de supprimer la catégorie !');
+        } else {
+            $messages['confirmation'] = 'La Catégorie a bien été supprimée !';
+            $this->generateadminView();
+        }
+    }
+
+    // Vider la Corbeille Catégorie :
+    public function emptycategories()
+    {
+        $this->category->emptybin();
+    }
+
+
+    // COMMENTS
+
+    // Affichage de la Corbeille des commentaires :
+    public function commentsbin()
+    {
+        if (null!= $this->request->ifParameter("id"))  {
+        $comments_deleted_current_page    = $this->request->getParameter("id");
+        }
+        else {
+          $comments_deleted_current_page  = 1;
+        }
+        $comments_deleted_previous_page   = $comments_deleted_current_page - 1;
+        $comments_deleted_next_page       = $comments_deleted_current_page + 1;
+        $comments_deleted                 = $this->comment->selectCommentsDeleted($comments_deleted_current_page);
+        $default                          = "default.png";
+        $number_of_comments_deleted_pages = $this->calculate->getNumberOfCommentsDeletedPagesFromAdmin();
+        $counter_comments_deleted        = $this->calculate->getTotalOfCommentsDeleted();
+        $this->generateadminView(array(
+            'comments_deleted' => $comments_deleted,
+            'default' => $default,
+            'comments_deleted_current_page' => $comments_deleted_current_page,
+            'comments_deleted_previous_page' => $comments_deleted_previous_page,
+            'comments_deleted_next_page' => $comments_deleted_next_page,
+            'number_of_comments_deleted_pages' => $number_of_comments_deleted_pages,
+            'counter_comments_deleted' => $counter_comments_deleted
+        ));
+    }
+
+    // Déplacer un commentaire vers la Corbeille :
+    public function movecommenttobin()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $this->comment->moveComment($id_comment);
+    }
+
+    // Vider la Corbeille Commentaires
+    public function emptycomments()
+    {
+        $this->comment->emptycommentsbin();
+    }
+
+
+    // Suppression d'un commentaire définitivement :
+    public function removecomment()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $this->comment->eraseComment($id_comment);
+        $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé définitivement!';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: '. BASE_ADMIN_URL. 'comments');
+            exit;
+        }
+    }
+
+
+    // Suppression d'un commentaire signalé :
+    public function removecommentreported()
+    {
+        $id_comment = $this->request->getParameter("id");
+        $this->comment->eraseComment($id_comment);
+        $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: '. BASE_ADMIN_URL. 'commentsreported');
+            exit;
+        }
+    }
+
+
     // USERS
 
     // Affichage de la Corbeille des utilisateurs :

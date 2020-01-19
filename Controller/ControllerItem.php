@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
+require_once 'Model/Category.php';
 require_once 'Model/Comment.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
@@ -15,6 +16,7 @@ require_once 'Model/Calculate.php';
 class ControllerItem extends Controller
 {
     private $item;
+    private $category;
     private $comment;
     private $user;
     private $calculate;
@@ -25,6 +27,7 @@ class ControllerItem extends Controller
     public function __construct()
     {
         $this->item      = new Item();
+        $this->category   = new Category();
         $this->comment   = new Comment();
         $this->user      = new User();
         $this->calculate = new Calculate();
@@ -38,6 +41,8 @@ class ControllerItem extends Controller
     {
         $id_item                  = $this->request->getParameter("id");
         $item                     = $this->item->getItem($id_item);
+        $id_category                = $item['category'];
+        $category                   = $this->category->getCategory($id_category);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $number_of_items_pages    = $this->calculate->getNumberOfPages();
         $number_of_comments       = $this->calculate->countComments($id_item);
@@ -51,6 +56,7 @@ class ControllerItem extends Controller
         $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($id_item);
         $this->generateView(array(
             'item' => $item,
+            'category' => $category,
             'number_of_items' => $number_of_items,
             'number_of_items_pages' => $number_of_items_pages,
             'comments' => $comments,
@@ -70,6 +76,8 @@ class ControllerItem extends Controller
     {
         $id_item                  = $this->request->getParameter("id");
         $item                     = $this->item->getItem($id_item);
+        $id_category                = $item['category'];
+        $category                   = $this->category->getCategory($id_category);
         $user                     = $this->user->getUser($_SESSION['id_user']);
         $number_of_items          = $this->calculate->getTotalOfItems();
         $total_comments_count     = $this->calculate->getTotalOfComments();
@@ -83,6 +91,7 @@ class ControllerItem extends Controller
         $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($id_item);
         $this->generateView(array(
             'item' => $item,
+            'category' => $category,
             'number_of_items' => $number_of_items,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,

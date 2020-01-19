@@ -13,23 +13,23 @@
 ?>
       <div class="col-md-12 col-lg-6 d-flex">
       <div class="card">
-        <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id'])  . "/1/" : "item/indexuser/" . $this->clean($item['id']). "/1/" ?>">
+        <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid'])  . "/1/" : "item/indexuser/" . $this->clean($item['itemid']). "/1/" ?>">
           <img src="<?php echo BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="card-img-top">
         </a>
         <div class="card-body d-flex flex-column">
           <div class="d-flex justify-content-between mb-3">
             <div class="text-small d-flex">
               <div class="mr-2">
-                <a href="#">Business</a>
+                <a href="#"><?= $this->clean($item['categoryname']) ;?></a>
               </div>
               <span class="text-muted">Le <?= $this->clean($item['date_creation_fr']) ?></span>
             </div>
           </div>
-          <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id']) . "/1/" : "item/indexuser/" . $this->clean($item['id']) . "/1/" ?>">
+          <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid']) . "/1/" : "item/indexuser/" . $this->clean($item['itemid']) . "/1/" ?>">
             <h4><?= $this->clean($item['title']) ?></h4>
           </a>
           <p class="flex-grow-1">
-            <?= $this->clean($intro); ?> ...[<a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['id']) . "/1/" : "item/indexuser/" . $this->clean($item['id']) . "/1/" ?>">lire la suite</a>]
+            <?= $this->clean($intro); ?> ...[<a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid']) . "/1/" : "item/indexuser/" . $this->clean($item['itemid']) . "/1/" ?>">lire la suite</a>]
           </p>
           <div class="d-flex align-items-center mt-3">
             <a href="<?= "user/profile/" . $this->clean($item['id_user']) ?>"><img src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean($item['avatar']);?>" alt="<?= $this->clean($item['firstname']) . '&nbsp;' . $this->clean($item['name']) ?>" class="avatar avatar-sm"></a>

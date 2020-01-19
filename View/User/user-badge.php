@@ -27,7 +27,7 @@
           <label for="avatar" class="text-muted text-small">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label>
           <input type="hidden" name="MAX_FILE_SIZE" value="1048576">
           <br>
-          <input type="submit" class="btn btn-md btn-success" name="modifyavatar" value="Envoyer">
+          <input type="submit" class="btn btn-md btn-success" name="update" value="Envoyer">
         </form>
       </div>
     </span>

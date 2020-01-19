@@ -32,7 +32,7 @@
           {
           ?>
           <li>
-              <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>extendedcards/<?= $page_next_items_deleted; ?>" aria-label="Next">
+              <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>extendedcardsbin/<?= $page_next_items_deleted; ?>" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
           </li>
