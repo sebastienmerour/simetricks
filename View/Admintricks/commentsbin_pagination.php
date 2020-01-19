@@ -2,7 +2,7 @@
   <nav class="blog-pagination">
     &nbsp; <ul class="pagination">
 <?php
-  if ($comments_deleted_current_page !=1  AND $comments_deleted_current_page <= $number_of_comments_deleted_pages)// Si la page active n'est pas la première page
+  if ($comments_deleted_current_page !=1  AND $comments_deleted_current_page <= $number_of_comments_deleted_pages)
   {
   ?>
   <li>

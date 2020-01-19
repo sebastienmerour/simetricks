@@ -2,46 +2,50 @@
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
 require_once 'Model/Category.php';
+require_once 'Model/Comment.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
-
 /**
- * Contrôleur gérant la page d'accueil
+ * Contrôleur des actions liées aux articles
  *
  * @version 1.0
  * @author Sébastien Merour
  */
 
-class ControllerHome extends Controller
+class ControllerCategory extends Controller
 {
     private $item;
     private $category;
+    private $comment;
     private $user;
     private $calculate;
 
+    /**
+     * Constructeur
+     */
     public function __construct()
     {
-        $this->item = new Item();
+        $this->item      = new Item();
         $this->category   = new Category();
-        $this->user = new User();
+        $this->comment   = new Comment();
+        $this->user      = new User();
         $this->calculate = new Calculate();
     }
-
-    // Lister les articles en page d'accueil :
+    // Lister les catégories  :
     public function index()
     {
-      if (null!= $this->request->ifParameter("id"))  {
-        $items_current_page  = $this->request->getParameter("id");
-        }
-        else {
-          $items_current_page = 1;
-        }
-          $items                 = $this->item->getItems($items_current_page);
+          $q                     = explode("/", $_SERVER['REQUEST_URI']);
+          $cat                   = $q[2];
+          $page                  = $q[3];
+          $id_category           = (int) $cat;
+          $category              = $this->category->getCategory($id_category);
+          $items_current_page = (int) $page;
+          $items                 = $this->item->getItemsFromCategory($cat, $items_current_page);
           $previous_page         = $items_current_page - 1;
           $next_page             = $items_current_page + 1;
-          $number_of_items_pages = $this->calculate->getNumberOfPages();
-          $number_of_items       = $this->calculate->getTotalOfItems();
+          $number_of_items_pages = $this->calculate->getNumberOfCatPages($id_category);
+          $number_of_items       = $this->calculate->getTotalOfItemsFromCat($id_category);
           $total_comments_count     = $this->calculate->getTotalOfComments();
           $total_users_count        = $this->calculate->getTotalOfUsers();
           $this->generateView(array(
@@ -50,6 +54,8 @@ class ControllerHome extends Controller
               'total_comments_count' => $total_comments_count,
               'total_users_count' => $total_users_count,
               'items_current_page' => $items_current_page,
+              'id_category' => $id_category,
+              'category' => $category,
               'previous_page' => $previous_page,
               'next_page' => $next_page,
               'number_of_items_pages' => $number_of_items_pages

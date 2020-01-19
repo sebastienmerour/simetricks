@@ -7,7 +7,7 @@
     <div class="text-small text-muted">publié le <?= $this->clean($item['date_creation_fr']) ?> | <?php if (isset($item['date_update']) AND $item['date_update'] > 0 ) {?>
       modifé le&nbsp;<?= $this->clean($item['date_update']) ?>
     <?php } ?><br>
-    Catégorie : <a href="#"><?= $category['name']; ?></a> |&nbsp;<a data-smooth-scroll href="<?= "item/" . $this->clean($item['id']). "/1"  ?>/#comments">Commentaires (<?= $number_of_comments ;?>)</a><br>
+    Catégorie : <a href="category/<?= $this->clean($category['id']) ;?>/1"><?= $this->clean($category['name']); ?></a> |&nbsp;<a data-smooth-scroll href="<?= "item/" . $this->clean($item['itemid']). "/1"  ?>/#comments">Commentaires (<?= $number_of_comments ;?>)</a><br>
     </div>
   </div>
 </div>

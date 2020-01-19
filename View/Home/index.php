@@ -20,7 +20,7 @@
           <div class="d-flex justify-content-between mb-3">
             <div class="text-small d-flex">
               <div class="mr-2">
-                <a href="#"><?= $this->clean($item['categoryname']) ;?></a>
+                <a href="category/<?= $this->clean($item['categoryid']) ;?>/1"><?= $this->clean($item['categoryname']) ;?></a>
               </div>
               <span class="text-muted">Le <?= $this->clean($item['date_creation_fr']) ?></span>
             </div>

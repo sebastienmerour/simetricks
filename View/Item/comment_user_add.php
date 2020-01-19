@@ -8,7 +8,7 @@
     <div class="col-md-12 mb-1">
       <div class="form-group">
         <div class="col-sm-7">
-          <input type="hidden" id="id" name="id" value="<?= $this->clean($item['id']); ?>">
+          <input type="hidden" id="id" name="id" value="<?= $this->clean($item['itemid']); ?>">
           <input type="hidden" id="user_id" name="user_id" value="<?= $_SESSION['id_user'];?>">
           <input type="text" readonly class="form-control-plaintext text-left" name="author" id="author" value="| Connecté en tant que : <?= $this->clean($user['firstname']).' ' .$this->clean($user['name'])?>">
         </div>

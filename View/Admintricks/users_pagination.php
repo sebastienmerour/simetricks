@@ -2,7 +2,7 @@
   <nav class="blog-pagination">
     &nbsp; <ul class="pagination">
 <?php
-  if ($users_current_page !=1  AND $users_current_page <= $number_of_users_pages)// Si la page active n'est pas la première page
+  if ($users_current_page !=1  AND $users_current_page <= $number_of_users_pages)
   {
   ?>
   <li>

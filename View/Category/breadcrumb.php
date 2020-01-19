@@ -5,10 +5,7 @@
         <a href="<?= DOMAIN_NAME; ?>">Accueil</a>
       </li>
       <li class="breadcrumb-item">
-        <a href="category/<?= $this->clean($category['id']) ;?>/1"><?= $this->clean($category['name']); ?></a>
-      </li>
-      <li class="breadcrumb-item">
-        <?= $this->clean($item['title']); ?>
+        <?= $this->clean($category['name']); ?>
       </li>
     </ol>
   </nav>

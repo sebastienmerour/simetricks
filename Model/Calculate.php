@@ -34,10 +34,33 @@ class Calculate extends Model
       return $number_of_items;
   }
 
+  // Obtenir le nombre total des Items d'une Catégorie :
+  public function getTotalOfItemsFromCat($id_category)
+  {
+      $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards
+      WHERE bin != "yes"
+      AND id_category = :cat';
+      $this->items_count = $this->dbConnect($sql, array(
+          ':cat' => $id_category
+      ));
+      $items             = $this->items_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_items   = $items['counter'];
+      return $number_of_items;
+  }
+
   // Obtenir le nombre de pages des articles :
   public function getNumberOfPages()
   {
       $number_of_items       = $this->getTotalOfItems();
+      // Calculer le nombre de pages nécessaires :
+      $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
+      return $number_of_items_pages;
+  }
+
+  // Obtenir le nombre de pages des articles :
+  public function getNumberOfCatPages($id_category)
+  {
+      $number_of_items       = $this->getTotalOfItemsFromCat($id_category);
       // Calculer le nombre de pages nécessaires :
       $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
       return $number_of_items_pages;

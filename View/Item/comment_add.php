@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-md-12 mb-1">
       <div class="form-group">
-        <input type="hidden" id="id" name="id" value="<?= $this->clean($item['id']); ?>">
+        <input type="hidden" id="id" name="id" value="<?= $this->clean($item['itemid']); ?>">
         <input type="text" class="form-control" placeholder="Prénom" name="author">
       </div>
     </div>

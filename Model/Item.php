@@ -84,7 +84,7 @@ class Item extends Model
     public function getItems($items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql   = 'SELECT extended_cards.id AS itemid, extended_cards.id_category, extended_cards.title, extended_cards.image, extended_cards.content,
+        $sql   = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.image, extended_cards.content,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
      users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname
@@ -96,6 +96,28 @@ class Item extends Model
      WHERE extended_cards.bin != "yes"
      ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
         $items = $this->dbConnect($sql);
+        return $items;
+    }
+
+    // Afficher la liste des Articles :
+    public function getItemsFromCategory($cat, $items_current_page)
+    {
+        $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
+        $sql   = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.image, extended_cards.content,
+     DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+     DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+     users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname
+     FROM extended_cards
+     LEFT JOIN users
+     ON extended_cards.id_user = users.id_user
+     LEFT JOIN categories
+     ON extended_cards.id_category = categories.id
+     WHERE extended_cards.bin != "yes"
+     AND extended_cards.id_category = :cat
+     ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
+        $items = $this->dbConnect($sql, array(
+            ':cat' => $cat
+        ));
         return $items;
     }
 
@@ -118,7 +140,7 @@ class Item extends Model
     // Afficher un Article en particulier :
     public function getItem($id_item)
     {
-        $sql  = 'SELECT extended_cards.id,  extended_cards.id_category AS category, extended_cards.title AS title, extended_cards.image AS image,
+        $sql  = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS category, extended_cards.title AS title, extended_cards.image AS image,
         DATE_FORMAT(extended_cards.date_native, \'%Y-%m-%d\') AS date_native,
         extended_cards.licence AS licence,
         extended_cards.sgbdr AS sgbdr,
@@ -147,7 +169,7 @@ class Item extends Model
     public function getItemsDeleted($items_deleted_current_page)
     {
         $items_start = (int) (($items_deleted_current_page - 1) * $this->number_of_items_by_page);
-        $sql   = 'SELECT extended_cards.id, extended_cards.id_category, extended_cards.title, extended_cards.image, extended_cards.content,
+        $sql   = 'SELECT extended_cards.id AS itemid, extended_cards.id_category, extended_cards.title, extended_cards.image, extended_cards.content,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
      users.id_user, users.firstname, users.name FROM extended_cards

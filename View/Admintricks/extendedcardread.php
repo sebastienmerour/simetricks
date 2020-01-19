@@ -15,7 +15,7 @@
 <div class="card my-4">
 	<h5 class="card-header">Modification de l'Extended Card <strong><?= $this->clean($item['title']);?></strong></h5>
     <div class="card-body">
-				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>updateitem/<?= $this->clean($item['id']);?>" method="post"
+				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>updateitem/<?= $this->clean($item['itemid']);?>" method="post"
 	        id="itemmodification" enctype="multipart/form-data" novalidate>
 
 				<div class="form-group">
@@ -106,7 +106,7 @@
 							<br>
 							<button class="btn btn-md btn-success" name="update" type="submit">Enregistrer</button>
 							<a href="#" role="button" class="btn btn-md btn-secondary" type="reset">Annuler</a>
-							<a href="<?= BASE_ADMIN_URL. 'removeitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
+							<a href="<?= BASE_ADMIN_URL. 'removeitem/' . $this->clean($item['itemid'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
 							<a href="<?= $_SERVER['HTTP_REFERER']; ?>" role="button" class="btn btn-md btn-primary" type="button">Retour</a>
 						</div>
 			</div>

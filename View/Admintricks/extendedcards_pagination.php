@@ -6,7 +6,7 @@
       require __DIR__ . '/../errors/page_not_found.php';
     }
         else {
-          if ($items_current_page !=1  AND $items_current_page <= $number_of_items_pages)// Si la page active n'est pas la première page
+          if ($items_current_page !=1  AND $items_current_page <= $number_of_items_pages)
           {
           ?>
           <li>

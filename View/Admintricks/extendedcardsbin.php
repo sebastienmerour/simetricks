@@ -33,13 +33,13 @@
 	        <td><h6 class="mt-2 text-left"><?= $this->clean($item['date_creation_fr']); ?></h6></td>
 	        <td><h6 class="mt-2 text-left"><a target="_blank" href="<?= BASE_ADMIN_URL.'userread/' . $this->clean($item['id_user']) ?>">
 	        <?= $this->clean($item['firstname']); ?>&nbsp;<?= $this->clean($item['name']);?></a></span></td>
-					<td><a href="<?= BASE_ADMIN_URL.'extendedcardread/' . $this->clean($item['id'])?>/1">
+					<td><a href="<?= BASE_ADMIN_URL.'extendedcardread/' . $this->clean($item['itemid'])?>">
 					<img width="125px" src="<?= BASE_URL. 'public/images/item_images/' .$this->clean($item['image'])?>" class="figure-img img-fluid rounded-right"
 					alt="<?= $this->clean($item['title']) ?>" title="<?= $this->clean($item['title']) ?>"></a></td>
-	        <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'extendedcardread/' . $this->clean($item['id'])?>/1">
+	        <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'extendedcardread/' . $this->clean($item['itemid'])?>">
 					<h6 class="mt-2 text-left"><?= $this->clean($item['title']); ?></h6></a></span></td>
-	        <td><a href="<?= BASE_ADMIN_URL. 'restorethisitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
-	        <td><a href="<?= BASE_ADMIN_URL. 'removeitem/' . $this->clean($item['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer définitivement</a></td>
+	        <td><a href="<?= BASE_ADMIN_URL. 'restorethisitem/' . $this->clean($item['itemid'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
+	        <td><a href="<?= BASE_ADMIN_URL. 'removeitem/' . $this->clean($item['itemid'])?>" role="button" class="btn btn-sm btn-danger">Supprimer définitivement</a></td>
 	      </tr>
 	      <?php
 	        }
