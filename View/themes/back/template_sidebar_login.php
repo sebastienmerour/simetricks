@@ -14,6 +14,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>links">
+          <span data-feather="link-2"></span>
+          Liens
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>extendedcards">
           <span data-feather="credit-card"></span>
           Extended Cards

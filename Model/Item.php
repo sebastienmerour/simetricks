@@ -15,27 +15,43 @@ class Item extends Model
     // CREATE
 
     // Création d'un nouvel article sans photo :
-    public function insertItem($id_user, $id_category, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content)
+    public function insertItem($id_user, $id_category, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO extended_cards (id_user, id_category, title, date_native, licence, sgbdr, pdm, langage, features, links, content, date_creation)
-                      VALUES
-                      (:id_user, :id_category, :title, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :links, :content, NOW())';
-        $items    = $this->dbConnect($sql, array(
-            ':id_user' => $id_user,
-            ':id_category' => $id_category,
-            ':title' => $title,
-            ':date_native' => $date_native,
-            ':licence' => $licence,
-            ':sgbdr' => $sgbdr,
-            ':pdm' => $pdm,
-            ':langage' => $langage,
-            ':features' => $features,
-            ':links' => $links,
-            ':content' => $content
-        ));
+
+        $sql = 'INSERT INTO extended_cards (id_user, id_category, title, date_native, licence, sgbdr, pdm, langage, features, content, date_creation)
+                      VALUES (:id_user, :id_category, :title, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, NOW())';
+        $query   = $this->dbConnectLastId($sql, array(
+                          ':id_user' => $id_user,
+                          ':id_category' => $id_category,
+                          ':title' => $title,
+                          ':date_native' => $date_native,
+                          ':licence' => $licence,
+                          ':sgbdr' => $sgbdr,
+                          ':pdm' => $pdm,
+                          ':langage' => $langage,
+                          ':features' => $features,
+                          ':content' => $content
+                      ));
+
+
+        if (isset($_POST['linkname']) && is_array($_POST['linkname'])) {
+        for ($i = 0; $i < count($_POST['linkname']); $i++) {
+            $linkname = $_POST['linkname'][$i];
+            $linkurl = $_POST['linkurl'][$i];
+
+        $stmt = 'INSERT INTO links (id_item, name, url)
+          VALUES(:id_item,:name,:url)';
+        $newquery = $this->dbConnect($stmt, array(
+                          ':id_item' => $query,
+                          ':name' => $linkname,
+                          ':url' => $linkurl
+                      ));
+        }
+        }
+
         $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
@@ -44,16 +60,17 @@ class Item extends Model
         }
     }
 
+
     // Création d'un nouvel article avec photo :
     public function insertItemImage($id_user, $id_category, $title, $itemimagename, $date_native,
-    $licence, $sgbdr, $pmd, $langage, $features, $links,$content)
+    $licence, $sgbdr, $pmd, $langage, $features, $content)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO extended_cards (id_user, id_category, title, image, date_native, licence, sgbdr, pdm, langage, features, links, content, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, id_category, title, image, date_native, licence, sgbdr, pdm, langage, features, content, date_creation)
                       VALUES
-                      (:id_user, :id_category, :title, :image, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :links, :content, NOW())';
+                      (:id_user, :id_category, :title, :image, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
             ':id_user' => $id_user,
             ':id_category' => $id_category,
@@ -65,7 +82,6 @@ class Item extends Model
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':links' => $links,
             ':content' => $content
         ));
 

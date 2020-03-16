@@ -289,5 +289,32 @@ class Calculate extends Model
       return $total_categories_deleted_count;
   }
 
+  // LINKS
+  // ADMIN
+
+  // Obtenir le nombre total des Liens :
+  public function getTotalOfLinks()
+  {
+      $sql               = 'SELECT COUNT(id) AS counter FROM links
+      WHERE bin != "yes"';
+      $this->links_count = $this->dbConnect($sql);
+      $links             = $this->links_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_links   = $links['counter'];
+      return $number_of_links;
+  }
+
+
+  // Obtenir le nombre total des Liens supprimés :
+  public function getTotalOfLinksDeleted()
+  {
+      $sql                  = 'SELECT COUNT(id) AS counter FROM links WHERE bin = :bin ';
+      $links_deleted_count = $this->dbConnect($sql, array(
+          ':bin' => "yes"
+      ));
+      $this->links_deleted_count = $links_deleted_count->fetch(\PDO::FETCH_ASSOC);
+      $total_links_deleted_count = $this->links_deleted_count['counter'];
+      return $total_links_deleted_count;
+  }
+
 
 }

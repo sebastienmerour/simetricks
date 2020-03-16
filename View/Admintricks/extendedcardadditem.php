@@ -11,7 +11,7 @@
 <div class="card my-4">
 	<h5 class="card-header">Ajout d'une <strong>Extended Card</strong></h5>
 	<div class="card-body">
-		<form action="<?= BASE_ADMIN_URL; ?>createitem" enctype="multipart/form-data" method="post">
+		<form id="repeater_form" action="<?= BASE_ADMIN_URL; ?>createitem" enctype="multipart/form-data" method="post">
 			<div class="form-group">
 				<div class="row">
 					<div class="col-12">
@@ -62,10 +62,27 @@
 						<textarea class="form-control" id="features" name="features" rows="5">Fonctionnalités...</textarea><br>
 					</div>
 				</div>
+				<div class="wrapper">
 				<div class="row">
+					<div class="col-4">
+						<label for="linkname">Liens :</label><br>
+						<input class="form-control" id="linkname" name="linkname[]" placeholder="Nom du site" type="text"><br>
+					</div>
+					<div class="col-4">
+						<label for="linkurl">URL</label><br>
+						<input class="form-control" id="linkurl" name="linkurl[]" placeholder="http://" type="url"><br>
+					</div>
+					<div class="col-4">
+						<label for="addlinks">Ajout / Suppression de liens</label><br>
+						<p><button class="btn btn-md btn-success add_fields">+</button></p>
+					</div>
+				</div>
+			</div>
+			
+				<div class="">
+				</div>
+					<div class="row">
 					<div class="col-12">
-						<label for="links">Liens :</label><br>
-						<textarea class="form-control" id="links" name="links" rows="5">https://</textarea>
 						<hr>
 						<label for="itemimage"></label>
 						<h5><label for="itemimage">Image principale de l'article :</label></h5><br>
@@ -74,7 +91,6 @@
 						</div><label for="image">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label> <input name="MAX_FILE_SIZE" type="hidden" value="1048576">
 						<hr>
 						<textarea class="form-control" id="content" name="content" rows="10">Aux dernières news...</textarea>
-					</div>
 				</div>
 			</div>
 			<div class="form-group">

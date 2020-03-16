@@ -35,6 +35,22 @@ abstract class Model
         return $result;
     }
 
+    protected function dbConnectLastId($sql, $params = null, $return_insert_id = FALSE)
+    {
+        if ($params == null) {
+            $result = self::getDb()->query($sql); // exécution directe
+        } else {
+            $result = self::getDb()->prepare($sql); // requête préparée
+            $result->execute($params);
+            $result = self::getDb()->lastInsertId();
+        }
+        return $result;
+    }
+
+
+
+
+
     /**
      * Renvoie un objet de connexion à la BDD en initialisant la connexion au besoin
      *

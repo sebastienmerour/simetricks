@@ -8,6 +8,12 @@ Options -MultiViews
 
 # Activation du module de réécriture d'URL :
 RewriteEngine on
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTP_HOST} ^(?:www\.)?simetricks\.com(?:.*)$ [nc]
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [redirect=301,L]
+
+
 
 #--------------------------------------------------
 # Règles de réécriture d'URL :
