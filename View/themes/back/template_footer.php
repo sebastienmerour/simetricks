@@ -26,6 +26,9 @@
         //replace the "Choose a file" label
         $(this).next('.custom-file-label').html(fileName);
     })
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 </script>
 </body>
 </html>

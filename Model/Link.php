@@ -51,9 +51,12 @@ class link extends Model
     // Afficher la liste des Liens en Admin :
     public function getLinksAdmin()
     {
-        $sql   = 'SELECT *
+        $sql   = 'SELECT links.id AS id, links.id_item AS id_item, links.name AS name, links.url AS url, links.bin AS bin,
+      extended_cards.id AS extended_cards, extended_cards.title AS title
      FROM links
-     WHERE bin != "yes"
+     LEFT JOIN extended_cards
+     ON links.id_item = extended_cards.id
+     WHERE links.bin != "yes"
      ORDER BY id ASC LIMIT 0, 100';
         $links = $this->dbConnect($sql);
         return $links;
