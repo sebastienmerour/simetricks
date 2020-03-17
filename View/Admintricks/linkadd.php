@@ -15,6 +15,14 @@
 			<div class="form-group">
 				<div class="row">
 					<div class="col-12">
+						<input class="form-control" id="id_item" name="id_item" placeholder="ID de l'Extended Card" type="text">
+						<small id="id_item" class="form-text text-muted">
+						  &nbsp;<strong>Attention : </strong>renseigner l'ID d'une Extended Card déjà publiée. Ne rentrer qu'une valeur numérique uniquement.
+						</small><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
 						<input class="form-control" id="name" name="name" placeholder="Nom du Lien" type="text"><br>
 					</div>
 				</div>

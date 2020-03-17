@@ -15,14 +15,15 @@ class link extends Model
     // CREATE
 
     // Création d'un nouveau lien :
-    public function insertlink($name, $url)
+    public function insertLink($id_item, $name, $url)
     {
-        $sql      = 'INSERT INTO links (name, url)
+        $sql      = 'INSERT INTO links (id_item, name, url)
                      VALUES
-                      (:name, :url)';
+                      (:id_item, :name, :url)';
         $links    = $this->dbConnect($sql, array(
-            ':name' => $name,
-            ':url' => $url
+            ':id_item' => $id_item,
+            ':name'    => $name,
+            ':url'     => $url
         ));
         $messages['confirmation'] = 'Votre lien a bien été ajouté !';
         if (!empty($messages)) {
@@ -34,8 +35,21 @@ class link extends Model
 
     // READ
 
-    // Afficher la liste des Liens :
-    public function getlinks()
+    // Afficher la liste des liens d'un Article :
+    public function getLinks($id_item)
+    {
+      $sql            = 'SELECT id, id_item, name AS name, url, bin
+      FROM links
+      WHERE id_item = ? AND bin != "yes"
+      ORDER BY id';
+      $links      = $this->dbConnect($sql, array(
+            $id_item
+        ));
+      return $links;
+    }
+
+    // Afficher la liste des Liens en Admin :
+    public function getLinksAdmin()
     {
         $sql   = 'SELECT *
      FROM links
@@ -46,7 +60,7 @@ class link extends Model
     }
 
     // Afficher un Lien en particulier :
-    public function getlink($id_link)
+    public function getLinkAdmin($id_link)
     {
         $sql  = 'SELECT *
         FROM links
@@ -60,7 +74,7 @@ class link extends Model
     }
 
     // Afficher la liste des Liens Supprimés :
-    public function getlinksDeleted()
+    public function getLinksDeleted()
     {
         $sql   = 'SELECT *
      FROM links
@@ -73,17 +87,20 @@ class link extends Model
     }
 
 
+
     // UPDATE
 
     // Modification d'un lien :
-    public function changelink($id_link, $name, $url)
+    public function changeLink($id_link, $id_item, $name, $url)
     {
+        $id_item = !empty($_POST['id_item']) ? trim($_POST['id_item']) : null;
         $name = !empty($_POST['name']) ? trim($_POST['name']) : null;
         $url = !empty($_POST['url']) ? trim($_POST['url']) : null;
-        $sql     = 'UPDATE links SET name = :name, url = :url
+        $sql     = 'UPDATE links SET id_item = :id_item, name = :name, url = :url
         WHERE id = :id_link';
         $link    = $this->dbConnect($sql, array(
             ':id_link' => $id_link,
+            ':id_item' => $id_item,
             ':name' => $name,
             ':url' => $url
         ));
@@ -96,7 +113,7 @@ class link extends Model
     }
 
     // Restaurer un lien depuis la Corbeille
-    public function restorelink($id_link)
+    public function restoreLink($id_link)
     {
         $bin                      = "no";
         $sql                      = 'UPDATE links SET bin = :bin WHERE id = :id';
@@ -115,7 +132,7 @@ class link extends Model
     // DELETE
 
     // Déplacement d'un lien vers la Corbeille
-    public function movelink($id_link)
+    public function moveLink($id_link)
     {
         $bin                      = "yes";
         $sql                      = 'UPDATE links SET bin = :bin WHERE id = :id';
@@ -132,7 +149,7 @@ class link extends Model
     }
 
     // Suppression définitive d'un lien
-    public function eraselink($id_link)
+    public function eraseLink($id_link)
     {
         $sql = 'DELETE
         FROM links

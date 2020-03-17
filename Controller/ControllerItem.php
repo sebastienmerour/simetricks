@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
+require_once 'Model/Link.php';
 require_once 'Model/Category.php';
 require_once 'Model/Comment.php';
 require_once 'Model/User.php';
@@ -16,6 +17,7 @@ require_once 'Model/Calculate.php';
 class ControllerItem extends Controller
 {
     private $item;
+    private $link;
     private $category;
     private $comment;
     private $user;
@@ -27,6 +29,7 @@ class ControllerItem extends Controller
     public function __construct()
     {
         $this->item      = new Item();
+        $this->link       = new Link();
         $this->category   = new Category();
         $this->comment   = new Comment();
         $this->user      = new User();
@@ -52,6 +55,7 @@ class ControllerItem extends Controller
         $comments                 = $this->comment->getPaginationComments($id_item, $comments_current_page);
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
+        $links                    = $this->link->getLinks($id_item);
         $default                  = "default.png";
         $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($id_item);
         $this->generateView(array(
@@ -60,6 +64,7 @@ class ControllerItem extends Controller
             'number_of_items' => $number_of_items,
             'number_of_items_pages' => $number_of_items_pages,
             'comments' => $comments,
+            'links' => $links,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'default' => $default,
@@ -82,6 +87,7 @@ class ControllerItem extends Controller
         $number_of_items          = $this->calculate->getTotalOfItems();
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
+        $links                    = $this->link->getLinks($id_item);
         $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = $this->calculate->getCommentsCurrentPageUser();
         $page_previous_comments   = $comments_current_page - 1;
@@ -97,6 +103,7 @@ class ControllerItem extends Controller
             'total_users_count' => $total_users_count,
             'user' => $user,
             'comments' => $comments,
+            'links' => $links,
             'default' => $default,
             'comments_current_page' => $comments_current_page,
             'page_previous_comments' => $page_previous_comments,

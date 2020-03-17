@@ -4,6 +4,7 @@
 	}
 	else {
 ?>
+
 <?php $this->title =  WEBSITE_NAME . ' |  Modification d\'un article'; ?>
 <?php require('extendedcards_menu.php'); ?>
 <?php if (empty($item)) {
@@ -73,7 +74,20 @@
 				<div class="row">
 				<div class="col-12">
 					<label for="links">Liens :</label><br>
-					<textarea class="form-control" id="links" name="links" rows="5"><?= $this->clean($item['links']);?></textarea>
+					<div class="wrapper">
+						<?php foreach ($links as $link): ?>
+					<div class="row">
+						<div class="col-6">
+							<label for="linkname">Nom du site :</label><br>
+							<input class="form-control" id="linkname" name="linkname[]" placeholder="<?= $this->clean($link['name']);?>" type="text"><br>
+						</div>
+						<div class="col-6">
+							<label for="linkurl">URL</label><br>
+							<input class="form-control" id="linkurl" name="linkurl[]" placeholder="<?= $this->clean($link['url']);?>" type="url"><br>
+						</div>
+					</div>
+				<?php endforeach; ?>
+				</div>
 						<hr>
 						<label for="itemimage"><h5>Image principale de l'article :</h5></label><br>
 						<?php if (empty($item['image'])) {

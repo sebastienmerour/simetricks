@@ -36,7 +36,13 @@
           <dt class="col-sm-3"><h6>Fonctionnalités</h6></dt>
           <dd class="col-sm-9"><?= $this->clean($item['features']); ?></dd>
           <dt class="col-sm-3"><h6>Liens</h6></dt>
-          <dd class="col-sm-9"><?= $this->clean($item['links']); ?></dd>
+          <dd class="col-sm-9">
+            <div class="">
+              <?php foreach ($links as $link): ?>
+                <a href="<?= $this->clean($link['url']) ;?>" target="_blank" type="button" class="btn btn-success btn-sm p-1"><?= $this->clean($link['name']) ;?></a>
+              <?php endforeach; ?>
+            </div>
+          </dd>
           <dt class="col-sm-3"><h6>Aux dernières nouvelles</h6></dt>
           <dd class="col-sm-9"><?= $this->cleantinymce($item['content']); ?></dd>
         </dl>

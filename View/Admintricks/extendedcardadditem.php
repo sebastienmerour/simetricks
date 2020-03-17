@@ -62,10 +62,11 @@
 						<textarea class="form-control" id="features" name="features" rows="5">Fonctionnalités...</textarea><br>
 					</div>
 				</div>
+				<label for="links">Liens :</label><br>
 				<div class="wrapper">
 				<div class="row">
 					<div class="col-4">
-						<label for="linkname">Liens :</label><br>
+						<label for="linkname">Nom du site :</label><br>
 						<input class="form-control" id="linkname" name="linkname[]" placeholder="Nom du site" type="text"><br>
 					</div>
 					<div class="col-4">
@@ -78,7 +79,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 				<div class="">
 				</div>
 					<div class="row">

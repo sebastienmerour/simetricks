@@ -18,6 +18,14 @@
 				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>updatelink/<?= $this->clean($link['id']);?>" method="post"
 	        id="linkmodification" novalidate>
 				<div class="form-group">
+					<div class="row">
+					<div class="col-12">
+						<input class="form-control" id="id_item" name="id_item" type="text" value="<?= $this->clean($link['id_item']);?>">
+						<small id="id_item" class="form-text text-muted">
+						  &nbsp;<strong>Attention : </strong>renseigner l'ID d'une Extended Card déjà publiée. Ne rentrer qu'une valeur numérique uniquement.
+						</small><br>
+					</div>
+					</div>
 						<div class="row">
 						<div class="col-12">
 							<input class="form-control" id="name" name="name" type="text" value="<?= $this->clean($link['name']);?>"><br>

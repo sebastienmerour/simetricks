@@ -42,10 +42,8 @@ class ControllerAdmintricks extends Controller
       $categories_current_page    = 1;
       $links_current_page         = 1;
       $categories                 = $this->category->getCategories($categories_current_page);
-      $links               = $this->link->getLinks($links_current_page);
-        $this->generateadminView(array(
-            'categories' => $categories,
-            'links' => $links
+      $this->generateadminView(array(
+            'categories' => $categories
           ));
     }
 
@@ -64,8 +62,6 @@ class ControllerAdmintricks extends Controller
             $pdm                   = $_POST['pdm'];
             $langage               = $_POST['langage'];
             $features              = $_POST['features'];
-            //$linkname              = $_POST['linkname'][$i];
-            //$linkurl               = $_POST['linkurl'][$i];
             $content               = $_POST['content'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];
@@ -158,9 +154,10 @@ class ControllerAdmintricks extends Controller
     public function createlink()
     {
         if (isset($_POST["create"])) {
-            $name                   = $_POST['name'];
+            $id_item       = $_POST['id_item'];
+            $name          = $_POST['name'];
             $url           = $_POST['url'];
-            $this->link->insertLink($name, $url);
+            $this->link->insertLink($id_item, $name, $url);
             }
     }
 
@@ -220,16 +217,17 @@ class ControllerAdmintricks extends Controller
     // Affichage d'un article seul :
     public function extendedcardread()
     {
-
         $id_item                    = $this->request->getParameter("id");
         $categories                 = $this->category->getCategories();
         $item                       = $this->item->getItem($id_item);
         $id_category                = $item['category'];
         $category                   = $this->category->getCategory($id_category);
+        $links                    = $this->link->getLinks($id_item);
         $this->generateadminView(array(
             'item' => $item,
             'category' => $category,
-            'categories' => $categories
+            'categories' => $categories,
+            'links' => $links
         ));
     }
 
@@ -260,7 +258,7 @@ class ControllerAdmintricks extends Controller
     public function links()
     {
         $number_of_links       = $this->calculate->getTotalOfLinks();
-        $links                = $this->link->getLinks();
+        $links                = $this->link->getLinksAdmin();
         $this->generateadminView(array(
             'links' => $links,
             'number_of_links' => $number_of_links
@@ -271,7 +269,7 @@ class ControllerAdmintricks extends Controller
     public function linkread()
     {
         $id_link = $this->request->getParameter("id");
-        $link   = $this->link->getLink($id_link);
+        $link   = $this->link->getLinkAdmin($id_link);
         $this->generateadminView(array(
             'link' => $link
         ));
@@ -425,7 +423,6 @@ class ControllerAdmintricks extends Controller
             $pdm                   = $this->request->getParameter("pdm");
             $langage               = $this->request->getParameter("langage");
             $features              = $this->request->getParameter("features");
-            $links                 = $this->request->getParameter("links");
             $content               = $this->request->getParameter("content");
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];
@@ -454,9 +451,8 @@ class ControllerAdmintricks extends Controller
                 $pdm                   = $this->request->getParameter("pdm");
                 $langage  = $this->request->getParameter("langage");
                 $features              = $this->request->getParameter("features");
-                $links  = $this->request->getParameter("links");
                 $content  = $this->request->getParameter("content");
-                $this->item->changeItem($id_category, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item);
+                $this->item->changeItem($id_category, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -480,7 +476,7 @@ class ControllerAdmintricks extends Controller
                 }
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->changeItemImage($id_category, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item);
+                $this->item->changeItemImage($id_category, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item);
             }
         }
     }
@@ -521,9 +517,10 @@ class ControllerAdmintricks extends Controller
     {
         if (isset($_POST["update"])) {
             $id_link             = $this->request->getParameter("id");
+            $id_item             = $this->request->getParameter("id_item");
             $name                = $this->request->getParameter("name");
             $url                 = $this->request->getParameter("url");
-            $this->link->changeLink($id_link, $name, $url);
+            $this->link->changeLink($id_link, $id_item, $name, $url);
             }
     }
 
