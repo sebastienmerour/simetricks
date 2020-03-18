@@ -13,13 +13,9 @@
     <link rel="preload" as="font" href="<?= BASE_URL; ?>public/fonts/Inter-UI-upright.var.woff2" type="font/woff2" crossorigin="anonymous">
     <link rel="preload" as="font" href="<?= BASE_URL; ?>public/fonts/Inter-UI.var.woff2" type="font/woff2" crossorigin="anonymous">
     <link href="<?= BASE_URL; ?>public/css/scroll-front.css" rel="stylesheet">
-    <link href="<?= BASE_URL; ?>public/css/loaders/loader-typing.css" rel="stylesheet" media="all">
     <link href="<?= BASE_URL; ?>public/css/theme.css" rel="stylesheet" media="all">
     <link href="<?= BASE_URL; ?>public/css/simetricks.css" rel="stylesheet" media="all">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title><?= $title ?></title>
 </head>
 <body>
-  <div class="loader">
-    <div class="loading-animation"></div>
-  </div>

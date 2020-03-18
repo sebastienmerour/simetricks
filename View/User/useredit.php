@@ -9,7 +9,7 @@
     <div class="col-md-6 col-lg-8 d-flex" data-aos-delay="200">
       <div class="row">
 				<div class="col-md-12 col-lg-12 d-flex">
-	      <div class="card pt-2">
+	      <div class="tabedit card pt-2">
 					<?php require('user-badge.php'); ?>
 					<?php require('user-tabs.php'); ?>
 					<?php require('user-form.php'); ?>

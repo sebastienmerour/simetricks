@@ -1,0 +1,33 @@
+###########################
+#			  #
+#     DOCUMENTATION	  #
+#			  #
+###########################
+
+>>>>> Simetricks.com <<<<<
+
+
+///// JQUERY  /////
+
+
+1) Page Mon Compte
+La page Mon Compte fait appel au fichier tab.js
+Ce fichier permet d'ouvrir directement le bon onglet "Identifiant" lorsqu'on souhaite le modifier.
+
+ >> A noter : l'indication $(window) a été remplacée par $("div.tabedit")
+Ceci est fait pour éviter qu'un scroll se fasse automatiquement sur l'ensemble du site 
+lors de la présence d'un #
+
+2) Admin - Page Création d'Extended Card
+Fonction Javascript permettant d'ajouter dynamiquement des champs "Nouveau Lien"
+lors de la création d'une Extended Card.
+
+3) Footer de la page Admin
+-La fonction $('#uploadimage').on('change',function() a pour objectif
+de renommer le terme "Choose a file" par une phrase en français.
+
+-La fonctoon data-toggle="tooltip" permet d'afficher une Toolip dans la page "Liens"
+
+4) Footer de la page Front
+-La fonction $('#uploadimage').on('change',function() a pour objectif
+de renommer le terme "Choose a file" par une phrase en français.

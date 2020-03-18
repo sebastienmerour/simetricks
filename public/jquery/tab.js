@@ -7,7 +7,7 @@ $(document).ready(() => {
     url = location.href.replace(/\/#/, "#");
     history.replaceState(null, null, url);
     setTimeout(() => {
-      $(window).scrollTop(0);
+      $("div.tabedit").scrollTop(0);
     }, 400);
   }
 
