@@ -12,7 +12,7 @@
         }
 ?>
       <div class="col-md-12 col-lg-6 d-flex">
-      <div class="card">
+      <div class="card hover-shadow-3d rotate-left">
         <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid'])  . "/1/" : "item/indexuser/" . $this->clean($item['itemid']). "/1/" ?>">
           <img src="<?php echo BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="card-img-top">
         </a>

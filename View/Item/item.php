@@ -15,7 +15,7 @@
 <div class="pr-lg-4">
 <div class="container">
   <div class="row justify-content-left position-relative">
-    <div class="pt-3 ml-3">
+    <div class="pt-3 ml-3">        
       <img src="<?php echo BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="w-85 rounded">
     </div>
   </div>
