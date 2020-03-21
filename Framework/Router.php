@@ -31,15 +31,41 @@ class Router
     // Crée le contrôleur approprié en fonction de la requête reçue
     private function createController(Request $request)
     {
-        $controller = "Home"; // Contrôleur par défaut
+        $q          = explode("/", $_SERVER['REQUEST_URI']);
+        $folder     = "Front"; // Dossier par défaut
+        $subfolder  = "Home"; // Sous-Dossier par défaut
+        $controller = $subfolder;
+        if ($q[1] == "admintricks") {
+            $folder     = "Admin"; // Dossier par défaut
+            $subfolder  = "Lock"; // Sous-Dossier par défaut
+            $controller = "Lock";
+        }
+
         if ($request->ifParameter('controller')) {
             $controller = $request->getParameter('controller');
             // Première lettre en majuscule
             $controller = ucfirst(strtolower($controller));
+
+            if ($q[1] != "admintricks") {
+                $subfolder = $q[1]; // Sous-Dossier par défaut
+            } else if ($q[1] == "admintricks" AND $q[2] == false) {
+                $subfolder  = "Lock"; // Sous-Dossier par défaut
+                $controller = "Lock";
+            }
+
+            else if ($q[1] == "admintricks") {
+                $subfolder  = ucfirst($q[2]); // Sous-Dossier par défaut
+                $controller = ucfirst($q[2]);
+            }
         }
+
         // Création du nom du fichier du contrôleur
-        $classController = "Controller" . $controller;
-        $fileController  = "Controller/" . $classController . ".php";
+        $folderController    = $folder;
+        $subFolderController = $subfolder;
+        $classController     = "Controller" . $controller;
+        $fileController      = "Controller/" . $folderController . "/" . $subFolderController . "/" . $classController . ".php";
+
+
         if (file_exists($fileController)) {
             // Instanciation du contrôleur adapté à la requête
             require($fileController);
@@ -53,6 +79,7 @@ class Router
     // Détermine l'action à exécuter en fonction de la requête reçue
     private function createAction(Request $request)
     {
+        $q      = explode("/", $_SERVER['REQUEST_URI']);
         $action = "index"; // Action par défaut
         if ($request->ifParameter('action')) {
             $action = $request->getParameter('action');

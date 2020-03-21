@@ -2,7 +2,7 @@
 <div class="d-flex align-items-center ml-3">
   <a href="<?= "user/profile/" . $this->clean($item['id_user']) ?>"><img src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean($item['avatar']);?>" alt="<?= $this->clean($item['firstname']) . '&nbsp;' . $this->clean($item['name']) ?>" class="avatar mr-2"></a>
 <div>
-    <div>par <a href="<?= "user/profle/" . $this->clean($item['id_user']) ?>"><?= $this->clean($item['firstname']) . '&nbsp;' . $this->clean($item['name'])?></a>
+    <div>par <a href="<?= "user/profile/" . $this->clean($item['id_user']) ?>"><?= $this->clean($item['firstname']) . '&nbsp;' . $this->clean($item['name'])?></a>
     </div>
     <div class="text-small text-muted">publié le <?= $this->clean($item['date_creation_fr']) ?> | <?php if (isset($item['date_update']) AND $item['date_update'] > 0 ) {?>
       modifé le&nbsp;<?= $this->clean($item['date_update']) ?>
@@ -15,7 +15,7 @@
 <div class="pr-lg-4">
 <div class="container">
   <div class="row justify-content-left position-relative">
-    <div class="pt-3 ml-3">        
+    <div class="pt-3 ml-3">
       <img src="<?php echo BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="w-85 rounded">
     </div>
   </div>

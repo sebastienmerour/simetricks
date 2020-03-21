@@ -17,17 +17,17 @@ class Category extends Model
     // Création d'une nouvelle catégorie :
     public function insertCategory($name, $description)
     {
-        $sql      = 'INSERT INTO categories (name, description)
+        $sql                      = 'INSERT INTO categories (name, description)
                      VALUES
                       (:name, :description)';
-        $categories    = $this->dbConnect($sql, array(
+        $categories               = $this->dbConnect($sql, array(
             ':name' => $name,
             ':description' => $description
         ));
         $messages['confirmation'] = 'Votre catégorie a bien été ajoutée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'categories');
+            header('Location:' . BASE_ADMIN_URL . 'categories');
             exit;
         }
     }
@@ -37,7 +37,7 @@ class Category extends Model
     // Afficher la liste des Catégories :
     public function getCategories()
     {
-        $sql   = 'SELECT *
+        $sql        = 'SELECT *
      FROM categories
      WHERE bin != "yes"
      ORDER BY id ASC LIMIT 0, 100';
@@ -48,10 +48,10 @@ class Category extends Model
     // Afficher une Catégorie en particulier :
     public function getCategory($id_category)
     {
-        $sql  = 'SELECT *
+        $sql      = 'SELECT *
         FROM categories
         WHERE id = ? ';
-        $req  = $this->dbConnect($sql, array(
+        $req      = $this->dbConnect($sql, array(
             $id_category
 
         ));
@@ -62,7 +62,7 @@ class Category extends Model
     // Afficher la liste des Catégories Supprimées :
     public function getCategoriesDeleted()
     {
-        $sql   = 'SELECT *
+        $sql                = 'SELECT *
      FROM categories
      WHERE bin = :bin
      ORDER BY name DESC LIMIT 0, 100';
@@ -78,11 +78,11 @@ class Category extends Model
     // Modification d'une catégorie :
     public function changeCategory($id_category, $name, $description)
     {
-        $name = !empty($_POST['name']) ? trim($_POST['name']) : null;
-        $description = !empty($_POST['description']) ? trim($_POST['description']) : null;
-        $sql     = 'UPDATE categories SET name = :name, description = :description
+        $name                     = !empty($_POST['name']) ? trim($_POST['name']) : null;
+        $description              = !empty($_POST['description']) ? trim($_POST['description']) : null;
+        $sql                      = 'UPDATE categories SET name = :name, description = :description
         WHERE id = :id_category';
-        $category    = $this->dbConnect($sql, array(
+        $category                 = $this->dbConnect($sql, array(
             ':id_category' => $id_category,
             ':name' => $name,
             ':description' => $description
@@ -90,7 +90,7 @@ class Category extends Model
         $messages['confirmation'] = 'La Catégorie a bien été modifiée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'categoryread/' . $id_category);
+            header('Location: ' . BASE_ADMIN_URL . 'categories/categoryread/' . $id_category);
             exit;
         }
     }
@@ -107,7 +107,7 @@ class Category extends Model
         $messages['confirmation'] = 'Merci ! La Catégorie a bien été restaurée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'categoriesbin');
+            header('Location: ' . BASE_ADMIN_URL . 'categories/categoriesbin');
             exit;
         }
     }
@@ -119,14 +119,14 @@ class Category extends Model
     {
         $bin                      = "yes";
         $sql                      = 'UPDATE categories SET bin = :bin WHERE id = :id';
-        $move               = $this->dbConnect($sql, array(
+        $move                     = $this->dbConnect($sql, array(
             ':id' => $id_category,
             ':bin' => $bin
         ));
         $messages['confirmation'] = 'Merci ! La Catégorie a été déplacée dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'categories');
+            header('Location: ' . BASE_ADMIN_URL . 'categories');
             exit;
         }
     }
@@ -136,7 +136,7 @@ class Category extends Model
     {
         $sql = 'DELETE
         FROM categories
-        WHERE id = ' . (int) $id_category ;
+        WHERE id = ' . (int) $id_category;
         $req = $this->dbConnect($sql);
         $req->execute();
 
@@ -144,7 +144,7 @@ class Category extends Model
         $messages['confirmation'] = 'Merci ! La Catégorie a été supprimée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'categoriesbin');
+            header('Location:' . BASE_ADMIN_URL . 'categories/categoriesbin');
             exit;
         }
     }
@@ -165,11 +165,10 @@ class Category extends Model
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'categoriesbin');
+            header('Location:' . BASE_ADMIN_URL . 'categories/categoriesbin');
             exit;
         }
     }
-
 
 
 }

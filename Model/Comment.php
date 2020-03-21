@@ -242,7 +242,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Votre commentaire a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'commentread/' . $comment);
+            header('Location: '. BASE_ADMIN_URL. 'comments/commentread/' . $comment);
             exit;
         }
     }
@@ -260,7 +260,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Votre commentaire a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'commentreportedread/' . $comment);
+            header('Location: '. BASE_ADMIN_URL. 'commentsreported/commentreportedread/' . $comment);
             exit;
         }
     }
@@ -278,7 +278,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été approuvé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'commentsreported');
+            header('Location: '. BASE_ADMIN_URL. 'commentsreported/commentreportedread/'.$id_comment);
             exit;
         }
     }
@@ -295,7 +295,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été restauré !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'commentsbin');
+            header('Location: '. BASE_ADMIN_URL. 'comments/commentsbin');
             exit;
         }
     }
@@ -326,6 +326,14 @@ class Comment extends Model
         $sql = 'DELETE FROM comments WHERE id = ' . (int) $id_comment;
         $req = $this->dbConnect($sql);
         $req->execute();
+        // Ici on affiche le message de confirmation :
+        $messages['confirmation'] = 'Merci ! Le commentaire a été supprimé !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location:' . BASE_ADMIN_URL. 'comments/commentsbin');
+            exit;
+        }
+
     }
 
     // Vidage de la Corbeille :
@@ -341,7 +349,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'commentsbin');
+            header('Location:' . BASE_ADMIN_URL. 'comments/commentsbin');
             exit;
         }
     }

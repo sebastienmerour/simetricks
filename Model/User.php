@@ -205,7 +205,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ' . BASE_ADMIN_URL . 'userread/' . $id_user));
+            die(header('Location: ' . BASE_ADMIN_URL . 'users/userread/' . $id_user));
             exit;
         }
 
@@ -225,12 +225,12 @@ class User extends Model
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'userread/' . $id_user);
+            header('Location: ' . BASE_ADMIN_URL . 'users/userread/' . $id_user);
             exit;
         }
     }
 
-    // Modification d'un utilisateur en front :
+    // Modification de l'avatar d'un user en Admin :
     public function changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $date_birth)
     {
         $identification = $id_user;
@@ -247,7 +247,7 @@ class User extends Model
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            die(header('Location: ' . BASE_ADMIN_URL . 'userread/' . $id_user));
+            die(header('Location: ' . BASE_ADMIN_URL . 'users/userread/' . $id_user));
             exit;
         }
 
@@ -268,7 +268,7 @@ class User extends Model
         $messages['confirmation'] = 'Le compte a bien été mis à jour !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'userread/' . $id_user);
+            header('Location: ' . BASE_ADMIN_URL . 'users/userread/' . $id_user);
             exit;
         }
     }
@@ -354,7 +354,7 @@ class User extends Model
         $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été restauré !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'usersbin');
+            header('Location: ' . BASE_ADMIN_URL . 'users/usersbin');
             exit;
         }
     }
@@ -414,7 +414,7 @@ class User extends Model
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'usersbin');
+            header('Location:' . BASE_ADMIN_URL . 'users/usersbin');
             exit;
         }
     }
@@ -464,14 +464,14 @@ class User extends Model
     // Vérifier si le token de reset est valable :
     public function checkResetLink($token, $email, $username, $current_date)
     {
-        $sql     = 'SELECT expdate, COUNT(id) AS num FROM password_reset_temp WHERE email = :email
+        $sql  = 'SELECT expdate, COUNT(id) AS num FROM password_reset_temp WHERE email = :email
         AND token = :token';
-        $stmt    = $this->dbConnect($sql, array(
+        $stmt = $this->dbConnect($sql, array(
             ':email' => $email,
-            ':token' => $token,
+            ':token' => $token
         ));
 
-        $row     = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $row        = $stmt->fetch(\PDO::FETCH_ASSOC);
         $expiration = $row['expdate'];
         if ($row['num'] == 0) {
             $errors['invalidlink'] = 'Ce lien est invalide.<br>
@@ -480,30 +480,28 @@ class User extends Model
             $_SESSION['errors']    = $errors;
             die(header('Location:' . BASE_URL . 'login/forgottenpassword'));
             exit;
-        }
-         else if ($expiration <= $current_date) {
-              $errors['invalidlink'] = 'Ce lien a expiré.<br>
+        } else if ($expiration <= $current_date) {
+            $errors['invalidlink'] = 'Ce lien a expiré.<br>
               Veuillez redemander un nouveau <br>
               mot de passe ci-dessous.';
-              $_SESSION['errors']    = $errors;
-              die(header('Location:' . BASE_URL . 'login/forgottenpassword'));
-              exit;
-          }
-        else {
-          $_SESSION['username']    = $username;
-          $_SESSION['email']    = $email;
-          die(header('Location:' . BASE_URL . 'login/createnewpassword'));
-          exit;
+            $_SESSION['errors']    = $errors;
+            die(header('Location:' . BASE_URL . 'login/forgottenpassword'));
+            exit;
+        } else {
+            $_SESSION['username'] = $username;
+            $_SESSION['email']    = $email;
+            die(header('Location:' . BASE_URL . 'login/createnewpassword'));
+            exit;
         }
     }
 
     // Mise à jour du mot de passe depuis la page de reset :
     public function updatePassword($username, $passwordHash, $email)
     {
-        $sql                      = 'UPDATE users
+        $sql  = 'UPDATE users
          SET pass = :pass
          WHERE username= :username';
-        $user                     = $this->dbConnect($sql, array(
+        $user = $this->dbConnect($sql, array(
             ':pass' => htmlspecialchars($passwordHash),
             ':username' => htmlspecialchars($username)
         ));
@@ -521,13 +519,13 @@ class User extends Model
     public function deleteToken($email)
     {
 
-      $sql = 'DELETE
+        $sql = 'DELETE
       FROM password_reset_temp
       WHERE email = :email';
-      $req = $this->dbConnect($sql, array(
-          ':email' => $email
-      ));
-      $req->execute();
+        $req = $this->dbConnect($sql, array(
+            ':email' => $email
+        ));
+        $req->execute();
     }
 
 }

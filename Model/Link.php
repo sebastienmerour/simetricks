@@ -17,18 +17,18 @@ class link extends Model
     // Création d'un nouveau lien :
     public function insertLink($id_item, $name, $url)
     {
-        $sql      = 'INSERT INTO links (id_item, name, url)
+        $sql                      = 'INSERT INTO links (id_item, name, url)
                      VALUES
                       (:id_item, :name, :url)';
-        $links    = $this->dbConnect($sql, array(
+        $links                    = $this->dbConnect($sql, array(
             ':id_item' => $id_item,
-            ':name'    => $name,
-            ':url'     => $url
+            ':name' => $name,
+            ':url' => $url
         ));
         $messages['confirmation'] = 'Votre lien a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'links');
+            header('Location:' . BASE_ADMIN_URL . 'links');
             exit;
         }
     }
@@ -38,14 +38,14 @@ class link extends Model
     // Afficher la liste des liens d'un Article :
     public function getLinks($id_item)
     {
-      $sql            = 'SELECT id, id_item, name AS name, url, bin
+        $sql   = 'SELECT id, id_item, name AS name, url, bin
       FROM links
       WHERE id_item = ? AND bin != "yes"
       ORDER BY id';
-      $links      = $this->dbConnect($sql, array(
+        $links = $this->dbConnect($sql, array(
             $id_item
         ));
-      return $links;
+        return $links;
     }
 
     // Afficher la liste des Liens en Admin :
@@ -79,7 +79,7 @@ class link extends Model
     // Afficher la liste des Liens Supprimés :
     public function getLinksDeleted()
     {
-        $sql   = 'SELECT *
+        $sql           = 'SELECT *
      FROM links
      WHERE bin = :bin
      ORDER BY name DESC LIMIT 0, 100';
@@ -90,18 +90,17 @@ class link extends Model
     }
 
 
-
     // UPDATE
 
     // Modification d'un lien :
     public function changeLink($id_link, $id_item, $name, $url)
     {
-        $id_item = !empty($_POST['id_item']) ? trim($_POST['id_item']) : null;
-        $name = !empty($_POST['name']) ? trim($_POST['name']) : null;
-        $url = !empty($_POST['url']) ? trim($_POST['url']) : null;
-        $sql     = 'UPDATE links SET id_item = :id_item, name = :name, url = :url
+        $id_item                  = !empty($_POST['id_item']) ? trim($_POST['id_item']) : null;
+        $name                     = !empty($_POST['name']) ? trim($_POST['name']) : null;
+        $url                      = !empty($_POST['url']) ? trim($_POST['url']) : null;
+        $sql                      = 'UPDATE links SET id_item = :id_item, name = :name, url = :url
         WHERE id = :id_link';
-        $link    = $this->dbConnect($sql, array(
+        $link                     = $this->dbConnect($sql, array(
             ':id_link' => $id_link,
             ':id_item' => $id_item,
             ':name' => $name,
@@ -110,7 +109,7 @@ class link extends Model
         $messages['confirmation'] = 'La lien a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'linkread/' . $id_link);
+            header('Location: ' . BASE_ADMIN_URL . 'links/linkread/' . $id_link);
             exit;
         }
     }
@@ -127,10 +126,11 @@ class link extends Model
         $messages['confirmation'] = 'Merci ! La lien a bien été restaurée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'linksbin');
+            header('Location: ' . BASE_ADMIN_URL . 'links/linksbin');
             exit;
         }
     }
+
 
     // DELETE
 
@@ -139,14 +139,14 @@ class link extends Model
     {
         $bin                      = "yes";
         $sql                      = 'UPDATE links SET bin = :bin WHERE id = :id';
-        $move               = $this->dbConnect($sql, array(
+        $move                     = $this->dbConnect($sql, array(
             ':id' => $id_link,
             ':bin' => $bin
         ));
         $messages['confirmation'] = 'Merci ! La lien a été déplacée dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'links');
+            header('Location: ' . BASE_ADMIN_URL . 'links');
             exit;
         }
     }
@@ -156,7 +156,7 @@ class link extends Model
     {
         $sql = 'DELETE
         FROM links
-        WHERE id = ' . (int) $id_link ;
+        WHERE id = ' . (int) $id_link;
         $req = $this->dbConnect($sql);
         $req->execute();
 
@@ -164,7 +164,7 @@ class link extends Model
         $messages['confirmation'] = 'Merci ! La lien a été supprimé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'linksbin');
+            header('Location:' . BASE_ADMIN_URL . 'links/linksbin');
             exit;
         }
     }
@@ -185,11 +185,10 @@ class link extends Model
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'linksbin');
+            header('Location:' . BASE_ADMIN_URL . 'links/linksbin');
             exit;
         }
     }
-
 
 
 }

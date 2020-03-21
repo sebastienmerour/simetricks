@@ -16,7 +16,20 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [redirect=301,L]
 
 
 #--------------------------------------------------
-# Règles de réécriture d'URL :
+# Règles de réécriture d'URL pour l'Admin :
+#--------------------------------------------------
+
+# Réécrit une URL de l'interface d'admin de type admintricks/xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz
+RewriteRule ^admintricks?/?([a-zA-Z]*)?/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&id=$3 [NC,L]
+
+# Réécrit une URL de l'interface d'admin de type admintricks/xxx/yyy en index.php?controller=xxx&action=yyy
+RewriteRule ^admintricks?/?([a-zA-Z]*)?/?([a-zA-Z]*)?/?$ index.php?controller=$1&action=$2 [NC,L]
+
+# Réécrit une URL de l'interface d'admin de type admintricks/xxx/yyy en index.php?controller=xxx&action=yyy
+RewriteRule ^admintricks?/?([a-zA-Z]*)?/?$ index.php?controller=$1 [NC,L]
+
+#--------------------------------------------------
+# Règles de réécriture d'URL pour le Front :
 #--------------------------------------------------
 
 # Réécrit une URL de type xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz

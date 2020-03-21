@@ -61,7 +61,7 @@ class Item extends Model
 
 
     // Création d'un nouvel article avec photo :
-    public function insertItemImage($id_user, $id_category, $title, $itemimagename, $date_native, $licence, $sgbdr, $pmd, $langage, $features, $content)
+    public function insertItemImage($id_user, $id_category, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
     {
         $errors   = array();
         $messages = array();
@@ -165,7 +165,8 @@ class Item extends Model
         extended_cards.content AS content,
         DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
         DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-        users.id_user, users.avatar, users.firstname, users.name
+        users.id_user, users.avatar, users.firstname, users.name,
+        categories.name AS categoryname
         FROM extended_cards
         LEFT JOIN users
         ON extended_cards.id_user = users.id_user
@@ -203,7 +204,7 @@ class Item extends Model
     // Modification d'un article avec photo :
     public function changeItemImage($id_category, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item)
     {
-        $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
+        $id_category              = !empty($_POST['id']) ? trim($_POST['id']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $date_native              = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
         $licence                  = !empty($_POST['licence']) ? trim($_POST['licence']) : null;
@@ -234,7 +235,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcardread/' . $id_item);
+            header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardread/' . $id_item);
             exit;
         }
     }
@@ -269,7 +270,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! Votre article a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcardread/' . $id_item);
+            header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardread/' . $id_item);
             exit;
         }
     }
@@ -286,7 +287,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! L\'Extended Card a bien été restaurée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcardsbin');
+            header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardsbin');
             exit;
         }
     }
@@ -325,7 +326,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! Votre article a bien été supprimé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcardsbin');
+            header('Location:' . BASE_ADMIN_URL . 'extendedcards/extendedcardsbin');
             exit;
         }
     }
@@ -347,7 +348,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcardsbin');
+            header('Location:' . BASE_ADMIN_URL . 'extendedcards/extendedcardsbin');
             exit;
         }
     }
