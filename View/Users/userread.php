@@ -59,8 +59,8 @@
 	            </div>
 
 							<div class="col-6">
-								<input class="form-control" id="firstname" name="firstname" type="text" placeholder="<?= $this->clean($user['firstname']);?>" value="<?= $this->clean($user['firstname']);?>"><br>
-								<input class="form-control" id="name" name="name" type="text" placeholder="<?= $this->clean($user['name']);?>" value="<?= $this->clean($user['name']);?>"><br>
+								<input class="form-control font-weight-bold" id="firstname" name="firstname" type="text" placeholder="Prénom" value="<?= $this->clean($user['firstname']);?>"><br>
+								<input class="form-control font-weight-bold" id="name" name="name" type="text" placeholder="Nom" value="<?= $this->clean($user['name']);?>"><br>
 								<label for="date_birth">Date de naissance :</label><br>
 								<input type="date" class="form-control" name="date_birth" id="date_birth" value="<?= strftime('%Y-%m-%d', strtotime($user['date_birth'])); ?>" title="Modifiez la date de naissance si besoin"><br>
 								<label for="date_register">Date d'enregistrement :</label><br>

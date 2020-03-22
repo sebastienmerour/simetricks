@@ -13,7 +13,7 @@ class Calculate extends Model
   public
   $number_of_comments,
   $comments_current_page,
-  $number_of_items_by_page = 5,
+  $number_of_items_by_page = 6,
   $number_of_comments_by_page = 5,
   $number_of_comments_reported_by_page = 5,
   $number_of_users_by_page = 5,
@@ -185,9 +185,12 @@ class Calculate extends Model
   // Calculer le nombre total de commentaires signalés pour l'admin :
   public function getTotalOfCommentsReported()
   {
-      $sql                     = 'SELECT COUNT(id) as counter FROM comments WHERE report = :report ';
+      $sql                     = 'SELECT COUNT(id) as counter FROM comments
+      WHERE report = :report
+      AND bin = :bin';
       $comments_reported_count = $this->dbConnect($sql, array(
-          ':report' => "yes"
+          ':report' => "yes",
+          ':bin'    => "no"
       ));
 
       $this->comments_reported_count = $comments_reported_count->fetch(\PDO::FETCH_ASSOC);

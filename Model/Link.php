@@ -106,7 +106,7 @@ class link extends Model
             ':name' => $name,
             ':url' => $url
         ));
-        $messages['confirmation'] = 'La lien a bien été modifié !';
+        $messages['confirmation'] = 'Le lien a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: ' . BASE_ADMIN_URL . 'links/linkread/' . $id_link);
@@ -123,7 +123,7 @@ class link extends Model
             ':id' => $id_link,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! La lien a bien été restaurée !';
+        $messages['confirmation'] = 'Merci ! Le lien a bien été restauré !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: ' . BASE_ADMIN_URL . 'links/linksbin');
@@ -143,7 +143,7 @@ class link extends Model
             ':id' => $id_link,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! La lien a été déplacée dans la corbeille !';
+        $messages['confirmation'] = 'Merci ! Le lien a été déplacé dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: ' . BASE_ADMIN_URL . 'links');
@@ -161,7 +161,7 @@ class link extends Model
         $req->execute();
 
         // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La lien a été supprimé !';
+        $messages['confirmation'] = 'Merci ! Le lien a été supprimé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location:' . BASE_ADMIN_URL . 'links/linksbin');

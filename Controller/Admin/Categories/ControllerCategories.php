@@ -1,9 +1,6 @@
 <?php
 require_once 'Framework/Controller.php';
-require_once 'Model/Item.php';
 require_once 'Model/Category.php';
-require_once 'Model/Link.php';
-require_once 'Model/Comment.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
@@ -17,19 +14,13 @@ require_once 'Model/Calculate.php';
 class ControllerCategories extends Controller
 {
     private $user;
-    private $item;
     private $category;
-    private $link;
-    private $comment;
     private $calculate;
 
     public function __construct()
     {
         $this->user      = new User();
-        $this->item      = new Item();
         $this->category  = new Category();
-        $this->link      = new Link();
-        $this->comment   = new Comment();
         $this->calculate = new Calculate();
     }
 
@@ -46,9 +37,22 @@ class ControllerCategories extends Controller
     public function createcategory()
     {
         if (isset($_POST["create"])) {
-            $name        = $_POST['name'];
-            $description = $_POST['description'];
-            $this->category->insertCategory($name, $description);
+            $name         = $_POST['name'];
+            $description  = $_POST['description'];
+            $delimiter    = '-';
+            $slugcategory = $this->slugify($name, $delimiter);
+
+            if (empty($name) || empty($description)) {
+                $errors['errors'] = 'Veuillez remplir tous les champs !';
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: ' . BASE_ADMIN_URL . 'categories/categoryadd');
+                    exit;
+                }
+            }
+            else {
+            $this->category->insertCategory($name, $slugcategory, $description);
+          }
         }
     }
 
@@ -83,10 +87,11 @@ class ControllerCategories extends Controller
     public function updatecategory()
     {
         if (isset($_POST["update"])) {
-            $id_category = $this->request->getParameter("id");
-            $name        = $this->request->getParameter("name");
-            $description = $this->request->getParameter("description");
-            $this->category->changeCategory($id_category, $name, $description);
+            $id_category  = $this->request->getParameter("id");
+            $name         = $this->request->getParameter("name");
+            $slugcategory = $this->request->getParameter("slugcategory");
+            $description  = $this->request->getParameter("description");
+            $this->category->changeCategory($id_category, $name, $slugcategory, $description);
         }
     }
 
@@ -110,7 +115,6 @@ class ControllerCategories extends Controller
             'number_of_categories_deleted' => $number_of_categories_deleted
         ));
     }
-
 
     // Déplacer un catégorie vers la Corbeille :
     public function movecategorytobin()
@@ -136,6 +140,19 @@ class ControllerCategories extends Controller
     public function emptycategories()
     {
         $this->category->emptybin();
+    }
+
+    public function slugify($name, $delimiter) {
+    	$oldLocale = setlocale(LC_ALL, '0');
+    	setlocale(LC_ALL, 'en_US.UTF-8');
+    	$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
+      $clean = str_replace('\'', ' ', $clean);
+    	$clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
+    	$clean = strtolower($clean);
+    	$clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
+    	$clean = trim($clean, $delimiter);
+    	setlocale(LC_ALL, $oldLocale);
+    	return $clean;
     }
 
 

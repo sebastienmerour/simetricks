@@ -27,7 +27,8 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
-						<input class="form-control" id="title" name="title" placeholder="Titre" type="text"><br>
+						<input class="form-control font-weight-bold" id="title" name="title" placeholder="Titre" type="text"><br>
+						<input class="form-control" id="slug" name="slug" placeholder="Slug" type="text"><br>
 					</div>
 				</div>
 				<div class="row">
@@ -86,11 +87,12 @@
 					<div class="col-12">
 						<hr>
 						<label for="itemimage"></label>
-						<h5><label for="itemimage">Image principale de l'article :</label></h5><br>
+						<h5><label for="itemimage">Image principale de l'article :</label></h5>
 						<div class="custom-file">
 							<input class="custom-file-input" name="image" type="file" id="uploadimage"> <label class="custom-file-label" data-browse="Parcourir..." for="image"></label>
 						</div><label for="image">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label> <input name="MAX_FILE_SIZE" type="hidden" value="1048576">
 						<hr>
+						<h5><label for="content">Contenu :</label></h5>
 						<textarea class="form-control" id="content" name="content" rows="10">Aux dernières news...</textarea>
 				</div>
 			</div>

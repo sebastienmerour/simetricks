@@ -23,6 +23,11 @@
 							<input class="form-control" id="name" name="name" type="text" placeholder="<?= $this->clean($category['name']);?>" value="<?= $this->clean($category['name']);?>"><br>
 						</div>
 					</div>
+					<div class="row">
+					<div class="col-12">
+						<input class="form-control" id="slugcategory" name="slugcategory" type="text" placeholder="<?= $this->clean($category['slug']);?>" value="<?= $this->clean($category['slug']);?>"><br>
+					</div>
+				</div>
 				</div>
 				<div class="row">
 				<div class="col-12">

@@ -10,7 +10,8 @@
         <div class="col-sm-7">
           <input type="hidden" id="id" name="id" value="<?= $this->clean($item['itemid']); ?>">
           <input type="hidden" id="user_id" name="user_id" value="<?= $_SESSION['id_user'];?>">
-          <input type="text" readonly class="form-control-plaintext text-left" name="author" id="author" value="| Connecté en tant que : <?= $this->clean($user['firstname']).' ' .$this->clean($user['name'])?>">
+          <label for="author">| Connecté en tant que : </label>
+          <input type="text" readonly class="form-control-plaintext text-left" name="author" id="author" value="<?= $this->clean($user['firstname']).' ' .$this->clean($user['name'])?>">
         </div>
       </div>
     </div>

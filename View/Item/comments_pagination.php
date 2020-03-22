@@ -5,7 +5,7 @@
         {
         ?>
     <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid']) . "/" . $page_previous_comments : "item/indexuser/" . $this->clean($item['itemid']).
-    "/" . $page_previous_comments ?>/#comments" class="btn btn-outline-white">Préc</a>
+    "/" . $page_previous_comments . "/" . $this->clean($item['slug']);?>/#comments" class="btn btn-outline-white">Préc</a>
   <?php
   }; ?>
 </div>
@@ -21,10 +21,10 @@
             }
             else {
               if (!ISSET($_SESSION['id_user'])) {
-                echo ' class="page-item active"><a class="page-link" href="item/' .$this->clean($item['itemid']). '/'. $i . '/#comments">' . $i . '</a></li>';
+                echo ' class="page-item active"><a class="page-link" href="item/' .$this->clean($item['itemid']). '/'. $i . '/' . $this->clean($item['slug']) .'/#comments">' . $i . '</a></li>';
               }
               else {
-                echo ' class="page-item active"><a class="page-link" href="item/indexuser/' .$this->clean($item['itemid']). '/'. $i . '/#comments">' . $i . '</a></li>';
+                echo ' class="page-item active"><a class="page-link" href="item/indexuser/' .$this->clean($item['itemid']). '/'. $i . '/' . $this->clean($item['slug']) .'/#comments">' . $i . '</a></li>';
             }
         }
       };?>
@@ -35,6 +35,6 @@
     <?php if ($comments_current_page < $number_of_comments_pages)
         {
         ?><a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid']) . "/" . $page_next_comments  : "item/indexuser/" . $this->clean($item['itemid']).
-        "/" . $page_next_comments ?>/#comments" class="btn btn-outline-white">Suiv</a><?php };?>
+        "/" . $page_next_comments. '/' . $this->clean($item['slug']);?>/#comments" class="btn btn-outline-white">Suiv</a><?php };?>
       </div>
 </div>

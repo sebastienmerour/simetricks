@@ -15,13 +15,14 @@ class Category extends Model
     // CREATE
 
     // Création d'une nouvelle catégorie :
-    public function insertCategory($name, $description)
+    public function insertCategory($name, $slugcategory, $description)
     {
-        $sql                      = 'INSERT INTO categories (name, description)
+        $sql                      = 'INSERT INTO categories (name, slug, description)
                      VALUES
-                      (:name, :description)';
+                      (:name, :slug, :description)';
         $categories               = $this->dbConnect($sql, array(
             ':name' => $name,
+            ':slug' => $slugcategory,
             ':description' => $description
         ));
         $messages['confirmation'] = 'Votre catégorie a bien été ajoutée !';
@@ -76,14 +77,16 @@ class Category extends Model
     // UPDATE
 
     // Modification d'une catégorie :
-    public function changeCategory($id_category, $name, $description)
+    public function changeCategory($id_category, $name, $slugcategory, $description)
     {
         $name                     = !empty($_POST['name']) ? trim($_POST['name']) : null;
+        $slugcategory             = !empty($_POST['slugcategory']) ? trim($_POST['slugcategory']) : null;
         $description              = !empty($_POST['description']) ? trim($_POST['description']) : null;
-        $sql                      = 'UPDATE categories SET name = :name, description = :description
+        $sql                      = 'UPDATE categories SET name = :name, slug = :slug, description = :description
         WHERE id = :id_category';
         $category                 = $this->dbConnect($sql, array(
             ':id_category' => $id_category,
+            ':slug' => $slugcategory,
             ':name' => $name,
             ':description' => $description
         ));

@@ -10,23 +10,24 @@ require_once 'Framework/Model.php';
 
 class Item extends Model
 {
-    public $number_of_items, $items_current_page, $number_of_items_pages, $number_of_items_by_page = 5;
+    public $number_of_items, $items_current_page, $number_of_items_pages, $number_of_items_by_page = 6;
 
     // CREATE
 
     // Création d'un nouvel article sans photo :
-    public function insertItem($id_user, $id_category, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
+    public function insertItem($id_user, $id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
 
-        $sql   = 'INSERT INTO extended_cards (id_user, id_category, title, date_native, licence, sgbdr, pdm, langage, features, content, date_creation)
-                      VALUES (:id_user, :id_category, :title, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, NOW())';
+        $sql   = 'INSERT INTO extended_cards (id_user, id_category, title, slug, date_native, licence, sgbdr, pdm, langage, features, content, date_creation)
+                      VALUES (:id_user, :id_category, :title, :slug, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, NOW())';
         $query = $this->dbConnectLastId($sql, array(
             ':id_user' => $id_user,
             ':id_category' => $id_category,
             ':title' => $title,
+            ':slug' => $slug,
             ':date_native' => $date_native,
             ':licence' => $licence,
             ':sgbdr' => $sgbdr,
@@ -59,20 +60,20 @@ class Item extends Model
         }
     }
 
-
     // Création d'un nouvel article avec photo :
-    public function insertItemImage($id_user, $id_category, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
+    public function insertItemImage($id_user, $id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO extended_cards (id_user, id_category, title, image, date_native, licence, sgbdr, pdm, langage, features, content, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, id_category, title, slug, image, date_native, licence, sgbdr, pdm, langage, features, content, date_creation)
                       VALUES
-                      (:id_user, :id_category, :title, :image, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, NOW())';
+                      (:id_user, :id_category, :title, :slug, :image, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, NOW())';
         $items    = $this->dbConnect($sql, array(
             ':id_user' => $id_user,
             ':id_category' => $id_category,
             ':title' => $title,
+            ':slug' => $slug,
             ':image' => $itemimagename,
             ':date_native' => $date_native,
             ':licence' => $licence,
@@ -98,10 +99,11 @@ class Item extends Model
     public function getItems($items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.image, extended_cards.content,
+        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-     users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname
+     users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname,
+     categories.slug AS categoryslug
      FROM extended_cards
      LEFT JOIN users
      ON extended_cards.id_user = users.id_user
@@ -117,10 +119,11 @@ class Item extends Model
     public function getItemsFromCategory($cat, $items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.image, extended_cards.content,
+        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-     users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname
+     users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname,
+     categories.slug AS categoryslug
      FROM extended_cards
      LEFT JOIN users
      ON extended_cards.id_user = users.id_user
@@ -139,7 +142,7 @@ class Item extends Model
     public function getPaginationItems($items_current_page)
     {
         $start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql   = 'SELECT extended_cards.id, extended_cards.id_category, extended_cards.title, extended_cards.image, extended_cards.content,
+        $sql   = 'SELECT extended_cards.id, extended_cards.id_category, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
     DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
     DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
     users.id_user, users.avatar, users.firstname, users.name FROM extended_cards
@@ -154,7 +157,7 @@ class Item extends Model
     // Afficher un Article en particulier :
     public function getItem($id_item)
     {
-        $sql  = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS category, extended_cards.title AS title, extended_cards.image AS image,
+        $sql  = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS category, extended_cards.title AS title, extended_cards.slug AS slug, extended_cards.image AS image,
         DATE_FORMAT(extended_cards.date_native, \'%Y-%m-%d\') AS date_native,
         extended_cards.licence AS licence,
         extended_cards.sgbdr AS sgbdr,
@@ -166,7 +169,7 @@ class Item extends Model
         DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
         DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
         users.id_user, users.avatar, users.firstname, users.name,
-        categories.name AS categoryname
+        categories.name AS categoryname, categories.slug AS categoryslug
         FROM extended_cards
         LEFT JOIN users
         ON extended_cards.id_user = users.id_user
@@ -184,7 +187,7 @@ class Item extends Model
     public function getItemsDeleted($items_deleted_current_page)
     {
         $items_start   = (int) (($items_deleted_current_page - 1) * $this->number_of_items_by_page);
-        $sql           = 'SELECT extended_cards.id AS itemid, extended_cards.id_category, extended_cards.title, extended_cards.image, extended_cards.content,
+        $sql           = 'SELECT extended_cards.id AS itemid, extended_cards.id_category, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
      users.id_user, users.firstname, users.name FROM extended_cards
@@ -202,26 +205,27 @@ class Item extends Model
     // UPDATE
 
     // Modification d'un article avec photo :
-    public function changeItemImage($id_category, $title, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $links, $content, $id_item)
+    public function changeItemImage($id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item)
     {
         $id_category              = !empty($_POST['id']) ? trim($_POST['id']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
+        $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
         $date_native              = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
         $licence                  = !empty($_POST['licence']) ? trim($_POST['licence']) : null;
         $sgbdr                    = !empty($_POST['sgbdr']) ? trim($_POST['sgbdr']) : null;
         $pdm                      = !empty($_POST['pdm']) ? trim($_POST['pdm']) : null;
         $features                 = !empty($_POST['features']) ? trim($_POST['features']) : null;
         $langage                  = !empty($_POST['langage']) ? trim($_POST['langage']) : null;
-        $links                    = !empty($_POST['links']) ? trim($_POST['links']) : null;
         $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
-        $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title, image = :image,
-        date_native = :date_native, licence = :licence, sgbdr = :sgbdr, pdm = :pdm,  langage = :langage, features = :features, links = :links,
+        $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug, image = :image,
+        date_native = :date_native, licence = :licence, sgbdr = :sgbdr, pdm = :pdm,  langage = :langage, features = :features,
         content = :content,
         date_update = NOW() WHERE id = :id';
         $item                     = $this->dbConnect($sql, array(
             ':id' => $id_item,
             ':id_category' => $id_category,
             ':title' => $title,
+            ':slug' => $slug,
             ':image' => $itemimagename,
             ':date_native' => $date_native,
             ':licence' => $licence,
@@ -229,7 +233,6 @@ class Item extends Model
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':links' => $links,
             ':content' => $content
         ));
         $messages['confirmation'] = 'Votre Extended Card a bien été modifiée !';
@@ -241,10 +244,11 @@ class Item extends Model
     }
 
     // Modification d'un article sans photo :
-    public function changeItem($id_category, $title, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item)
+    public function changeItem($id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item)
     {
         $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
+        $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
         $date_native              = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
         $licence                  = !empty($_POST['licence']) ? trim($_POST['licence']) : null;
         $sgbdr                    = !empty($_POST['sgbdr']) ? trim($_POST['sgbdr']) : null;
@@ -252,13 +256,14 @@ class Item extends Model
         $langage                  = !empty($_POST['langage']) ? trim($_POST['langage']) : null;
         $features                 = !empty($_POST['features']) ? trim($_POST['features']) : null;
         $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
-        $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title,
+        $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug,
         date_native = :date_native, licence = :licence, sgbdr = :sgbdr, pdm = :pdm, langage = :langage, features = :features,
         content = :content, date_update = NOW() WHERE id = :id';
         $item                     = $this->dbConnect($sql, array(
             ':id' => $id_item,
             ':id_category' => $id_category,
             ':title' => $title,
+            ':slug' => $slug,
             ':date_native' => $date_native,
             ':licence' => $licence,
             ':sgbdr' => $sgbdr,

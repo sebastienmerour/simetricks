@@ -13,7 +13,8 @@ RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteCond %{HTTP_HOST} ^(?:www\.)?simetricks\.com(?:.*)$ [nc]
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [redirect=301,L]
 
-
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
 
 #--------------------------------------------------
 # Règles de réécriture d'URL pour l'Admin :
@@ -36,7 +37,7 @@ RewriteRule ^admintricks?/?([a-zA-Z]*)?/?$ index.php?controller=$1 [NC,L]
 RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&id=$3 [NC,L]
 
 # Réécrit une URL de type xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz&pageitems=iii
-RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&id=$3&page=$4 [NC,L]
+RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9\-]+)?/?$ index.php?controller=$1&action=$2&id=$3&page=$4&slug=0 [NC,L]
 
 # Réécrit une URL pour Reset Password
 RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&token=$3&email=$4&username=$5 [NC,L]

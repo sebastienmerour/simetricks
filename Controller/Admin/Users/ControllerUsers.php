@@ -1,9 +1,5 @@
 <?php
 require_once 'Framework/Controller.php';
-require_once 'Model/Item.php';
-require_once 'Model/Category.php';
-require_once 'Model/Link.php';
-require_once 'Model/Comment.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
@@ -17,19 +13,11 @@ require_once 'Model/Calculate.php';
 class ControllerUsers extends Controller
 {
     private $user;
-    private $item;
-    private $category;
-    private $link;
-    private $comment;
     private $calculate;
 
     public function __construct()
     {
         $this->user      = new User();
-        $this->item      = new Item();
-        $this->category  = new Category();
-        $this->link      = new Link();
-        $this->comment   = new Comment();
         $this->calculate = new Calculate();
     }
 
@@ -132,7 +120,7 @@ class ControllerUsers extends Controller
                 $this->user->changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $date_birth);
             }
         } else {
-            $errors['errors'] = 'Merci de renseigner tous les champs !';
+            $errors['errors'] = 'Merci de renseigner les champs <strong>Prénom et Nom</strong> !';
             if (!empty($errors)) {
                 $_SESSION['errors'] = $errors;
                 header('Location: ' . BASE_ADMIN_URL . 'users/userread/' . $id_user);

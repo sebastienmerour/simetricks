@@ -10,7 +10,7 @@
         if ($items_current_page > 1  AND $items_current_page <= $number_of_items_pages)
         {
         ?>
-    <a href="<?= BASE_URL. 'category/'.$id_category. '/'. $previous_page; ?>" class="btn btn-outline-white">Préc</a>
+    <a href="<?= BASE_URL. 'category/'.$id_category. '/'. $previous_page. '/'. $this->clean($category['slug']); ?>" class="btn btn-outline-white">Préc</a>
   <?php
   }; ?>
 
@@ -26,7 +26,7 @@
               echo ' class="page-item disabled"><a class="page-link" href="#">'.$i.' </a></li>';
             }
             else {
-              echo ' class="page-item active"><a class="page-link" href="'. BASE_URL . 'category/'.$id_category. '/'.$i.'">' .$i. '</a></li>';
+              echo ' class="page-item active"><a class="page-link" href="'. BASE_URL . 'category/'.$id_category. '/'.$i.'/' .$this->clean($category['slug']).'">' .$i. '</a></li>';
             }
         };?>
         </ul>
@@ -35,7 +35,7 @@
     <div class="col-auto">
     <?php if ($items_current_page < $number_of_items_pages)
         {
-        ?><a href="<?= BASE_URL. 'category/'.$id_category. '/'. $next_page; ?>" class="btn btn-outline-white">Suiv</a><?php };?>
+        ?><a href="<?= BASE_URL. 'category/'.$id_category. '/'. $next_page. '/' .$this->clean($category['slug']);?>" class="btn btn-outline-white">Suiv</a><?php };?>
       </div>
       <?php };?>
 </div>

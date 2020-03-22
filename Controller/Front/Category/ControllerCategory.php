@@ -7,7 +7,7 @@ require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
 /**
- * Contrôleur des actions liées aux articles
+ * Contrôleur des actions liées aux catégories
  *
  * @version 1.0
  * @author Sébastien Merour
@@ -27,7 +27,7 @@ class ControllerCategory extends Controller
     public function __construct()
     {
         $this->item      = new Item();
-        $this->category   = new Category();
+        $this->category  = new Category();
         $this->comment   = new Comment();
         $this->user      = new User();
         $this->calculate = new Calculate();

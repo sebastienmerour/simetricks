@@ -20,6 +20,11 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
+						<input class="form-control" id="slugcategory" name="slugcategory" placeholder="Slug de la Catégorie" type="text"><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
 						<textarea class="form-control" id="description" name="description" rows="5">Description</textarea>
 					</div>
 				</div>
