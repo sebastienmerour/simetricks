@@ -1,4 +1,4 @@
-<div class="pr-lg-4 ml-3">
+<div class="pr-lg-4 ml-3"><!-- Commentaires  -->
   <hr>
   <h5 id="comments" class="my-4"><?= $number_of_comments ;?> Commentaire(s)</h5>
 <?php

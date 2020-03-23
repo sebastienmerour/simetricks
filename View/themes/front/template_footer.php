@@ -10,7 +10,7 @@
     <div class="row mb-4">
       <div class="col">
         <ul class="nav justify-content-center">
-          <li class="nav-item"><a href="#" class="nav-link">Cards</a>
+          <li class="nav-item"><a href="cards" class="nav-link">Cards</a>
           </li>
           <li class="nav-item"><a href="#" class="nav-link">Extended Cards</a>
           </li>

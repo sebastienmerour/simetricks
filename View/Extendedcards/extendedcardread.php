@@ -5,7 +5,7 @@
 	else {
 ?>
 
-<?php $this->title =  WEBSITE_NAME . ' |  Modification d\'un article'; ?>
+<?php $this->title =  WEBSITE_NAME . ' |  Modification d\'une Extended Card'; ?>
 <?php require('extendedcards_menu.php'); ?>
 <?php if (empty($item)) {
 							require __DIR__ . '/../errors/item_not_found.php';
@@ -90,9 +90,9 @@
 				<?php endforeach; ?>
 				</div>
 						<hr>
-						<label for="itemimage"><h5>Image principale de l'article :</h5></label><br>
+						<label for="itemimage"><h5>Image principale de l'Extended Card :</h5></label><br>
 						<?php if (empty($item['image'])) {
-								echo '<p>Il n\'y a pas d\'image pour cet article. Ajoutez une image ci-dessous :</p>';
+								echo '<p>Il n\'y a pas d\'image pour cette Extended Card. Ajoutez une image ci-dessous :</p>';
 						} else {
 							?>
 							<figure class="figure">
@@ -113,7 +113,7 @@
 						<h5><label for="content">Contenu :</label></h5>
 						<textarea rows="15" cols="10" class="form-control" name="content" id="content"
 						placeholder="<?= $this->clean($item['content']);?>"
-						title="Modifiez l'article si besoin"><?= $this->clean($item['content']);?></textarea>
+						title="Modifiez l'extended card si besoin"><?= $this->clean($item['content']);?></textarea>
 				</div>
 			</div>
 		</div>

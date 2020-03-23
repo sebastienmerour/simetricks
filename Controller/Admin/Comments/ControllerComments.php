@@ -6,7 +6,7 @@ require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
 /**
- * Contrôleur gérant la page d'accueil de l'administration du site
+ * Contrôleur gérant l'administration des commentaires
  *
  * @version 1.0
  * @author Sébastien Merour

@@ -2,7 +2,7 @@
 require_once 'Framework/Model.php';
 
 /**
- * Fournit les fonctions liées aux articles
+ * Fournit les fonctions liées aux Extended Cards
  *
  * @version 1.0
  * @author Sébastien Merour
@@ -14,7 +14,7 @@ class Item extends Model
 
     // CREATE
 
-    // Création d'un nouvel article sans photo :
+    // Création d'une nouvelle Extended Card sans photo :
     public function insertItem($id_user, $id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
     {
         $errors   = array();
@@ -60,7 +60,7 @@ class Item extends Model
         }
     }
 
-    // Création d'un nouvel article avec photo :
+    // Création d'une nouvelle Extended Card avec photo :
     public function insertItemImage($id_user, $id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
     {
         $errors   = array();
@@ -95,7 +95,7 @@ class Item extends Model
 
     // READ
 
-    // Afficher la liste des Articles :
+    // Afficher la liste des Extended Cards :
     public function getItems($items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
@@ -115,7 +115,7 @@ class Item extends Model
         return $items;
     }
 
-    // Afficher la liste des Articles :
+    // Afficher la liste des Extended Cards appartenant à une Catégorie :
     public function getItemsFromCategory($cat, $items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
@@ -138,7 +138,7 @@ class Item extends Model
         return $items;
     }
 
-    // Pagniation des Articles :
+    // Pagniation des Extended Cards :
     public function getPaginationItems($items_current_page)
     {
         $start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
@@ -153,8 +153,7 @@ class Item extends Model
         return $items;
     }
 
-
-    // Afficher un Article en particulier :
+    // Afficher une Extended Card en particulier :
     public function getItem($id_item)
     {
         $sql  = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS category, extended_cards.title AS title, extended_cards.slug AS slug, extended_cards.image AS image,
@@ -183,7 +182,7 @@ class Item extends Model
         return $item;
     }
 
-    // Afficher la liste des Articles Supprimés :
+    // Afficher la liste des Extended Cards Supprimées :
     public function getItemsDeleted($items_deleted_current_page)
     {
         $items_start   = (int) (($items_deleted_current_page - 1) * $this->number_of_items_by_page);
@@ -204,7 +203,7 @@ class Item extends Model
 
     // UPDATE
 
-    // Modification d'un article avec photo :
+    // Modification d'une Extended Card avec photo :
     public function changeItemImage($id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item)
     {
         $id_category              = !empty($_POST['id']) ? trim($_POST['id']) : null;
@@ -243,7 +242,7 @@ class Item extends Model
         }
     }
 
-    // Modification d'un article sans photo :
+    // Modification d'une Extended Card sans photo :
     public function changeItem($id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item)
     {
         $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
@@ -272,7 +271,7 @@ class Item extends Model
             ':features' => $features,
             ':content' => $content
         ));
-        $messages['confirmation'] = 'Merci ! Votre article a bien été modifié !';
+        $messages['confirmation'] = 'Merci ! Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardread/' . $id_item);
@@ -316,7 +315,7 @@ class Item extends Model
         }
     }
 
-    // Suppression définitive d'un article avec ses commentaires associés.
+    // Suppression définitive d'une Extended Card avec ses commentaires associés.
     public function eraseItem($id_item)
     {
         $sql = 'DELETE extended_cards.*, comments.*
@@ -328,7 +327,7 @@ class Item extends Model
         $req->execute();
 
         // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! Votre article a bien été supprimé !';
+        $messages['confirmation'] = 'Merci ! Votre Extended Card a bien été supprimée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location:' . BASE_ADMIN_URL . 'extendedcards/extendedcardsbin');
@@ -336,7 +335,7 @@ class Item extends Model
         }
     }
 
-    // Vidage de la Corbeille des articles avec ses commentaires associés.
+    // Vidage de la Corbeille des Extended Cards avec ses commentaires associés.
     public function emptybin()
     {
         $bin = "yes";

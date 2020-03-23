@@ -18,6 +18,5 @@
 <?php if(!ISSET($_SESSION['id_user']))
       {require __DIR__ . '/../themes/front/template_module_login.php'; }
    else { require __DIR__ . '/../themes/front/template_module_logout.php';}?>
- </div>
-</div>
-</div>
+ </div><!-- Fin de la Sidebar  -->
+</div><!-- Fin du Container Global  -->

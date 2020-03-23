@@ -14,7 +14,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>cards">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>cardsadmin">
           <span data-feather="bookmark"></span>
           Cards
         </a>

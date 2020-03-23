@@ -4,7 +4,7 @@
 	}
 	else {
 ?>
-<?php $this->title =  WEBSITE_NAME . ' | Ajout d\'un nouvel article'; ?>
+<?php $this->title =  WEBSITE_NAME . ' | Ajout d\'une nouvelle extended card'; ?>
 <?php require('extendedcards_menu.php'); ?>
 <?php require __DIR__ . '/../errors/errors.php'; ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
@@ -87,7 +87,7 @@
 					<div class="col-12">
 						<hr>
 						<label for="itemimage"></label>
-						<h5><label for="itemimage">Image principale de l'article :</label></h5>
+						<h5><label for="itemimage">Image principale de l'extended card :</label></h5>
 						<div class="custom-file">
 							<input class="custom-file-input" name="image" type="file" id="uploadimage"> <label class="custom-file-label" data-browse="Parcourir..." for="image"></label>
 						</div><label for="image">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label> <input name="MAX_FILE_SIZE" type="hidden" value="1048576">

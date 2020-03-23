@@ -8,7 +8,7 @@ require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
 /**
- * Contrôleur des actions liées aux articles
+ * Contrôleur des actions liées aux Extended Cards
  *
  * @version 1.0
  * @author Sébastien Merour
@@ -47,7 +47,7 @@ class ControllerItem extends Controller
         $id_category              = $item['category'];
         $category                 = $this->category->getCategory($id_category);
         $number_of_items          = $this->calculate->getTotalOfItems();
-        $number_of_items_pages    = $this->calculate->getNumberOfPages();
+        $number_of_items_pages    = $this->calculate->getNumberOfPagesOfExt();
         $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = $this->calculate->getCommentsCurrentPage();
         $page_previous_comments   = $comments_current_page - 1;
@@ -250,7 +250,7 @@ class ControllerItem extends Controller
         $id_item                  = $this->calculate->getItemId();
         $item                     = $this->item->getItem($id_item);
         $number_of_items          = $this->calculate->getTotalOfItems();
-        $number_of_items_pages    = $this->calculate->getNumberOfPages();
+        $number_of_items_pages    = $this->calculate->getNumberOfPagesOfExt();
         $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;

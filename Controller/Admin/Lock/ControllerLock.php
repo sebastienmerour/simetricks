@@ -2,8 +2,9 @@
 require_once 'Framework/Controller.php';
 require_once 'Model/Login.php';
 require_once 'Model/User.php';
+
 /**
- * Contrôleur gérant la page d'accueil de l'administration du site
+ * Contrôleur gérant l'authentification sur l'administration du site
  *
  * @version 1.0
  * @author Sébastien Merour
@@ -51,7 +52,7 @@ class ControllerLock extends Controller
             $this->redirect("admintricks/lock/admininvite");
         }
     }
-    
+
     // Fin de sessionn d'un admin :
     public function adminended()
     {

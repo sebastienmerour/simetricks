@@ -7,13 +7,13 @@ require_once 'Model/Calculate.php';
 
 
 /**
- * Contrôleur gérant la page d'accueil
+ * Contrôleur gérant la section Extended Cards
  *
  * @version 1.0
  * @author Sébastien Merour
  */
 
-class ControllerHome extends Controller
+class ControllerExtendedcards extends Controller
 {
     private $item;
     private $category;
@@ -28,7 +28,7 @@ class ControllerHome extends Controller
         $this->calculate = new Calculate();
     }
 
-    // Lister les articles en page d'accueil :
+    // Lister les Extended Cards :
     public function index()
     {
         if (null != $this->request->ifParameter("id")) {

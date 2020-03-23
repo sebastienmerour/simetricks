@@ -3,7 +3,7 @@ require_once 'Framework/Controller.php';
 require_once 'Model/User.php';
 
 /**
- * Contrôleur gérant la page d'accueil de l'administration du site
+ * Contrôleur gérant le compte Administrateur depuis l'administration du site
  *
  * @version 1.0
  * @author Sébastien Merour

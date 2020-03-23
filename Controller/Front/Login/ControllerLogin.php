@@ -36,7 +36,7 @@ class ControllerLogin extends Controller
         $number_of_items       = $this->calculate->getTotalOfItems();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'total_comments_count' => $total_comments_count,
@@ -96,7 +96,7 @@ class ControllerLogin extends Controller
         $number_of_items       = $this->calculate->getTotalOfItems();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'total_comments_count' => $total_comments_count,
@@ -179,7 +179,7 @@ class ControllerLogin extends Controller
         $number_of_items       = $this->calculate->getTotalOfItems();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
         $this->generateView(array(
             'username' => $username,
             'email' => $email,
@@ -196,7 +196,7 @@ class ControllerLogin extends Controller
         $number_of_items       = $this->calculate->getTotalOfItems();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
         if (isset($_POST["email"]) && isset($_POST["username"])) {
 
             if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {

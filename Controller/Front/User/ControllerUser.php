@@ -7,7 +7,7 @@ require_once 'Model/Calculate.php';
 require_once 'PHPMailer/PHPMailerAutoload.php';
 
 /**
- * Contrôleur des actions liées aux utilisateurs
+ * Contrôleur gérant les actions liées aux utilisateurs
  *
  * @version 1.0
  * @author Sébastien Merour
@@ -39,7 +39,7 @@ class ControllerUser extends Controller
         $number_of_items       = $this->calculate->getTotalOfItems();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'total_comments_count' => $total_comments_count,
@@ -129,7 +129,7 @@ class ControllerUser extends Controller
         $number_of_items       = $this->calculate->getTotalOfItems();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
         $this->generateView(array(
             'user' => $user,
             'number_of_items' => $number_of_items,
@@ -161,7 +161,7 @@ class ControllerUser extends Controller
     function useredit()
     {
         $number_of_items       = $this->calculate->getTotalOfItems();
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
         $user                  = $this->request->getSession()->setAttribut("user", $this->user);
         $user                  = $this->user->getUser($_SESSION['id_user']);
         $this->generateView(array(

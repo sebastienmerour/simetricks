@@ -14,6 +14,7 @@ class Calculate extends Model
   $number_of_comments,
   $comments_current_page,
   $number_of_items_by_page = 6,
+  $number_of_cards_by_page = 6,
   $number_of_comments_by_page = 5,
   $number_of_comments_reported_by_page = 5,
   $number_of_users_by_page = 5,
@@ -48,8 +49,8 @@ class Calculate extends Model
       return $number_of_items;
   }
 
-  // Obtenir le nombre de pages des articles :
-  public function getNumberOfPages()
+  // Obtenir le nombre de pages des Extended Cards :
+  public function getNumberOfPagesOfExt()
   {
       $number_of_items       = $this->getTotalOfItems();
       // Calculer le nombre de pages nécessaires :
@@ -57,7 +58,7 @@ class Calculate extends Model
       return $number_of_items_pages;
   }
 
-  // Obtenir le nombre de pages des articles :
+  // Obtenir le nombre de pages des Extended Cards d'une Catégorie précise :
   public function getNumberOfCatPages($id_category)
   {
       $number_of_items       = $this->getTotalOfItemsFromCat($id_category);
@@ -66,7 +67,7 @@ class Calculate extends Model
       return $number_of_items_pages;
   }
 
-  // Obtenir l'ID d'un item sur la page de modification de commentaires :
+  // Obtenir l'ID d'une Extended Card sur la page de modification de commentaires :
   public function getItemId()
   {
       $q       = explode("/", $_SERVER['REQUEST_URI']);
@@ -78,7 +79,7 @@ class Calculate extends Model
 
   // ADMIN
 
-  // Obtenir le nombre total des Items supprimés :
+  // Obtenir le nombre total des Extended Cards supprimées :
   public function getTotalOfItemsDeleted()
   {
       $sql                  = 'SELECT COUNT(id) AS counter FROM extended_cards WHERE bin = :bin ';
@@ -90,14 +91,72 @@ class Calculate extends Model
       return $total_items_deleted_count;
   }
 
-  // Obtenir le nombre de pages des articles supprimés :
-  public function getNumberOfPagesDeleted()
+  // Obtenir le nombre de pages des Extended Cards supprimées :
+  public function getNumberOfPagesOfExtDeleted()
   {
       $number_of_items_deleted       = $this->getTotalOfItemsDeleted();
       // Calculer le nombre de pages nécessaires :
       $number_of_items_deleted_pages = ceil($number_of_items_deleted / $this->number_of_items_by_page);
       return $number_of_items_deleted_pages;
   }
+
+
+  // CARDS
+  // FRONT
+
+  // Obtenir le nombre total des Cards :
+  public function getTotalOfCards()
+  {
+      $sql               = 'SELECT COUNT(id) AS counter FROM cards
+      WHERE bin != "yes"';
+      $this->cards_count = $this->dbConnect($sql);
+      $cards             = $this->cards_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_cards   = $cards['counter'];
+      return $number_of_cards;
+  }
+
+  // Obtenir le nombre de pages des Cards :
+  public function getNumberOfPagesOfCards()
+  {
+      $number_of_cards       = $this->getTotalOfCards();
+      // Calculer le nombre de pages nécessaires :
+      $number_of_cards_pages = ceil($number_of_cards / $this->number_of_cards_by_page);
+      return $number_of_cards_pages;
+  }
+
+  // Obtenir le nombre de pages des Cards :
+  public function getNumberOfCardsPages()
+  {
+      $number_of_cards       = $this->getTotalOfCards();
+      // Calculer le nombre de pages nécessaires :
+      $number_of_cards_pages = ceil($number_of_cards / $this->number_of_cards_by_page);
+      return $number_of_cards_pages;
+  }
+
+
+  // ADMIN
+
+  // Obtenir le nombre total des Cards supprimées :
+  public function getTotalOfCardsDeleted()
+  {
+      $sql                  = 'SELECT COUNT(id) AS counter FROM cards WHERE bin = :bin ';
+      $cards_deleted_count = $this->dbConnect($sql, array(
+          ':bin' => "yes"
+      ));
+      $this->cards_deleted_count = $cards_deleted_count->fetch(\PDO::FETCH_ASSOC);
+      $total_cards_deleted_count = $this->cards_deleted_count['counter'];
+      return $total_cards_deleted_count;
+  }
+
+  // Obtenir le nombre de pages des Cards supprimées :
+  public function getNumberOfPagesOfCardsDeleted()
+  {
+      $number_of_cards_deleted       = $this->getTotalOfCardsDeleted();
+      // Calculer le nombre de pages nécessaires :
+      $number_of_cards_deleted_pages = ceil($number_of_cards_deleted / $this->number_of_cards_by_page);
+      return $number_of_cards_deleted_pages;
+  }
+
 
   // COMMENTAIRES
   // FRONT
@@ -114,7 +173,7 @@ class Calculate extends Model
       return $total_comments_count;
   }
 
-  // Calculer le nombre de Commentaires d'un article en particulier :
+  // Calculer le nombre de Commentaires d'une Extended Card précise :
   public function countComments($id_item)
   {
       $sql                  = 'SELECT COUNT(id) as counter FROM comments
@@ -137,7 +196,7 @@ class Calculate extends Model
       return $id_comment;
   }
 
-  // Obtenir la page courante des commentaires sur un article en particulier :
+  // Obtenir la page courante des commentaires sur une Extended Card précise :
   public function getCommentsCurrentPage()
   {
       $q                     = explode("/", $_SERVER['REQUEST_URI']);
@@ -146,7 +205,7 @@ class Calculate extends Model
       return $comments_current_page;
   }
 
-  // Obtenir la page courante des commentaires sur un article en particulier avec user connecté :
+  // Obtenir la page courante des commentaires sur une Extended Card précise avec user connecté :
   public function getCommentsCurrentPageUser()
   {
       $q                     = explode("/", $_SERVER['REQUEST_URI']);
@@ -155,7 +214,7 @@ class Calculate extends Model
       return $comments_current_page;
   }
 
-  // Obtenir le nombre de pages des commentaires sur un article en particulier :
+  // Obtenir le nombre de pages des commentaires sur une Extended Card précise :
   public function getNumberOfCommentsPagesFromItem($id_item)
   {
       $number_of_comments       = $this->countComments($id_item);
@@ -182,7 +241,7 @@ class Calculate extends Model
       return $number_of_comments_reported_pages;
   }
 
-  // Calculer le nombre total de commentaires signalés pour l'admin :
+  // Calculer le nombre total de Commentaires signalés pour l'admin :
   public function getTotalOfCommentsReported()
   {
       $sql                     = 'SELECT COUNT(id) as counter FROM comments
@@ -198,7 +257,7 @@ class Calculate extends Model
       return $total_comments_reported_count;
   }
 
-  // Calculer le nombre total de commentaires supprimés :
+  // Calculer le nombre total de Commentaires supprimés :
   public function getTotalOfCommentsDeleted()
   {
       $sql                  = 'SELECT COUNT(id) as counter FROM comments WHERE bin = :bin ';
@@ -230,7 +289,7 @@ class Calculate extends Model
       return $number_of_users_pages;
   }
 
-  // Calculer le nombre total de users :
+  // Calculer le nombre total de Users :
   public function getTotalOfUsers()
   {
       $id_admin = ID_ADMIN;
@@ -245,7 +304,7 @@ class Calculate extends Model
       return $total_users_count;
   }
 
-  // Calculer le nombre total d'utilisateurs supprimés :
+  // Calculer le nombre total de Users supprimés :
   public function getTotalOfUsersDeleted()
   {
       $sql                  = 'SELECT COUNT(id_user) as counter FROM users WHERE bin = :bin ';
@@ -257,7 +316,7 @@ class Calculate extends Model
       return $total_users_deleted_count;
   }
 
-  // Calculer le nombre total de Pages d' utilisateurs supprimés pour l'admin :
+  // Calculer le nombre total de Pages de Users supprimés pour l'admin :
   public function getNumberOfUsersDeletedPagesFromAdmin()
   {
       $total_users_deleted_count     = $this->getTotalOfUsersDeleted();
@@ -278,7 +337,6 @@ class Calculate extends Model
       $number_of_categories   = $categories['counter'];
       return $number_of_categories;
   }
-
 
   // Obtenir le nombre total des Catégories supprimées :
   public function getTotalOfCategoriesDeleted()
@@ -305,7 +363,6 @@ class Calculate extends Model
       $number_of_links   = $links['counter'];
       return $number_of_links;
   }
-
 
   // Obtenir le nombre total des Liens supprimés :
   public function getTotalOfLinksDeleted()

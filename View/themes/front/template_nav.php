@@ -7,7 +7,7 @@
 				<div class="collapse navbar-collapse" id="navbarmenu">
 					<ul class="navbar-nav">
 						<li class="nav-item">
-							<a class="nav-link" href="#">Cards</a>
+							<a class="nav-link" href="cards">Cards</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#">Extended Cards</a>

@@ -8,7 +8,7 @@ require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
 /**
- * Contrôleur gérant la page d'accueil de l'administration du site
+ * Contrôleur gérant les Items de type ExtendedCards
  *
  * @version 1.0
  * @author Sébastien Merour
@@ -36,7 +36,7 @@ class ControllerExtendedcards extends Controller
 
     // CREATE
 
-    // Affichage du formulaire de création d'un article :
+    // Affichage du formulaire de création d'une Extended Card :
     public function extendedcardadditem()
     {
         $categories_current_page = 1;
@@ -47,7 +47,7 @@ class ControllerExtendedcards extends Controller
         ));
     }
 
-    // Processus de création d'un article :
+    // Processus de création d'une Extended Card :
     public function createitem()
     {
         if (isset($_POST["create"])) {
@@ -140,7 +140,7 @@ class ControllerExtendedcards extends Controller
         $items                 = $this->item->getItems($items_current_page);
         $page_previous_items   = $items_current_page - 1;
         $page_next_items       = $items_current_page + 1;
-        $number_of_items_pages = $this->calculate->getNumberOfPages();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
         $this->generateadminView(array(
             'items' => $items,
             'number_of_items' => $number_of_items,
@@ -151,7 +151,7 @@ class ControllerExtendedcards extends Controller
         ));
     }
 
-    // Affichage d'un article seul :
+    // Affichage d'une seule Extended Card :
     public function extendedcardread()
     {
         $id_item     = $this->request->getParameter("id");
@@ -170,7 +170,7 @@ class ControllerExtendedcards extends Controller
 
     // UPDATE
 
-    // Modification d'un article :
+    // Modification d'une Extended Card :
     public function updateitem()
     {
         if (isset($_POST["update"])) {
@@ -248,7 +248,7 @@ class ControllerExtendedcards extends Controller
         $items_deleted                 = $this->item->getItemsDeleted($items_deleted_current_page);
         $page_previous_items_deleted   = $items_deleted_current_page - 1;
         $page_next_items_deleted       = $items_deleted_current_page + 1;
-        $number_of_items_deleted_pages = $this->calculate->getNumberOfPagesDeleted();
+        $number_of_items_deleted_pages = $this->calculate->getNumberOfPagesOfExtDeleted();
         $this->generateadminView(array(
             'items_deleted' => $items_deleted,
             'number_of_items_deleted' => $number_of_items_deleted,
@@ -266,15 +266,15 @@ class ControllerExtendedcards extends Controller
         $this->item->moveItem($id_item);
     }
 
-    // Suppression définitive d'un article :
+    // Suppression définitive d'une Extended Card :
     public function removeitem()
     {
         $id_item = $this->request->getParameter("id");
         $this->item->eraseItem($id_item);
         if ($id_item === false) {
-            throw new Exception('Impossible de supprimer l\' article !');
+            throw new Exception('Impossible de supprimer l\' Extended Card !');
         } else {
-            $messages['confirmation'] = 'L\'article a bien été supprimé !';
+            $messages['confirmation'] = 'L\'Extended Card a bien été supprimée !';
             $this->generateadminView();
         }
     }

@@ -1,7 +1,7 @@
 <h1 class="ml-3"><?= $this->clean($item['title']) ?></h1>
-<div class="d-flex align-items-center ml-3">
+<div class="d-flex align-items-center ml-3"><!-- Entête de l'item  -->
   <a href="<?= "user/profile/" . $this->clean($item['id_user']) ?>"><img src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean($item['avatar']);?>" alt="<?= $this->clean($item['firstname']) . '&nbsp;' . $this->clean($item['name']) ?>" class="avatar mr-2"></a>
-<div>
+  <div>
     <div>par <a href="<?= "user/profile/" . $this->clean($item['id_user']) ?>"><?= $this->clean($item['firstname']) . '&nbsp;' . $this->clean($item['name'])?></a>
     </div>
     <div class="text-small text-muted">publié le <?= $this->clean($item['date_creation_fr']) ?> | <?php if (isset($item['date_update']) AND $item['date_update'] > 0 ) {?>
@@ -10,10 +10,8 @@
     Catégorie : <a href="category/<?= $this->clean($category['id']). '/1/' . $this->clean($category['slug']);?>"><?= $this->clean($category['name']); ?></a> |&nbsp;<a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid'])  . "/1/#comments" : "item/indexuser/" . $this->clean($item['itemid']). "/1/" .$this->clean($item['slug']). "#comments" ?>">Commentaires (<?= $number_of_comments ;?>)</a><br>
     </div>
   </div>
-</div>
-</div>
-<div class="pr-lg-4">
-<div class="container">
+</div><!-- Fin de l'Entête de l'item  -->
+<div class="container"><!-- Contenu de l'item  -->
   <div class="row justify-content-left position-relative">
     <div class="pt-3 ml-3">
       <img src="<?php echo BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="w-85 rounded">
@@ -49,4 +47,4 @@
       </article>
     </div>
   </div>
-</div>
+</div><!-- Fin du Contenu de l'item  -->
