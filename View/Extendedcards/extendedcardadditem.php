@@ -14,6 +14,16 @@
 		<form id="repeater_form" action="<?= BASE_ADMIN_URL; ?>extendedcards/createitem" enctype="multipart/form-data" method="post">
 			<div class="form-group">
 				<div class="row">
+					<div class="col-12 text-right">
+						<h4><label for="draft">Pubication :</label></h4>
+						<div class="custom-control custom-switch">
+						  <input type="checkbox" class="custom-control-input" name="draft" id="draft" value="Y">
+						  <label class="custom-control-label" for="draft">Activer pour Publier</label>
+						</div>
+					<br>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-12">
 						<label for="category">Catégorie :</label>
 						<select class="form-control" id="category" name="category">

@@ -53,6 +53,7 @@ class ControllerExtendedcards extends Controller
         if (isset($_POST["create"])) {
             $errors                = array();
             $messages              = array();
+            $draft                 = "yes";
             $id_user               = $_SESSION['id_user_admin'];
             $id_category           = $_POST['category'];
             $title                 = $_POST['title'];
@@ -81,6 +82,10 @@ class ControllerExtendedcards extends Controller
             $itemimagename         = "{$time}$slug.{$extension_upload}";
             $destination           = ROOT_PATH . 'public/images/item_images';
 
+            if(isset($_POST['draft'])){
+                $draft = "no";
+            }
+
             if (empty($title) || empty($content)) {
                 $errors['errors'] = 'Veuillez remplir les champs <strong>Titre et Contenu</strong>';
                 if (!empty($errors)) {
@@ -91,7 +96,7 @@ class ControllerExtendedcards extends Controller
             }
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->item->insertItem($id_user, $id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content);
+                $this->item->insertItem($id_user, $id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft);
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -119,7 +124,7 @@ class ControllerExtendedcards extends Controller
 
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->insertItemImage($id_user, $id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content);
+                $this->item->insertItemImage($id_user, $id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft);
 
             }
         }
@@ -128,19 +133,19 @@ class ControllerExtendedcards extends Controller
 
     // READ
 
-    // Affichage de la page Extended Cards :
+    // Affichage de la page Extended Cards en Admnin :
     public function index()
     {
-        $number_of_items = $this->calculate->getTotalOfItems();
+        $number_of_items = $this->calculate->getTotalOfItemsAdmin();
         if (null != $this->request->ifParameter("id")) {
             $items_current_page = $this->request->getParameter("id");
         } else {
             $items_current_page = 1;
         }
-        $items                 = $this->item->getItems($items_current_page);
+        $items                 = $this->item->getItemsAdmin($items_current_page);
         $page_previous_items   = $items_current_page - 1;
         $page_next_items       = $items_current_page + 1;
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtAdmin();
         $this->generateadminView(array(
             'items' => $items,
             'number_of_items' => $number_of_items,
@@ -176,6 +181,7 @@ class ControllerExtendedcards extends Controller
         if (isset($_POST["update"])) {
             $id_item               = $this->request->getParameter("id");
             $id_category           = $_POST['category'];
+            $draft                 = "yes";
             $title                 = $this->request->getParameter("title");
             $slug                  = $_POST['slug'];
             $date_native           = $_POST['date_native'];
@@ -203,9 +209,13 @@ class ControllerExtendedcards extends Controller
             $itemimagename         = "{$time}$slug.{$extension_upload}";
             $destination           = ROOT_PATH . 'public/images/item_images';
 
+            if(isset($_POST['draft'])){
+                $draft = "no";
+            }
+
             if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $messages    = array();
-                $this->item->changeItem($id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item);
+                $this->item->changeItem($id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft, $id_item);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -229,7 +239,7 @@ class ControllerExtendedcards extends Controller
                 }
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->changeItemImage($id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item);
+                $this->item->changeItemImage($id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft, $id_item);
             }
         }
     }

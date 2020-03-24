@@ -35,7 +35,7 @@ class ControllerDashboard extends Controller
         $items_current_page    = 1;
         $comments_current_page = 1;
         $users_current_page    = 1;
-        $items                 = $this->item->getItems($items_current_page);
+        $items                 = $this->item->getItemsAdmin($items_current_page);
         $comments              = $this->comment->selectComments($comments_current_page);
         $users                 = $this->user->selectUsers($users_current_page);
         $this->generateadminView(array(

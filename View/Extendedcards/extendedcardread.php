@@ -18,8 +18,17 @@
     <div class="card-body">
 				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>extendedcards/updateitem/<?= $this->clean($item['itemid']);?>" method="post"
 	        id="itemmodification" enctype="multipart/form-data" novalidate>
-
-				<div class="form-group">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-12 text-right">
+									<h4><label for="draft">Pubication :</label></h4>
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" name="draft" id="draft" <?php if ($this->clean($item['draft']== "no")) {?> checked value="no"<?php } else { ?>value="yes"<?php }; ?>>
+										<label class="custom-control-label" for="draft">Activer pour Publier</label>
+									</div>
+									<br>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-12">
 							<label for="category">Catégorie :</label>

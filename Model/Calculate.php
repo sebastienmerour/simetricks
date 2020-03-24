@@ -25,10 +25,12 @@ class Calculate extends Model
   // FRONT
 
   // Obtenir le nombre total des Items :
-  public function getTotalOfItems()
+  public function getTotalOfItemsFront()
   {
       $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards
-      WHERE bin != "yes"';
+      WHERE bin != "yes"
+      AND draft = "no"
+      ';
       $this->items_count = $this->dbConnect($sql);
       $items             = $this->items_count->fetch(\PDO::FETCH_ASSOC);
       $number_of_items   = $items['counter'];
@@ -36,10 +38,11 @@ class Calculate extends Model
   }
 
   // Obtenir le nombre total des Items d'une Catégorie :
-  public function getTotalOfItemsFromCat($id_category)
+  public function getTotalOfItemsFromCatFront($id_category)
   {
       $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards
       WHERE bin != "yes"
+      AND draft = "no"
       AND id_category = :cat';
       $this->items_count = $this->dbConnect($sql, array(
           ':cat' => $id_category
@@ -49,19 +52,28 @@ class Calculate extends Model
       return $number_of_items;
   }
 
-  // Obtenir le nombre de pages des Extended Cards :
-  public function getNumberOfPagesOfExt()
+  // Obtenir le nombre de pages des Extended Cards en Front :
+  public function getNumberOfPagesOfExtFront()
   {
-      $number_of_items       = $this->getTotalOfItems();
+      $number_of_items       = $this->getTotalOfItemsFront();
+      // Calculer le nombre de pages nécessaires :
+      $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
+      return $number_of_items_pages;
+  }
+
+  // Obtenir le nombre de pages des Extended Cards en Admin :
+  public function getNumberOfPagesOfExtAdmin()
+  {
+      $number_of_items       = $this->getTotalOfItemsAdmin();
       // Calculer le nombre de pages nécessaires :
       $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
       return $number_of_items_pages;
   }
 
   // Obtenir le nombre de pages des Extended Cards d'une Catégorie précise :
-  public function getNumberOfCatPages($id_category)
+  public function getNumberOfCatPagesFront($id_category)
   {
-      $number_of_items       = $this->getTotalOfItemsFromCat($id_category);
+      $number_of_items       = $this->getTotalOfItemsFromCatFront($id_category);
       // Calculer le nombre de pages nécessaires :
       $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
       return $number_of_items_pages;
@@ -78,6 +90,19 @@ class Calculate extends Model
 
 
   // ADMIN
+
+  // Obtenir le nombre total des Items en Admin :
+  public function getTotalOfItemsAdmin()
+  {
+      $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards
+      WHERE bin != "yes"
+      ';
+      $this->items_count = $this->dbConnect($sql);
+      $items             = $this->items_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_items   = $items['counter'];
+      return $number_of_items;
+  }
+
 
   // Obtenir le nombre total des Extended Cards supprimées :
   public function getTotalOfItemsDeleted()

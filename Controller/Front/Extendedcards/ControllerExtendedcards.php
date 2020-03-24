@@ -36,11 +36,11 @@ class ControllerExtendedcards extends Controller
         } else {
             $items_current_page = 1;
         }
-        $items                 = $this->item->getItems($items_current_page);
+        $items                 = $this->item->getItemsFront($items_current_page);
         $previous_page         = $items_current_page - 1;
         $next_page             = $items_current_page + 1;
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
-        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
+        $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
         $this->generateView(array(

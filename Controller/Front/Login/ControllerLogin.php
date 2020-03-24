@@ -33,10 +33,10 @@ class ControllerLogin extends Controller
     // Affichage de la page de connexion :
     public function index()
     {
-        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'total_comments_count' => $total_comments_count,
@@ -59,7 +59,7 @@ class ControllerLogin extends Controller
     // Appui sur le bouton Deconnexion d'un user :
     public function logout()
     {
-        $number_of_items      = $this->calculate->getTotalOfItems();
+        $number_of_items      = $this->calculate->getTotalOfItemsFront();
         $total_comments_count = $this->calculate->getTotalOfComments();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         if (ISSET($_SESSION['id_user'])) {
@@ -80,7 +80,7 @@ class ControllerLogin extends Controller
     // On invite un utilisateur non connecté à se connecter :
     public function invite()
     {
-        $number_of_items      = $this->calculate->getTotalOfItems();
+        $number_of_items      = $this->calculate->getTotalOfItemsFront();
         $total_comments_count = $this->calculate->getTotalOfComments();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
@@ -93,10 +93,10 @@ class ControllerLogin extends Controller
     // Affichage de la page Forgotten Password :
     public function forgottenpassword()
     {
-        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'total_comments_count' => $total_comments_count,
@@ -176,10 +176,10 @@ class ControllerLogin extends Controller
     // Affichage de la page Reset Password :
     public function createnewpassword()
     {
-        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $this->generateView(array(
             'username' => $username,
             'email' => $email,
@@ -193,10 +193,10 @@ class ControllerLogin extends Controller
     // Affichage de la page Reset Password :
     public function validnewpassword()
     {
-        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         if (isset($_POST["email"]) && isset($_POST["username"])) {
 
             if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {

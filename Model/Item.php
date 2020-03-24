@@ -15,14 +15,14 @@ class Item extends Model
     // CREATE
 
     // Création d'une nouvelle Extended Card sans photo :
-    public function insertItem($id_user, $id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
+    public function insertItem($id_user, $id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
 
-        $sql   = 'INSERT INTO extended_cards (id_user, id_category, title, slug, date_native, licence, sgbdr, pdm, langage, features, content, date_creation)
-                      VALUES (:id_user, :id_category, :title, :slug, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, NOW())';
+        $sql   = 'INSERT INTO extended_cards (id_user, id_category, title, slug, date_native, licence, sgbdr, pdm, langage, features, content, draft, date_creation)
+                      VALUES (:id_user, :id_category, :title, :slug, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, :draft, NOW())';
         $query = $this->dbConnectLastId($sql, array(
             ':id_user' => $id_user,
             ':id_category' => $id_category,
@@ -34,7 +34,8 @@ class Item extends Model
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':content' => $content
+            ':content' => $content,
+            ':draft' => $draft
         ));
 
         if (isset($_POST['linkname']) && is_array($_POST['linkname'])) {
@@ -61,14 +62,14 @@ class Item extends Model
     }
 
     // Création d'une nouvelle Extended Card avec photo :
-    public function insertItemImage($id_user, $id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content)
+    public function insertItemImage($id_user, $id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO extended_cards (id_user, id_category, title, slug, image, date_native, licence, sgbdr, pdm, langage, features, content, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, id_category, title, slug, image, date_native, licence, sgbdr, pdm, langage, features, content, draft, date_creation)
                       VALUES
-                      (:id_user, :id_category, :title, :slug, :image, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, NOW())';
+                      (:id_user, :id_category, :title, :slug, :image, :date_native, :licence, :sgbdr, :pdm, :langage, :features, :content, :draft, NOW())';
         $items    = $this->dbConnect($sql, array(
             ':id_user' => $id_user,
             ':id_category' => $id_category,
@@ -81,7 +82,8 @@ class Item extends Model
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':content' => $content
+            ':content' => $content,
+            ':draft' => $draft
         ));
 
         $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
@@ -95,13 +97,34 @@ class Item extends Model
 
     // READ
 
-    // Afficher la liste des Extended Cards :
-    public function getItems($items_current_page)
+    // Afficher la liste des Extended Cards en Front :
+    public function getItemsFront($items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
         $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+     users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname,
+     categories.slug AS categoryslug
+     FROM extended_cards
+     LEFT JOIN users
+     ON extended_cards.id_user = users.id_user
+     LEFT JOIN categories
+     ON extended_cards.id_category = categories.id
+     WHERE extended_cards.bin != "yes" AND extended_cards.draft = "no"
+     ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
+        $items       = $this->dbConnect($sql);
+        return $items;
+    }
+
+    // Afficher la liste des Extended Cards en Admin :
+    public function getItemsAdmin($items_current_page)
+    {
+        $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
+        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
+     DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+     DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+     extended_cards.draft AS draft,
      users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname,
      categories.slug AS categoryslug
      FROM extended_cards
@@ -115,8 +138,8 @@ class Item extends Model
         return $items;
     }
 
-    // Afficher la liste des Extended Cards appartenant à une Catégorie :
-    public function getItemsFromCategory($cat, $items_current_page)
+    // Afficher la liste des Extended Cards appartenant à une Catégorie en Front :
+    public function getItemsFromCategoryFront($cat, $items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
         $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
@@ -130,6 +153,7 @@ class Item extends Model
      LEFT JOIN categories
      ON extended_cards.id_category = categories.id
      WHERE extended_cards.bin != "yes"
+     AND extended_cards.draft = "no"
      AND extended_cards.id_category = :cat
      ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
         $items       = $this->dbConnect($sql, array(
@@ -165,6 +189,7 @@ class Item extends Model
         extended_cards.features AS features,
         extended_cards.links AS links,
         extended_cards.content AS content,
+        extended_cards.draft AS draft,
         DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
         DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
         users.id_user, users.avatar, users.firstname, users.name,
@@ -204,7 +229,7 @@ class Item extends Model
     // UPDATE
 
     // Modification d'une Extended Card avec photo :
-    public function changeItemImage($id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item)
+    public function changeItemImage($id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft, $id_item)
     {
         $id_category              = !empty($_POST['id']) ? trim($_POST['id']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
@@ -218,7 +243,7 @@ class Item extends Model
         $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug, image = :image,
         date_native = :date_native, licence = :licence, sgbdr = :sgbdr, pdm = :pdm,  langage = :langage, features = :features,
-        content = :content,
+        content = :content, draft = :draft,
         date_update = NOW() WHERE id = :id';
         $item                     = $this->dbConnect($sql, array(
             ':id' => $id_item,
@@ -232,7 +257,8 @@ class Item extends Model
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':content' => $content
+            ':content' => $content,
+            ':draft' => $draft
         ));
         $messages['confirmation'] = 'Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {
@@ -243,7 +269,7 @@ class Item extends Model
     }
 
     // Modification d'une Extended Card sans photo :
-    public function changeItem($id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $id_item)
+    public function changeItem($id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft, $id_item)
     {
         $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
@@ -257,7 +283,7 @@ class Item extends Model
         $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug,
         date_native = :date_native, licence = :licence, sgbdr = :sgbdr, pdm = :pdm, langage = :langage, features = :features,
-        content = :content, date_update = NOW() WHERE id = :id';
+        content = :content, draft= :draft, date_update = NOW() WHERE id = :id';
         $item                     = $this->dbConnect($sql, array(
             ':id' => $id_item,
             ':id_category' => $id_category,
@@ -269,7 +295,8 @@ class Item extends Model
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':content' => $content
+            ':content' => $content,
+            ':draft' => $draft
         ));
         $messages['confirmation'] = 'Merci ! Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {

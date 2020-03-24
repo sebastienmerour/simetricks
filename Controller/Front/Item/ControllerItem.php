@@ -46,8 +46,8 @@ class ControllerItem extends Controller
         $item                     = $this->item->getItem($id_item);
         $id_category              = $item['category'];
         $category                 = $this->category->getCategory($id_category);
-        $number_of_items          = $this->calculate->getTotalOfItems();
-        $number_of_items_pages    = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items          = $this->calculate->getTotalOfItemsFront();
+        $number_of_items_pages    = $this->calculate->getNumberOfPagesOfExtFront();
         $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = $this->calculate->getCommentsCurrentPage();
         $page_previous_comments   = $comments_current_page - 1;
@@ -84,7 +84,7 @@ class ControllerItem extends Controller
         $id_category              = $item['category'];
         $category                 = $this->category->getCategory($id_category);
         $user                     = $this->user->getUser($_SESSION['id_user']);
-        $number_of_items          = $this->calculate->getTotalOfItems();
+        $number_of_items          = $this->calculate->getTotalOfItemsFront();
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
         $links                    = $this->link->getLinks($id_item);
@@ -202,7 +202,7 @@ class ControllerItem extends Controller
 
         $id_item                  = $this->calculate->getItemId();
         $item                     = $this->item->getItem($id_item);
-        $number_of_items          = $this->calculate->getTotalOfItems();
+        $number_of_items          = $this->calculate->getTotalOfItemsFront();
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
         $number_of_comments       = $this->calculate->countComments($id_item);
@@ -249,8 +249,8 @@ class ControllerItem extends Controller
     {
         $id_item                  = $this->calculate->getItemId();
         $item                     = $this->item->getItem($id_item);
-        $number_of_items          = $this->calculate->getTotalOfItems();
-        $number_of_items_pages    = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items          = $this->calculate->getTotalOfItemsFront();
+        $number_of_items_pages    = $this->calculate->getNumberOfPagesOfExtFront();
         $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = 1;
         $page_previous_comments   = $comments_current_page - 1;

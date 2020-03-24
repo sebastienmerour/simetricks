@@ -36,10 +36,10 @@ class ControllerUser extends Controller
     // Affichage du formulaire d'inscription :
     public function useradd()
     {
-        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'total_comments_count' => $total_comments_count,
@@ -126,10 +126,10 @@ class ControllerUser extends Controller
     {
         //$user                  = $this->request->getSession()->setAttribut("user", $this->user);
         $user                  = $this->user->getUser($_SESSION['id_user']);
-        $number_of_items       = $this->calculate->getTotalOfItems();
+        $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $this->generateView(array(
             'user' => $user,
             'number_of_items' => $number_of_items,
@@ -144,7 +144,7 @@ class ControllerUser extends Controller
     {
         $id_user              = $this->request->getParameter("id");
         $user                 = $this->user->getUser($id_user);
-        $number_of_items      = $this->calculate->getTotalOfItems();
+        $number_of_items      = $this->calculate->getTotalOfItemsFront();
         $total_comments_count = $this->calculate->getTotalOfComments();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
@@ -160,8 +160,8 @@ class ControllerUser extends Controller
     // Affichage de la page de modification de user :
     function useredit()
     {
-        $number_of_items       = $this->calculate->getTotalOfItems();
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExt();
+        $number_of_items       = $this->calculate->getTotalOfItemsFront();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $user                  = $this->request->getSession()->setAttribut("user", $this->user);
         $user                  = $this->user->getUser($_SESSION['id_user']);
         $this->generateView(array(
@@ -261,7 +261,7 @@ class ControllerUser extends Controller
     // Affichage des CGU :
     public function cgu()
     {
-        $number_of_items      = $this->calculate->getTotalOfItems();
+        $number_of_items      = $this->calculate->getTotalOfItemsFront();
         $total_comments_count = $this->calculate->getTotalOfComments();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         $text                 = $this->cgu->conditions();

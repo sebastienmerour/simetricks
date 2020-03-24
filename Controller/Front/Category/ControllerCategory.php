@@ -41,11 +41,11 @@ class ControllerCategory extends Controller
           $id_category           = (int) $cat;
           $category              = $this->category->getCategory($id_category);
           $items_current_page = (int) $page;
-          $items                 = $this->item->getItemsFromCategory($cat, $items_current_page);
+          $items                 = $this->item->getItemsFromCategoryFront($cat, $items_current_page);
           $previous_page         = $items_current_page - 1;
           $next_page             = $items_current_page + 1;
-          $number_of_items_pages = $this->calculate->getNumberOfCatPages($id_category);
-          $number_of_items       = $this->calculate->getTotalOfItemsFromCat($id_category);
+          $number_of_items_pages = $this->calculate->getNumberOfCatPagesFront($id_category);
+          $number_of_items       = $this->calculate->getTotalOfItemsFromCatFront($id_category);
           $total_comments_count     = $this->calculate->getTotalOfComments();
           $total_users_count        = $this->calculate->getTotalOfUsers();
           $this->generateView(array(
