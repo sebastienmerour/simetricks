@@ -27,7 +27,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Votre commentaire a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_URL. 'item/' . $id_item . '/1/#comments');
+            header('Location: '. BASE_URL. 'extendedcard/' . $id_item . '/1/#comments');
             exit;
         }
     }
@@ -47,7 +47,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Votre commentaire a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_URL. 'item/indexuser/' . $id_item . '/1/#comments');
+            header('Location: '. BASE_URL. 'extendedcard/indexuser/' . $id_item . '/1/#comments');
             exit;
         }
     }
@@ -190,7 +190,7 @@ class Comment extends Model
         $messages['confirmation'] = 'Merci ! Le commentaire a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_URL. 'item/commentread/' . $item . '/' . $comment);
+            header('Location: '. BASE_URL. 'extendedcard/commentread/' . $item . '/' . $comment);
             exit;
         }
     }
@@ -216,10 +216,10 @@ class Comment extends Model
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             if (ISSET($_SESSION['id_user'])) {
-                header('Location: '. BASE_URL. 'item/indexuser/' . $item . '/1/#comments');
+                header('Location: '. BASE_URL. 'extendedcard/indexuser/' . $item . '/1/#comments');
                 exit;
             } else {
-                header('Location: '. BASE_URL. 'item/' . $item . '/1/#comments');
+                header('Location: '. BASE_URL. 'extendedcard/' . $item . '/1/#comments');
                 exit;
             }
         }

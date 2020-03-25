@@ -18,9 +18,10 @@
 			</div>
 		</div>
 		<div class="col-md-6 col-lg-4 d-none d-md-block">
-  <?php if(!ISSET($_SESSION['id_user']))
-          {require __DIR__ . '/../themes/front/template_module_login.php'; }
-       else { require __DIR__ . '/../themes/front/template_module_logout.php';}?>
-		 </div>
+			<?php if(!ISSET($_SESSION['id_user']))
+		          {require __DIR__ . '/../themes/front/template_module_login.php'; }
+		       else { require __DIR__ . '/../themes/front/template_module_logout.php';}
+		       require( __DIR__ . '/../themes/front/template_module_stats.php');?>
+		 </div>	 
 	 </div>
 <?php	};?>

@@ -12,9 +12,13 @@
         <ul class="nav justify-content-center">
           <li class="nav-item"><a href="cards" class="nav-link">Cards</a>
           </li>
-          <li class="nav-item"><a href="#" class="nav-link">Extended Cards</a>
+          <li class="nav-item"><a href="extendedcards" class="nav-link">Extended Cards</a>
           </li>
-          <li class="nav-item"><a href="#" class="nav-link">2.0</a>
+          <li class="nav-item"><a href="category/1/1/web" class="nav-link">Web</a>
+          </li>
+          <li class="nav-item"><a href="category/2/1/langages" class="nav-link">Langages</a>
+          </li>
+          <li class="nav-item"><a href="category/3/1/it" class="nav-link">IT</a>
           </li>
         </ul>
       </div>

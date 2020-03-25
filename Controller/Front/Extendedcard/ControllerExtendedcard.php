@@ -14,7 +14,7 @@ require_once 'Model/Calculate.php';
  * @author Sébastien Merour
  */
 
-class ControllerItem extends Controller
+class ControllerExtendedcard extends Controller
 {
     private $item;
     private $link;
@@ -47,6 +47,7 @@ class ControllerItem extends Controller
         $id_category              = $item['category'];
         $category                 = $this->category->getCategory($id_category);
         $number_of_items          = $this->calculate->getTotalOfItemsFront();
+        $number_of_cards          = $this->calculate->getTotalOfCards();
         $number_of_items_pages    = $this->calculate->getNumberOfPagesOfExtFront();
         $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = $this->calculate->getCommentsCurrentPage();
@@ -62,6 +63,7 @@ class ControllerItem extends Controller
             'item' => $item,
             'category' => $category,
             'number_of_items' => $number_of_items,
+            'number_of_cards' => $number_of_cards,
             'number_of_items_pages' => $number_of_items_pages,
             'comments' => $comments,
             'links' => $links,
@@ -85,6 +87,7 @@ class ControllerItem extends Controller
         $category                 = $this->category->getCategory($id_category);
         $user                     = $this->user->getUser($_SESSION['id_user']);
         $number_of_items          = $this->calculate->getTotalOfItemsFront();
+        $number_of_cards          = $this->calculate->getTotalOfCards();
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
         $links                    = $this->link->getLinks($id_item);
@@ -99,6 +102,7 @@ class ControllerItem extends Controller
             'item' => $item,
             'category' => $category,
             'number_of_items' => $number_of_items,
+            'number_of_cards' => $number_of_cards,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'user' => $user,
@@ -136,20 +140,20 @@ class ControllerItem extends Controller
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
                         $_SESSION['errors'] = $errors;
-                        header('Location: ' . BASE_URL . 'item/' . $id_item . '/1/#addcomment');
+                        header('Location: ' . BASE_URL . 'extendedcard/' . $id_item . '/1/#addcomment');
                         exit;
                     }
                 }
             } else {
                 $errors['errors']   = 'Merci de cocher la case reCAPTCHA.';
                 $_SESSION['errors'] = $errors;
-                header('Location: ' . BASE_URL . 'item/' . $id_item . '/1/#addcomment');
+                header('Location: ' . BASE_URL . 'extendedcard/' . $id_item . '/1/#addcomment');
                 exit;
             }
         } else {
             $errors['errors']   = 'Merci de renseigner tous les champs';
             $_SESSION['errors'] = $errors;
-            header('Location: ' . BASE_URL . 'item/' . $id_item . '/1/#addcomment');
+            header('Location: ' . BASE_URL . 'extendedcard/' . $id_item . '/1/#addcomment');
             exit;
         }
     }
@@ -176,20 +180,20 @@ class ControllerItem extends Controller
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
                         $_SESSION['errors'] = $errors;
-                        header('Location: ' . BASE_URL . 'item/indexuser/' . $id_item . '/1/#addcomment');
+                        header('Location: ' . BASE_URL . 'extendedcard/indexuser/' . $id_item . '/1/#addcomment');
                         exit;
                     }
                 }
             } else {
                 $errors['errors']   = 'Merci de cocher la case reCAPTCHA.';
                 $_SESSION['errors'] = $errors;
-                header('Location: ' . BASE_URL . 'item/indexuser/' . $id_item . '/1/#addcomment');
+                header('Location: ' . BASE_URL . 'extendedcard/indexuser/' . $id_item . '/1/#addcomment');
                 exit;
             }
         } else {
             $errors['errors']   = 'Merci de renseigner tous les champs';
             $_SESSION['errors'] = $errors;
-            header('Location: ' . BASE_URL . 'item/indexuser/' . $id_item . '/1/#addcomment');
+            header('Location: ' . BASE_URL . 'extendedcard/indexuser/' . $id_item . '/1/#addcomment');
             exit;
         }
     }

@@ -15,6 +15,18 @@
 			<div class="form-group">
 				<div class="row">
 					<div class="col-12">
+						<label for="category">Catégorie :</label>
+						<select class="form-control" id="category" name="category">
+							<option selected>Sélectionnez une catégorie</option>
+							<?php
+							foreach ($categories as $category):?>
+							<option value="<?= $this->clean($category['id']);?>" id="<?= $this->clean($category['id']);?>"><?= $this->clean($category['name']); ?></option>
+						<?php endforeach; ?>
+					</select><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
 						<input class="form-control font-weight-bold" id="title" name="title" placeholder="Titre" type="text"><br>
 						<input class="form-control" id="slug" name="slug" placeholder="Slug" type="text"><br>
 					</div>

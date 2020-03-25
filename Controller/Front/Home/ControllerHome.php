@@ -1,8 +1,6 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
-require_once 'Model/Category.php';
-require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
 
@@ -16,15 +14,11 @@ require_once 'Model/Calculate.php';
 class ControllerHome extends Controller
 {
     private $item;
-    private $category;
-    private $user;
     private $calculate;
 
     public function __construct()
     {
         $this->item      = new Item();
-        $this->category  = new Category();
-        $this->user      = new User();
         $this->calculate = new Calculate();
     }
 
@@ -39,15 +33,13 @@ class ControllerHome extends Controller
         $items                 = $this->item->getItemsFront($items_current_page);
         $previous_page         = $items_current_page - 1;
         $next_page             = $items_current_page + 1;
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
-        $number_of_items       = $this->calculate->getTotalOfItemsFront();
-        $total_comments_count  = $this->calculate->getTotalOfComments();
-        $total_users_count     = $this->calculate->getTotalOfUsers();
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtHome();
+        $number_of_items       = $this->calculate->getTotalOfItemsHome();
+        $number_of_cards       = $this->calculate->getTotalOfCards();
         $this->generateView(array(
             'items' => $items,
             'number_of_items' => $number_of_items,
-            'total_comments_count' => $total_comments_count,
-            'total_users_count' => $total_users_count,
+            'number_of_cards' => $number_of_cards,
             'items_current_page' => $items_current_page,
             'previous_page' => $previous_page,
             'next_page' => $next_page,

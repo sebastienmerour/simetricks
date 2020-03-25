@@ -56,7 +56,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcards');
+            header('Location:' . BASE_ADMIN_URL . 'extendedcardsadmin');
             exit;
         }
     }
@@ -89,7 +89,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcards');
+            header('Location:' . BASE_ADMIN_URL . 'extendedcardsadmin');
             exit;
         }
     }
@@ -231,7 +231,7 @@ class Item extends Model
     // Modification d'une Extended Card avec photo :
     public function changeItemImage($id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft, $id_item)
     {
-        $id_category              = !empty($_POST['id']) ? trim($_POST['id']) : null;
+        $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
         $date_native              = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
@@ -263,7 +263,7 @@ class Item extends Model
         $messages['confirmation'] = 'Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardread/' . $id_item);
+            header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardread/' . $id_item);
             exit;
         }
     }
@@ -301,7 +301,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! Votre Extended Card a bien été modifiée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardread/' . $id_item);
+            header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardread/' . $id_item);
             exit;
         }
     }
@@ -318,7 +318,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! L\'Extended Card a bien été restaurée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardsbin');
+            header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardsbin');
             exit;
         }
     }
@@ -337,7 +337,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! L\'Extended Card a été déplacée dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcards');
+            header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin');
             exit;
         }
     }
@@ -357,7 +357,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! Votre Extended Card a bien été supprimée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcards/extendedcardsbin');
+            header('Location:' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardsbin');
             exit;
         }
     }
@@ -379,7 +379,7 @@ class Item extends Model
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcards/extendedcardsbin');
+            header('Location:' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardsbin');
             exit;
         }
     }

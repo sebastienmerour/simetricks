@@ -24,7 +24,22 @@ class Calculate extends Model
   // ITEMS
   // FRONT
 
-  // Obtenir le nombre total des Items :
+  // Obtenir le nombre total des Items en Home :
+  public function getTotalOfItemsHome()
+  {
+      $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards
+      WHERE bin != "yes"
+      AND draft = "no"
+      UNION SELECT COUNT(id) AS countercards FROM cards
+      WHERE bin != "yes"
+      ';
+      $this->items_count = $this->dbConnect($sql);
+      $items             = $this->items_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_items   = $items['counter'];
+      return $number_of_items;
+  }
+
+  // Obtenir le nombre total des Items en Front :
   public function getTotalOfItemsFront()
   {
       $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards
@@ -50,6 +65,15 @@ class Calculate extends Model
       $items             = $this->items_count->fetch(\PDO::FETCH_ASSOC);
       $number_of_items   = $items['counter'];
       return $number_of_items;
+  }
+
+  // Obtenir le nombre de pages des Extended Cards en Home :
+  public function getNumberOfPagesOfExtHome()
+  {
+      $number_of_items       = $this->getTotalOfItemsHome();
+      // Calculer le nombre de pages nécessaires :
+      $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
+      return $number_of_items_pages;
   }
 
   // Obtenir le nombre de pages des Extended Cards en Front :

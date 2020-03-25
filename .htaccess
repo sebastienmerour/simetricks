@@ -11,6 +11,7 @@ RewriteEngine on
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteCond %{HTTP_HOST} ^(?:www\.)?simetricks\.com(?:.*)$ [nc]
+RewriteCond %{HTTP_HOST} ^(?:www\.)?simetricks\.fr(?:.*)$ [nc]
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [redirect=301,L]
 
 RewriteCond %{REQUEST_FILENAME} !-d

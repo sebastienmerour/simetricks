@@ -3,7 +3,7 @@
 <?php require __DIR__ . '/../errors/errors.php'; ?>
 <h5 class="my-4">Ajoutez un commentaire :</h5>
 <div class="my-4">
-<form action="item/createcomment" method="post">
+<form action="extendedcard/createcomment" method="post">
   <div class="row">
     <div class="col-md-12 mb-1">
       <div class="form-group">

@@ -15,16 +15,17 @@ class Card extends Model
     // CREATE
 
     // Création d'une nouvelle Card sans photo :
-    public function insertCard($id_user, $title, $slugcard, $content)
+    public function insertCard($id_user, $id_category, $title, $slugcard, $content)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
 
-        $sql   = 'INSERT INTO cards (id_user, title, slug, content, date_creation)
-                      VALUES (:id_user, :title, :slug, :content, NOW())';
+        $sql   = 'INSERT INTO cards (id_user, id_category, title, slug, content, date_creation)
+                      VALUES (:id_user, :id_category, :title, :slug, :content, NOW())';
         $query = $this->dbConnectLastId($sql, array(
             ':id_user' => $id_user,
+            ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slugcard,
             ':content' => $content
@@ -39,16 +40,17 @@ class Card extends Model
     }
 
     // Création d'une nouvelle Card avec photo :
-    public function insertCardImage($id_user, $title, $slug, $cardimagename, $content)
+    public function insertCardImage($id_user, $id_category, $title, $slug, $cardimagename, $content)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO cards (id_user, title, slug, image, content, date_creation)
+        $sql      = 'INSERT INTO cards (id_user, id_category, title, slug, image, content, date_creation)
                       VALUES
-                      (:id_user, :title, :slug, :image, :content, NOW())';
+                      (:id_user, :id_category, :title, :slug, :image, :content, NOW())';
         $cards    = $this->dbConnect($sql, array(
             ':id_user' => $id_user,
+            ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slug,
             ':image' => $cardimagename,
@@ -96,11 +98,18 @@ class Card extends Model
     // Afficher une Card en particulier :
     public function getCard($id_card)
     {
-        $sql  = 'SELECT id AS id, title, slug, image, content,
-        DATE_FORMAT(date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
-        DATE_FORMAT(date_update, \'%d/%m/%Y à %Hh%i\') AS date_update
+        $sql  = 'SELECT cards.id AS id, cards.id_category AS category, cards.title, cards.slug AS slug,
+        cards.image AS image, cards.content AS content,
+        DATE_FORMAT(cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+        DATE_FORMAT(cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+        users.id_user, users.avatar, users.firstname, users.name,
+        categories.name AS categoryname, categories.slug AS categoryslug
         FROM cards
-        WHERE id = ? ';
+        LEFT JOIN users
+        ON cards.id_user = users.id_user
+        LEFT JOIN categories
+        ON cards.id_category = categories.id
+        WHERE cards.id = ? ';
         $req  = $this->dbConnect($sql, array(
             $id_card
         ));
@@ -127,18 +136,21 @@ class Card extends Model
 
     // UPDATE
 
+
     // Modification d'une Card avec photo :
-    public function changeCardImage($title, $slug, $cardimagename, $content, $id_card)
+    public function changeCardImage($id_category, $title, $slug, $cardimagename, $content, $id_card)
     {
+        $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
         $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE cards
-        SET title = :title, slug = :slug, image = :image,
+        SET id_category = :id_category, title = :title, slug = :slug, image = :image,
         content = :content, date_update = NOW()
         WHERE id = :id';
         $card                     = $this->dbConnect($sql, array(
             ':id' => $id_card,
+            ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slug,
             ':image' => $cardimagename,
@@ -153,16 +165,18 @@ class Card extends Model
     }
 
     // Modification d'une Card sans photo :
-    public function changeCard($title, $slug, $content, $id_card)
+    public function changeCard($id_category, $title, $slug, $content, $id_card)
     {
+        $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
         $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE cards
-        SET title = :title, slug = :slug, content = :content, date_update = NOW()
+        SET id_category = :id_category, title = :title, slug = :slug, content = :content, date_update = NOW()
         WHERE id = :id';
         $card                     = $this->dbConnect($sql, array(
             ':id' => $id_card,
+            ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slug,
             ':content' => $content

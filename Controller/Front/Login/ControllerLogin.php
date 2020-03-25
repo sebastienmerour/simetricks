@@ -34,11 +34,13 @@ class ControllerLogin extends Controller
     public function index()
     {
         $number_of_items       = $this->calculate->getTotalOfItemsFront();
+        $number_of_cards       = $this->calculate->getTotalOfCards();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
+            'number_of_cards' => $number_of_cards,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'number_of_items_pages' => $number_of_items_pages
@@ -61,6 +63,7 @@ class ControllerLogin extends Controller
     {
         $number_of_items      = $this->calculate->getTotalOfItemsFront();
         $total_comments_count = $this->calculate->getTotalOfComments();
+        $number_of_cards       = $this->calculate->getTotalOfCards();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         if (ISSET($_SESSION['id_user'])) {
             $this->request->getSession()->destroy();
@@ -69,6 +72,7 @@ class ControllerLogin extends Controller
             setcookie('pass', '');
             $this->generateView(array(
                 'number_of_items' => $number_of_items,
+                'number_of_cards' => $number_of_cards,
                 'total_comments_count' => $total_comments_count,
                 'total_users_count' => $total_users_count
             ));
@@ -81,10 +85,12 @@ class ControllerLogin extends Controller
     public function invite()
     {
         $number_of_items      = $this->calculate->getTotalOfItemsFront();
+        $number_of_cards       = $this->calculate->getTotalOfCards();
         $total_comments_count = $this->calculate->getTotalOfComments();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
+            'number_of_cards' => $number_of_cards,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count
         ));
@@ -94,11 +100,13 @@ class ControllerLogin extends Controller
     public function forgottenpassword()
     {
         $number_of_items       = $this->calculate->getTotalOfItemsFront();
+        $number_of_cards       = $this->calculate->getTotalOfCards();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
+            'number_of_cards' => $number_of_cards,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'number_of_items_pages' => $number_of_items_pages
@@ -177,6 +185,7 @@ class ControllerLogin extends Controller
     public function createnewpassword()
     {
         $number_of_items       = $this->calculate->getTotalOfItemsFront();
+        $number_of_cards       = $this->calculate->getTotalOfCards();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
@@ -184,6 +193,7 @@ class ControllerLogin extends Controller
             'username' => $username,
             'email' => $email,
             'number_of_items' => $number_of_items,
+            'number_of_cards' => $number_of_cards,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'number_of_items_pages' => $number_of_items_pages
@@ -194,6 +204,7 @@ class ControllerLogin extends Controller
     public function validnewpassword()
     {
         $number_of_items       = $this->calculate->getTotalOfItemsFront();
+        $number_of_cards       = $this->calculate->getTotalOfCards();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
@@ -245,6 +256,7 @@ class ControllerLogin extends Controller
         }
         $this->generateView(array(
             'number_of_items' => $number_of_items,
+            'number_of_cards' => $number_of_cards,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'number_of_items_pages' => $number_of_items_pages

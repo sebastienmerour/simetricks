@@ -13,7 +13,7 @@
 ?>
       <div class="col-md-12 col-lg-6 d-flex">
       <div class="card hover-shadow-3d rotate-left">
-        <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid'])  . "/1/". $this->clean($item['slug']) : "item/indexuser/" . $this->clean($item['itemid']). "/1/" .$this->clean($item['slug']);?>">
+        <a href="<?= !ISSET($_SESSION['id_user']) ? "extendedcard/" . $this->clean($item['itemid'])  . "/1/". $this->clean($item['slug']) : "extendedcard/indexuser/" . $this->clean($item['itemid']). "/1/" .$this->clean($item['slug']);?>">
           <img src="<?php echo BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="card-img-top">
         </a>
         <div class="card-body d-flex flex-column">
@@ -25,11 +25,11 @@
               <span class="text-muted">Le <?= $this->clean($item['date_creation_fr']) ?></span>
             </div>
           </div>
-          <a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid']) . "/1/". $this->clean($item['slug']) : "item/indexuser/" . $this->clean($item['itemid']) . "/1/" .$this->clean($item['slug']);?>">
+          <a href="<?= !ISSET($_SESSION['id_user']) ? "extendedcard/" . $this->clean($item['itemid']) . "/1/". $this->clean($item['slug']) : "extendedcard/indexuser/" . $this->clean($item['itemid']) . "/1/" .$this->clean($item['slug']);?>">
             <h4><?= $this->clean($item['title']) ?></h4>
           </a>
           <p class="flex-grow-1">
-            <?= $this->clean($intro); ?> ...[<a href="<?= !ISSET($_SESSION['id_user']) ? "item/" . $this->clean($item['itemid']) . "/1/". $this->clean($item['slug']) : "item/indexuser/" . $this->clean($item['itemid']) . "/1/" .$this->clean($item['slug']);?>">lire la suite</a>]
+            <?= $this->clean($intro); ?> ...[<a href="<?= !ISSET($_SESSION['id_user']) ? "extendedcard/" . $this->clean($item['itemid']) . "/1/". $this->clean($item['slug']) : "extendedcard/indexuser/" . $this->clean($item['itemid']) . "/1/" .$this->clean($item['slug']);?>">lire la suite</a>]
           </p>
           <div class="d-flex align-items-center mt-3">
             <a href="<?= "user/profile/" . $this->clean($item['id_user']) ?>"><img src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean($item['avatar']);?>" alt="<?= $this->clean($item['firstname']) . '&nbsp;' . $this->clean($item['name']) ?>" class="avatar avatar-sm"></a>
@@ -48,7 +48,8 @@
 <div class="col-md-6 col-lg-4 d-none d-md-block">
   <?php if(!ISSET($_SESSION['id_user']))
           {require __DIR__ . '/../themes/front/template_module_login.php'; }
-       else { require __DIR__ . '/../themes/front/template_module_logout.php';}?>
+       else { require __DIR__ . '/../themes/front/template_module_logout.php';}
+       require( __DIR__ . '/../themes/front/template_module_stats.php');?>
 </div>
 </div>
     <?php

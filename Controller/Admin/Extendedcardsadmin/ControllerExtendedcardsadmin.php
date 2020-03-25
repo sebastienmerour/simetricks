@@ -14,7 +14,7 @@ require_once 'Model/Calculate.php';
  * @author Sébastien Merour
  */
 
-class ControllerExtendedcards extends Controller
+class ControllerExtendedcardsadmin extends Controller
 {
     private $user;
     private $item;

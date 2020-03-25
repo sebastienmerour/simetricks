@@ -4,7 +4,6 @@
 	}
 	else {
 ?>
-
 <?php $this->title =  WEBSITE_NAME . ' |  Modification d\'une Extended Card'; ?>
 <?php require('extendedcards_menu.php'); ?>
 <?php if (empty($item)) {
@@ -16,7 +15,7 @@
 <div class="card my-4">
 	<h5 class="card-header">Modification de l'Extended Card <strong><?= $this->clean($item['title']);?></strong></h5>
     <div class="card-body">
-				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>extendedcards/updateitem/<?= $this->clean($item['itemid']);?>" method="post"
+				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>extendedcardsadmin/updateitem/<?= $this->clean($item['itemid']);?>" method="post"
 	        id="itemmodification" enctype="multipart/form-data" novalidate>
 						<div class="form-group">
 							<div class="row">
@@ -131,7 +130,7 @@
 							<br>
 							<button class="btn btn-md btn-success" name="update" type="submit">Enregistrer</button>
 							<a href="#" role="button" class="btn btn-md btn-secondary" type="reset">Annuler</a>
-							<a href="<?= BASE_ADMIN_URL. 'extendedcards/removeitem/' . $this->clean($item['itemid'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
+							<a href="<?= BASE_ADMIN_URL. 'extendedcardsadmin/removeitem/' . $this->clean($item['itemid'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
 							<a href="<?= $_SERVER['HTTP_REFERER']; ?>" role="button" class="btn btn-md btn-primary" type="button">Retour</a>
 						</div>
 			</div>

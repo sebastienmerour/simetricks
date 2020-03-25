@@ -1,7 +1,6 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Card.php';
-require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
 
@@ -15,13 +14,11 @@ require_once 'Model/Calculate.php';
 class ControllerCards extends Controller
 {
     private $card;
-    private $user;
     private $calculate;
 
     public function __construct()
     {
         $this->card      = new Card();
-        $this->user      = new User();
         $this->calculate = new Calculate();
     }
 
@@ -38,11 +35,11 @@ class ControllerCards extends Controller
         $next_page             = $cards_current_page + 1;
         $number_of_cards_pages = $this->calculate->getNumberOfPagesOfCards();
         $number_of_cards       = $this->calculate->getTotalOfCards();
-        $total_users_count     = $this->calculate->getTotalOfUsers();
+        $number_of_items       = $this->calculate->getTotalOfItemsHome();
         $this->generateView(array(
             'cards' => $cards,
             'number_of_cards' => $number_of_cards,
-            'total_users_count' => $total_users_count,
+            'number_of_items' => $number_of_items,
             'cards_current_page' => $cards_current_page,
             'previous_page' => $previous_page,
             'next_page' => $next_page,

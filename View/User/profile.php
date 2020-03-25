@@ -26,7 +26,6 @@ else {?>
                                 <?php require __DIR__ . '/../errors/errors.php'; ?>
 					                      <?php require __DIR__ . '/../errors/confirmation.php'; ?>
                                 <h2><?= '<h1 class="mt-4">Profil de '.$this->clean($user['firstname']). ' '. $this->clean($user['name']) ?></h2>
-                                  <div class="h6">Date de naissance : <?= strftime('%d/%m/%Y', strtotime($user['date_birth'])); ?></div>
 	                               </div>
                                </div>
 							                </span>
@@ -42,7 +41,8 @@ else {?>
 <div class="col-md-6 col-lg-4 d-none d-md-block">
   <?php if(!ISSET($_SESSION['id_user']))
           {require __DIR__ . '/../themes/front/template_module_login.php'; }
-       else { require __DIR__ . '/../themes/front/template_module_logout.php';}?>
+       else { require __DIR__ . '/../themes/front/template_module_logout.php';}
+       require( __DIR__ . '/../themes/front/template_module_stats.php');?>
 </div>
 </div>
 <?php };?>

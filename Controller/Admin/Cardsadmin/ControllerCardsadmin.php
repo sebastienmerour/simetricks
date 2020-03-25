@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Card.php';
+require_once 'Model/Category.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
@@ -15,12 +16,14 @@ class ControllerCardsadmin extends Controller
 {
     private $user;
     private $card;
+    private $category;
     private $calculate;
 
     public function __construct()
     {
         $this->user      = new User();
         $this->card      = new Card();
+        $this->category  = new Category();
         $this->calculate = new Calculate();
     }
 
@@ -30,7 +33,11 @@ class ControllerCardsadmin extends Controller
     // Affichage du formulaire de création d'une card :
     public function cardaddcard()
     {
-        $this->generateadminView();
+        $categories_current_page = 1;
+        $categories              = $this->category->getCategories($categories_current_page);
+        $this->generateadminView(array(
+            'categories' => $categories
+        ));
     }
 
     // Processus de création d'une Card :
@@ -40,6 +47,7 @@ class ControllerCardsadmin extends Controller
             $errors                = array();
             $messages              = array();
             $id_user               = $_SESSION['id_user_admin'];
+            $id_category           = $_POST['category'];
             $title                 = $_POST['title'];
             $content               = $_POST['content'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
@@ -70,7 +78,7 @@ class ControllerCardsadmin extends Controller
             }
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->card->insertCard($id_user, $title, $slugcard, $content);
+                $this->card->insertCard($id_user, $id_category, $title, $slugcard, $content);
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -98,7 +106,7 @@ class ControllerCardsadmin extends Controller
 
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
-                $this->card->insertCardImage($id_user, $title, $slugcard, $cardimagename, $content);
+                $this->card->insertCardImage($id_user, $id_category, $title, $slugcard, $cardimagename, $content);
 
             }
         }
@@ -135,10 +143,16 @@ class ControllerCardsadmin extends Controller
     {
         $id_card     = $this->request->getParameter("id");
         $card        = $this->card->getCard($id_card);
+        $categories  = $this->category->getCategories();
+        $id_category = $card['category'];
+        $category    = $this->category->getCategory($id_category);
         $this->generateadminView(array(
-            'card' => $card
+            'card' => $card,
+            'category' => $category,
+            'categories' => $categories
         ));
     }
+
 
     // UPDATE
 
@@ -147,6 +161,7 @@ class ControllerCardsadmin extends Controller
     {
         if (isset($_POST["update"])) {
             $id_card               = $this->request->getParameter("id");
+            $id_category           = $_POST['category'];
             $title                 = $this->request->getParameter("title");
             $slugcard              = $_POST['slug'];
             $content               = $this->request->getParameter("content");
@@ -170,7 +185,7 @@ class ControllerCardsadmin extends Controller
 
             if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $messages    = array();
-                $this->card->changeCard($title, $slugcard, $content, $id_card);
+                $this->card->changeCard($id_category, $title, $slugcard, $content, $id_card);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -194,7 +209,7 @@ class ControllerCardsadmin extends Controller
                 }
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
-                $this->card->changeCardImage($title, $slugcard, $cardimagename, $content, $id_card);
+                $this->card->changeCardImage($id_category, $title, $slugcard, $cardimagename, $content, $id_card);
             }
         }
     }

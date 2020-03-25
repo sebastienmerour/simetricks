@@ -6,6 +6,8 @@
     Pour vous connecter, <a href="login">cliquez ici</a></p>
     </div>
 <div class="col-md-6 col-lg-4 d-none d-md-block">
-<?php require __DIR__ . '/../themes/front/template_module_login.php';?>
+<?php 
+     require __DIR__ . '/../themes/front/template_module_logout.php';
+     require __DIR__ . '/../themes/front/template_module_stats.php';?>
 </div>
 </div>

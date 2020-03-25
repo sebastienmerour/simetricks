@@ -24,10 +24,10 @@ if ($comments_current_page > $number_of_comments_pages) {
       <?= $this->cleantinymce($comment['content']); ?>
     </div>
     <div>
-      <em class="fas fa-flag"></em>&nbsp;<a class="text-small" href="item/reportcomment/<?= $this->clean($item['itemid']) ?>/<?= $this->clean($comment['id_comment']) ;?>/">signaler le commentaire</a>&nbsp;
+      <em class="fas fa-flag"></em>&nbsp;<a class="text-small" href="extendedcard/reportcomment/<?= $this->clean($item['itemid']) ?>/<?= $this->clean($comment['id_comment']) ;?>/">signaler le commentaire</a>&nbsp;
       <?php if(ISSET($_SESSION['id_user']) AND  $_SESSION['id_user'] == $comment['user_com'])  {
       ?>
-      |&nbsp;<em class="fas fa-edit"></em>&nbsp;<a href="item/commentread/<?= $this->clean($item['itemid']) ?>/<?= $this->clean($comment['id_comment']) ;?>/">modifier</a>
+      |&nbsp;<em class="fas fa-edit"></em>&nbsp;<a href="extendedcard/commentread/<?= $this->clean($item['itemid']) ?>/<?= $this->clean($comment['id_comment']) ;?>/">modifier</a>
         <?php };?>
     </div>
   </li>

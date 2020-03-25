@@ -33,13 +33,13 @@
 	        <td><h6 class="mt-2 text-left"><?= $this->clean($item['date_creation_fr']); ?></h6></td>
 	        <td><h6 class="mt-2 text-left"><a target="_blank" href="<?= BASE_ADMIN_URL.'users/userread/' . $this->clean($item['id_user']) ?>">
 	        <?= $this->clean($item['firstname']); ?>&nbsp;<?= $this->clean($item['name']);?></a></span></td>
-					<td><a href="<?= BASE_ADMIN_URL.'extendedcards/extendedcardread/' . $this->clean($item['itemid'])?>">
+					<td><a href="<?= BASE_ADMIN_URL.'extendedcardsadmin/extendedcardread/' . $this->clean($item['itemid'])?>">
 					<img width="125px" src="<?= BASE_URL. 'public/images/item_images/' .$this->clean($item['image'])?>" class="figure-img img-fluid rounded-right"
 					alt="<?= $this->clean($item['title']) ?>" title="<?= $this->clean($item['title']) ?>"></a></td>
-	        <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'extendedcards/extendedcardread/' . $this->clean($item['itemid'])?>">
+	        <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'extendedcardsadmin/extendedcardread/' . $this->clean($item['itemid'])?>">
 					<h6 class="mt-2 text-left"><?= $this->clean($item['title']); ?></h6></a></span></td>
-	        <td><a href="<?= BASE_ADMIN_URL. 'extendedcards/restorethisitem/' . $this->clean($item['itemid'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
-	        <td><a href="<?= BASE_ADMIN_URL. 'extendedcards/removeitem/' . $this->clean($item['itemid'])?>" role="button" class="btn btn-sm btn-danger">Supprimer définitivement</a></td>
+	        <td><a href="<?= BASE_ADMIN_URL. 'extendedcardsadmin/restorethisitem/' . $this->clean($item['itemid'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
+	        <td><a href="<?= BASE_ADMIN_URL. 'extendedcardsadmin/removeitem/' . $this->clean($item['itemid'])?>" role="button" class="btn btn-sm btn-danger">Supprimer définitivement</a></td>
 	      </tr>
 	      <?php
 	        }
@@ -49,7 +49,7 @@
 		<?php require('extendedcardsbin_pagination.php');  ?>
 		<div class="d-flex flex-row-reverse btn-toolbar mb-3 mb-md-0">
 			<div class="btn-group mr-2">
-				<a href="<?= BASE_ADMIN_URL; ?>extendedcards/emptyextendedcards" role="button" class="float-right btn btn-sm btn-dark">Vider la Corbeille</a>
+				<a href="<?= BASE_ADMIN_URL; ?>extendedcardsadmin/emptyextendedcards" role="button" class="float-right btn btn-sm btn-dark">Vider la Corbeille</a>
 			</div>
 		</div>
 	</div>

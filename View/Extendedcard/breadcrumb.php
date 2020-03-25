@@ -2,7 +2,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="<?= DOMAIN_NAME; ?>">Accueil</a>
+        <a href="<?= BASE_URL; ?>">Accueil</a>
       </li>
       <li class="breadcrumb-item">
         <a href="category/<?= $this->clean($category['id']).'/1/' . $this->clean($category['slug']) ;?>"><?= $this->clean($category['name']); ?></a>

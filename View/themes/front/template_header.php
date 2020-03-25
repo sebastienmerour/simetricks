@@ -4,8 +4,12 @@
     <meta charset="utf-8">
     <base href="<?= $rootWeb ?>" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="Simetricks.com">
+    <meta name="description" content="Blog dédié au web, aux langages du web, et à l'I.T">
     <meta name="author" content="Sébastien Merour">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL; ?>public/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL; ?>public/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= BASE_URL; ?>public/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="<?= BASE_URL; ?>site.webmanifest">
     <!-- style -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900" rel="stylesheet">

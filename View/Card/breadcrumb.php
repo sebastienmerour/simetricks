@@ -2,10 +2,10 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="<?= DOMAIN_NAME; ?>">Accueil</a>
+        <a href="<?= BASE_URL; ?>">Accueil</a>
       </li>
       <li class="breadcrumb-item">
-        <a href="<?= DOMAIN_NAME; ?>cards">Cards</a>
+        <a href="<?= BASE_URL; ?>cards">Cards</a>
       </li>
       <li class="breadcrumb-item">
         <?= $this->clean($card['title']); ?>

@@ -19,7 +19,7 @@ if (empty($comment)) {
 						 </div>
 					 </div>
 					 <div>
-						 <form role="form" class="form needs-validation" action="<?php echo BASE_URL; ?>item/updatecomment/<?= $this->clean($item['itemid']) ?>/<?= $this->clean($comment['id']) ;?>/" method="post" id="commentmodification" novalidate>
+						 <form role="form" class="form needs-validation" action="<?php echo BASE_URL; ?>extendedcard/updatecomment/<?= $this->clean($item['itemid']) ?>/<?= $this->clean($comment['id']) ;?>/" method="post" id="commentmodification" novalidate>
 							 <div class="form-group">
 									 <div class="col-xs-6 p-2 d-flex justify-content-start">
 										 <img src="<?php echo BASE_URL; ?>public/images/avatars/<?= $this->clean(isset($comment['avatar_com']) ? $comment['avatar_com'] : $default );?>" alt="user" class="avatar avatar-lg">
@@ -55,8 +55,9 @@ if (empty($comment)) {
 
 <div class="col-md-4 col-lg-4 d-none d-md-block">
 	<div class="mb-4">
-<?php if(!ISSET($_SESSION['id_user']))
-      {require __DIR__ . '/../themes/front/template_module_login.php'; }
-   else { require __DIR__ . '/../themes/front/template_module_logout.php';}?>
+		<?php if(!ISSET($_SESSION['id_user']))
+	          {require __DIR__ . '/../themes/front/template_module_login.php'; }
+	       else { require __DIR__ . '/../themes/front/template_module_logout.php';}
+	       require( __DIR__ . '/../themes/front/template_module_stats.php');?>
 </div>
 </div>

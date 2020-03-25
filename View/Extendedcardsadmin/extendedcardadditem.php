@@ -11,7 +11,7 @@
 <div class="card my-4">
 	<h5 class="card-header">Ajout d'une <strong>Extended Card</strong></h5>
 	<div class="card-body">
-		<form id="repeater_form" action="<?= BASE_ADMIN_URL; ?>extendedcards/createitem" enctype="multipart/form-data" method="post">
+		<form id="repeater_form" action="<?= BASE_ADMIN_URL; ?>extendedcardsadmin/createitem" enctype="multipart/form-data" method="post">
 			<div class="form-group">
 				<div class="row">
 					<div class="col-12 text-right">
