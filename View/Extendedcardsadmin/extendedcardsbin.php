@@ -34,7 +34,7 @@
 	        <td><h6 class="mt-2 text-left"><a target="_blank" href="<?= BASE_ADMIN_URL.'users/userread/' . $this->clean($item['id_user']) ?>">
 	        <?= $this->clean($item['firstname']); ?>&nbsp;<?= $this->clean($item['name']);?></a></span></td>
 					<td><a href="<?= BASE_ADMIN_URL.'extendedcardsadmin/extendedcardread/' . $this->clean($item['itemid'])?>">
-					<img width="125px" src="<?= BASE_URL. 'public/images/item_images/' .$this->clean($item['image'])?>" class="figure-img img-fluid rounded-right"
+					<img width="125px" src="<?= BASE_URL. 'public/images/extendedcard_images/' .$this->clean($item['image'])?>" class="figure-img img-fluid rounded-right"
 					alt="<?= $this->clean($item['title']) ?>" title="<?= $this->clean($item['title']) ?>"></a></td>
 	        <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'extendedcardsadmin/extendedcardread/' . $this->clean($item['itemid'])?>">
 					<h6 class="mt-2 text-left"><?= $this->clean($item['title']); ?></h6></a></span></td>

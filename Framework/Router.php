@@ -35,28 +35,39 @@ class Router
         $folder     = "Front"; // Dossier par défaut
         $subfolder  = "Home"; // Sous-Dossier par défaut
         $controller = $subfolder;
-        if ($q[1] == "admintricks") {
+
+        if ($request->ifParameter('controller')) {
+        $controller = $request->getParameter('controller');
+        // Première lettre en majuscule
+        $controller = ucfirst(strtolower($controller));
+        }
+
+
+        if ($q[1] != "admintricks" AND $q[1] == false) {
+            $subfolder  = "Home"; // Sous-Dossier par défaut
+            $controller = $subfolder;
+        }
+
+        else if ($q[1] != "admintricks") {
+            $subfolder = ucfirst($q[1]); // Sous-Dossier par défaut
+            $controller = ucfirst($q[1]); // Sous-Dossier par défaut
+        }
+
+        else if ($q[1] != "admintricks" AND $request->ifParameter('token')) {
+            $subfolder = "Login";
+            $controller = "Login";
+        }
+
+        else if ($q[1] == "admintricks" AND $q[2] == false) {
             $folder     = "Admin"; // Dossier par défaut
             $subfolder  = "Lock"; // Sous-Dossier par défaut
             $controller = "Lock";
         }
 
-        if ($request->ifParameter('controller')) {
-            $controller = $request->getParameter('controller');
-            // Première lettre en majuscule
-            $controller = ucfirst(strtolower($controller));
-
-            if ($q[1] != "admintricks") {
-                $subfolder = $q[1]; // Sous-Dossier par défaut
-            } else if ($q[1] == "admintricks" AND $q[2] == false) {
-                $subfolder  = "Lock"; // Sous-Dossier par défaut
-                $controller = "Lock";
-            }
-
-            else if ($q[1] == "admintricks") {
-                $subfolder  = ucfirst($q[2]); // Sous-Dossier par défaut
-                $controller = ucfirst($q[2]);
-            }
+        else if ($q[1] == "admintricks") {
+            $folder     = "Admin"; // Dossier par défaut
+            $subfolder  = ucfirst($q[2]); // Sous-Dossier par défaut
+            $controller = ucfirst($q[2]);
         }
 
         // Création du nom du fichier du contrôleur
@@ -65,6 +76,12 @@ class Router
         $classController     = "Controller" . $controller;
         $fileController      = "Controller/" . $folderController . "/" . $subFolderController . "/" . $classController . ".php";
 
+        if ($q[1] != "admintricks"  AND $request->ifParameter('token'))  {
+            $subfolder = "Login";
+            $controller = "Login";
+            $classController     = "Controller" . $controller;
+            $fileController      = "Controller/Front/Login/ControllerLogin.php";
+        }
 
         if (file_exists($fileController)) {
             // Instanciation du contrôleur adapté à la requête

@@ -169,10 +169,11 @@ class ControllerLogin extends Controller
     // Affichage de la page Reset Password :
     public function resetpassword()
     {
-        if ($this->request->ifParameter("token") && $this->request->ifParameter("email") && $this->request->ifParameter("username")) {
-            $token        = $this->request->getParameter("token");
-            $email        = $this->request->getParameter("email");
-            $username     = $this->request->getParameter("username");
+
+        if (ISSET($_GET['token']) && ISSET($_GET['email']) && ISSET($_GET['username'])){
+            $token        = $_GET['token'];
+            $email        = $_GET['email'];
+            $username     = $_GET['username'];
             $current_date = date("Y-m-d H:i:s");
             $this->user->checkResetLink($token, $email, $username, $current_date);
         } else {

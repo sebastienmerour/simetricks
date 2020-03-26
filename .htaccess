@@ -11,6 +11,11 @@ RewriteEngine on
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteCond %{HTTP_HOST} ^(?:www\.)?simetricks\.com(?:.*)$ [nc]
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [redirect=301,L]
+
+RewriteEngine on
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteCond %{HTTP_HOST} ^(?:www\.)?simetricks\.fr(?:.*)$ [nc]
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [redirect=301,L]
 
@@ -41,7 +46,7 @@ RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=
 RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9\-]+)?/?$ index.php?controller=$1&action=$2&id=$3&page=$4&slug=0 [NC,L]
 
 # Réécrit une URL pour Reset Password
-RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&token=$3&email=$4&username=$5 [NC,L]
+# RewriteRule ^login/resetpassword?&token=?([a-zA-Z0-9]*)?&email=?([a-zA-Z0-9]*)?&username=?([a-zA-Z0-9]*)?/?$ index.php?controller=login&action=resetpassword&token=$1&email=$2&username=$3 [NC,L]
 
 # Réécrit une URL de type xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz&id_comment=iii
 RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&id=$3&id_comment=$4 [NC,L]

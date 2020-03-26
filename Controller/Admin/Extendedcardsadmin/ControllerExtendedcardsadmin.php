@@ -80,7 +80,7 @@ class ControllerExtendedcardsadmin extends Controller
             $itemimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
             $itemimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $itemimagename);
             $itemimagename         = "{$time}$slug.{$extension_upload}";
-            $destination           = ROOT_PATH . 'public/images/item_images';
+            $destination           = ROOT_PATH . 'public/images/extendedcard_images';
 
             if(isset($_POST['draft'])){
                 $draft = "no";
@@ -207,7 +207,7 @@ class ControllerExtendedcardsadmin extends Controller
             $itemimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
             $itemimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $itemimagename);
             $itemimagename         = "{$time}$slug.{$extension_upload}";
-            $destination           = ROOT_PATH . 'public/images/item_images';
+            $destination           = ROOT_PATH . 'public/images/extendedcard_images';
 
             if(isset($_POST['draft'])){
                 $draft = "no";

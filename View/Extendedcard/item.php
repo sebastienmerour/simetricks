@@ -14,7 +14,7 @@
 <div class="container"><!-- Contenu de l'item  -->
   <div class="row justify-content-left position-relative">
     <div class="pt-3 ml-3">
-      <img src="<?php echo BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="w-85 rounded">
+      <img src="<?php echo BASE_URL; ?>public/images/extendedcard_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="w-85 rounded">
     </div>
   </div>
   <div class="row justify-content-left ml-3">

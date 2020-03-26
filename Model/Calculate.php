@@ -97,9 +97,9 @@ class Calculate extends Model
   // Obtenir le nombre de pages des Extended Cards d'une Catégorie précise :
   public function getNumberOfCatPagesFront($id_category)
   {
-      $number_of_items       = $this->getTotalOfItemsFromCatFront($id_category);
+      $number_of_itemsFromCat       = $this->getTotalOfItemsFromCatFront($id_category);
       // Calculer le nombre de pages nécessaires :
-      $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
+      $number_of_items_pages = ceil($number_of_itemsFromCat / $this->number_of_items_by_page);
       return $number_of_items_pages;
   }
 

@@ -104,7 +104,7 @@
 						} else {
 							?>
 							<figure class="figure">
-							<img src="<?= BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image']);?>" class="figure-img img-fluid rounded-right"
+							<img src="<?= BASE_URL; ?>public/images/extendedcard_images/<?= $this->clean($item['image']);?>" class="figure-img img-fluid rounded-right"
 							alt="<?= $this->clean($item['title']); ?>" title="<?= $this->clean($item['title']);?>">
 							<figcaption class="figure-caption text-right"><?= $this->clean($item['title']); ?></figcaption>
 							</figure>

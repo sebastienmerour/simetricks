@@ -14,7 +14,7 @@
       <div class="col-md-12 col-lg-6 d-flex">
       <div class="card hover-shadow-3d rotate-left">
         <a href="<?= !ISSET($_SESSION['id_user']) ? "extendedcard/" . $this->clean($item['itemid'])  . "/1/". $this->clean($item['slug']) : "extendedcard/indexuser/" . $this->clean($item['itemid']). "/1/" .$this->clean($item['slug']);?>">
-          <img src="<?php echo BASE_URL; ?>public/images/item_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="card-img-top">
+          <img src="<?php echo BASE_URL; ?>public/images/extendedcard_images/<?= $this->clean($item['image'])?>" alt="<?= $this->clean($item['title']) ?>" class="card-img-top">
         </a>
         <div class="card-body d-flex flex-column">
           <div class="d-flex justify-content-between mb-3">
