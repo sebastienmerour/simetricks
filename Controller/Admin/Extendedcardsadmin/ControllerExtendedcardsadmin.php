@@ -57,13 +57,16 @@ class ControllerExtendedcardsadmin extends Controller
             $id_user               = $_SESSION['id_user_admin'];
             $id_category           = $_POST['category'];
             $title                 = $_POST['title'];
+            $description           = $_POST['description'];
             $date_native           = $_POST['date_native'];
+            $year_native           = $_POST['year_native'];
             $licence               = $_POST['licence'];
             $sgbdr                 = $_POST['sgbdr'];
             $pdm                   = $_POST['pdm'];
             $langage               = $_POST['langage'];
             $features              = $_POST['features'];
             $content               = $_POST['content'];
+            $version               = $_POST['version'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];
             $height                = $fileinfo[1];
@@ -96,7 +99,7 @@ class ControllerExtendedcardsadmin extends Controller
             }
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->item->insertItem($id_user, $id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft);
+                $this->item->insertItem($id_user, $id_category, $title, $slug, $description, $date_native, $year_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $version, $draft);
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -124,7 +127,7 @@ class ControllerExtendedcardsadmin extends Controller
 
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->insertItemImage($id_user, $id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft);
+                $this->item->insertItemImage($id_user, $id_category, $title, $slug, $description, $itemimagename, $date_native,  $year_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $version, $draft);
 
             }
         }
@@ -184,13 +187,16 @@ class ControllerExtendedcardsadmin extends Controller
             $draft                 = "yes";
             $title                 = $this->request->getParameter("title");
             $slug                  = $_POST['slug'];
+            $description           = $_POST['description'];
             $date_native           = $_POST['date_native'];
+            $year_native           = $_POST['year_native'];
             $licence               = $_POST['licence'];
             $sgbdr                 = $_POST['sgbdr'];
             $pdm                   = $_POST['pdm'];
             $langage               = $_POST['langage'];
             $features              = $_POST['features'];
             $content               = $this->request->getParameter("content");
+            $version               = $_POST['version'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];
             $height                = $fileinfo[1];
@@ -215,7 +221,7 @@ class ControllerExtendedcardsadmin extends Controller
 
             if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $messages    = array();
-                $this->item->changeItem($id_category, $title, $slug, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft, $id_item);
+                $this->item->changeItem($id_category, $title, $slug, $description, $date_native, $year_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $version, $draft, $id_item);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -239,7 +245,7 @@ class ControllerExtendedcardsadmin extends Controller
                 }
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->changeItemImage($id_category, $title, $slug, $itemimagename, $date_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft, $id_item);
+                $this->item->changeItemImage($id_category, $title, $slug, $description, $itemimagename, $date_native, $year_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $draft, $version, $id_item);
             }
         }
     }

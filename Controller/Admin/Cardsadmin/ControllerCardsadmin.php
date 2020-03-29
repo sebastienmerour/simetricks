@@ -95,8 +95,8 @@ class ControllerCardsadmin extends Controller
                     header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardaddcard');
                     exit;
                 }
-            } else if ($width < "350" && $height < "350") {
-                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 350 X 350 px';
+            } else if ($width < "250" && $height < "250") {
+                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 250 X 250 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
                     header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardaddcard');
@@ -200,8 +200,8 @@ class ControllerCardsadmin extends Controller
                     header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);
                     exit;
                 }
-            } else if ($width < "350" && $height < "350") {
-                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 350 X 350 px';
+            } else if ($width < "250" && $height < "250") {
+                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 250 X 250 px';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
                     header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);

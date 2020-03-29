@@ -39,6 +39,7 @@
 					<div class="col-12">
 						<input class="form-control font-weight-bold" id="title" name="title" placeholder="Titre" type="text"><br>
 						<input class="form-control" id="slug" name="slug" placeholder="Slug" type="text"><br>
+						<input class="form-control" id="version" name="version" placeholder="Version" type="text"><br>
 					</div>
 				</div>
 				<div class="row">
@@ -47,8 +48,18 @@
 						<input class="form-control" id="date_native" name="date_native" type="date"><br>
 					</div>
 					<div class="col-6">
+						<label for="year_native">Année de création :</label><br>
+						<input class="form-control" id="year_native" name="year_native" type="text"><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
 						<label for="licence">Licence :</label><br>
 						<input class="form-control" id="licence" name="licence" placeholder="Licence" type="text"><br>
+					</div>
+					<div class="col-6">
+						<label for="langage">Langage :</label><br>
+						<input class="form-control" id="langage" name="langage" placeholder="Langage" type="text"><br>
 					</div>
 				</div>
 				<div class="row">
@@ -63,8 +74,8 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
-						<label for="langage">Langage :</label><br>
-						<input class="form-control" id="langage" name="langage" placeholder="Langage" type="text"><br>
+						<label for="description">Description :</label><br>
+						<textarea class="form-control" id="description" name="description" rows="5">Description...</textarea><br>
 					</div>
 				</div>
 				<div class="row">

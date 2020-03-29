@@ -37,7 +37,7 @@ class ControllerExtendedcard extends Controller
     }
 
     // ITEMS
-    // Create
+    // Read
 
     // Affichage d'un seul item avec ses commentaires - pour user inconnu :
     public function index()
@@ -49,6 +49,7 @@ class ControllerExtendedcard extends Controller
         $number_of_items          = $this->calculate->getTotalOfItemsFront();
         $number_of_cards          = $this->calculate->getTotalOfCards();
         $number_of_items_pages    = $this->calculate->getNumberOfPagesOfExtFront();
+        $page_view                = $this->calculate->pageviewItemId($id_item);
         $number_of_comments       = $this->calculate->countComments($id_item);
         $comments_current_page    = $this->calculate->getCommentsCurrentPage();
         $page_previous_comments   = $comments_current_page - 1;

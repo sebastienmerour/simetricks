@@ -12,4 +12,6 @@
       </li>
     </ol>
   </nav>
+  <span class="badge bg-primary-alt text-primary">
+    <em class="far fa-eye"></em>&nbsp;&nbsp;<?= $this->clean($item['views']); ?> vues</span>
 </div>

@@ -112,6 +112,29 @@ class Calculate extends Model
       return $id_item;
   }
 
+  // Ajouter 1 vue pour calculer le nombre de pages vues
+  public function pageviewItemId($id_item)
+  {
+
+      $sql               = 'UPDATE extended_cards SET views = views+1
+      WHERE id = :id';
+      $item              = $this->dbConnect($sql, array(
+        ':id' => $id_item
+      ));
+
+  }
+
+  // Afficher le nombre de pages vues pour un item :
+  public function displayPageView($id_item)
+  {
+      $sql               = 'SELECT * FROM extended_cards
+      WHERE id = :id';
+      $this->views_count = $this->dbConnect($sql);
+      $items             = $this->views_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_page_view = $items['views'];
+      return $number_of_page_view;
+  }
+
 
   // ADMIN
 
@@ -344,7 +367,8 @@ class Calculate extends Model
       $id_admin = ID_ADMIN;
       $sql                  = 'SELECT COUNT(id_user) as counter
       FROM users
-      WHERE id_user != :id_admin';
+      WHERE id_user != :id_admin AND bin != "yes"
+      ';
       $users                = $this->dbConnect($sql, array(
           ':id_admin' => "$id_admin"
       ));

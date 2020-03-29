@@ -37,3 +37,9 @@ section.has-divider .container {
 	color: #000;
 	border: 1px solid #CCCCCC;
 }
+
+/* Design des Cards */
+
+#onecard {
+	min-width: 250px;
+}
