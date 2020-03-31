@@ -7,7 +7,7 @@
     <div class="text-small text-muted">publié le <?= $this->clean($item['date_creation_fr']) ?> | <?php if (isset($item['date_update']) AND $item['date_update'] > 0 ) {?>
       modifé le&nbsp;<?= $this->clean($item['date_update']) ?>
     <?php } ?><br>
-    Catégorie : <a href="category/<?= $this->clean($category['id']). '/1/' . $this->clean($category['slug']);?>"><?= $this->clean($category['name']); ?></a> |&nbsp;<a href="<?= !ISSET($_SESSION['id_user']) ? "extendedcard/" . $this->clean($item['itemid'])  . "/1/#comments" : "extendedcard/indexuser/" . $this->clean($item['itemid']). "/1/" .$this->clean($item['slug']). "#comments" ?>">Commentaires (<?= $number_of_comments ;?>)</a><br>
+    Catégorie : <a href="category/<?= $this->clean($category['id']). '/1/' . $this->clean($category['slug']);?>"><?= $this->clean($category['name']); ?></a> |&nbsp;<a href="<?= !ISSET($_SESSION['id_user']) ? "extendedcard/" . $this->clean($item['itemid'])  . "/1/" .$this->clean($item['slug']). "#comments" : "extendedcard/indexuser/" . $this->clean($item['itemid']). "/1/" .$this->clean($item['slug']). "#comments" ?>">Commentaires (<?= $number_of_comments ;?>)</a><br>
     </div>
   </div>
 </div><!-- Fin de l'Entête de l'item  -->
@@ -46,7 +46,7 @@
             </div>
           </dd>
           <?php if (!empty($this->clean($item['content']))) {?><dt class="col-sm-3"><h6>Aux dernières nouvelles</h6></dt>
-          <dd class="col-sm-9"><?= $this->clean($item['content']);?></dd><?php };?>
+          <dd class="col-sm-9"><?= $this->cleantinymce($item['content']);?></dd><?php };?>
           <?php if (!empty($this->clean($item['version']))) {?><dt class="col-sm-3"><h6>Dernière version</h6></dt>
           <dd class="col-sm-9"><?= $this->clean($item['version']);?></dd><?php };?>
         </dl>
