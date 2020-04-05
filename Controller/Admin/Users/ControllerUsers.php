@@ -72,10 +72,15 @@ class ControllerUsers extends Controller
             $errors                = array();
             $messages              = array();
             $status                = $this->request->getParameter("status");
-            $firstname             = $this->request->getParameter("firstname");
-            $name                  = $this->request->getParameter("name");
+            $firstname             = $_POST["firstname"];
+            $name                  = $_POST["name"];
             $email                 = $this->request->getParameter("email");
-            $date_birth            = $this->request->getParameter("date_birth");
+            $city                  = $_POST["city"];
+            $linkedin              = $_POST["linkedin"];
+            $github                = $_POST["github"];
+            $twitter               = $_POST["twitter"];
+            $website               = $_POST["website"];
+            $date_birth            = $_POST["date_birth"];
             $fileinfo              = @getimagesize($_FILES["avatar"]["tmp_name"]);
             $width                 = $fileinfo[0];
             $height                = $fileinfo[1];
@@ -93,7 +98,8 @@ class ControllerUsers extends Controller
             $destination           = ROOT_PATH . 'public/images/avatars';
 
             if (!file_exists($_FILES["avatar"]["tmp_name"])) {
-                $this->user->changeUserFromAdmin($id_user, $status, $firstname, $name, $email, $date_birth);
+                $this->user->changeUserFromAdmin($id_user, $status, $firstname, $name, $email, $city, $linkedin, $github,
+                $twitter, $website, $date_birth);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -117,7 +123,8 @@ class ControllerUsers extends Controller
                 }
             } else {
                 move_uploaded_file($_FILES['avatar']['tmp_name'], $destination . "/" . $avatarname);
-                $this->user->changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $date_birth);
+                $this->user->changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $city, $linkedin, $github,
+                $twitter, $website, $date_birth);
             }
         } else {
             $errors['errors'] = 'Merci de renseigner les champs <strong>Prénom et Nom</strong> !';

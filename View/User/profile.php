@@ -25,8 +25,20 @@ else {?>
                               <div>
                                 <?php require __DIR__ . '/../errors/errors.php'; ?>
 					                      <?php require __DIR__ . '/../errors/confirmation.php'; ?>
-                                <h2><?= '<h1 class="mt-4">Profil de '.$this->clean($user['firstname']). ' '. $this->clean($user['name']) ?></h2>
-	                               </div>
+                                <h2><?= '<h1 class="mt-4">'.$this->clean($user['firstname']). ' '. $this->clean($user['name']) ?></h2>
+                                  <ul>
+                                    <?php if (!empty($this->clean($user['city']))) {?><li class="hiddenlist"><em class="fas fa-home"></em>&nbsp;<strong class="text-info">Ville :</strong>
+                                    <?= $this->clean($user['city']);?></li><hr><?php };?>
+                                    <?php if (!empty($this->clean($user['linkedin']))) {?><li class="hiddenlist"><em class="fab fa-linkedin"></em>&nbsp;<strong class="text-info">Linkedin :</strong>
+                                    <a href="<?= $this->clean($user['linkedin']);?>" target="_blank"><?= $this->clean($user['linkedin']);?></a></li><?php };?>
+                                    <?php if (!empty($this->clean($user['github']))) {?><li class="hiddenlist"><em class="fab fa-github-square"></em>&nbsp;<strong class="text-info">Github :</strong>
+                                    <a href="<?= $this->clean($user['github']);?>" target="_blank"><?= $this->clean($user['github']);?></a></li><?php };?>
+                                    <?php if (!empty($this->clean($user['twitter']))) {?><li class="hiddenlist"><em class="fab fa-twitter-square"></em>&nbsp;<strong class="text-info">Twitter :</strong>
+                                    <a href="<?= $this->clean($user['twitter']);?>" target="_blank"><?= $this->clean($user['twitter']);?></li></a><?php };?>
+                                    <?php if (!empty($this->clean($user['website']))) {?><li class="hiddenlist"><em class="fas fa-link"></em>&nbsp;<strong class="text-info">Site Web :</strong>
+                                    <a href="<?= $this->clean($user['website']);?>" target="_blank"><?= $this->clean($user['website']);?></li></a><?php };?>
+                                  </ul>
+                                 </div>
                                </div>
 							                </span>
 							              </div>

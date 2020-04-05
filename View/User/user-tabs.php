@@ -5,4 +5,7 @@
     <li class="nav-item">
         <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#username" role="tab" aria-controls="pills-profile" aria-selected="false">Identifiant</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#password" role="tab" aria-controls="pills-profile" aria-selected="false">Mot de passe</a>
+    </li>
 </ul>

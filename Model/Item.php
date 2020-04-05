@@ -41,7 +41,7 @@ class Item extends Model
             ':draft' => $draft
         ));
 
-        if (isset($_POST['linkname']) && is_array($_POST['linkname'])) {
+        if (!empty($_POST['linkname'][0]) && is_array($_POST['linkname'])) {
             for ($i = 0; $i < count($_POST['linkname']); $i++) {
                 $linkname = $_POST['linkname'][$i];
                 $linkurl  = $_POST['linkurl'][$i];

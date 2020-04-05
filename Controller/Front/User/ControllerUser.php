@@ -177,16 +177,22 @@ class ControllerUser extends Controller
         ));
     }
 
-    // Modification d'utilisateur :
-    public function updateuser()
+    // Modification de la Tab "Infos" d'un User en Front :
+    public function updateuserinfos()
     {
-        $pass       = $this->request->getParameter("pass");
+      if (!empty($_POST['email'])) {
         $email      = $this->request->getParameter("email");
-        $firstname  = $this->request->getParameter("firstname");
-        $name       = $this->request->getParameter("name");
-        $date_birth = $this->request->getParameter("date_birth");
+        $firstname             = $_POST["firstname"];
+        $name                  = $_POST["name"];
+        $city                  = $_POST["city"];
+        $linkedin              = $_POST["linkedin"];
+        $github                = $_POST["github"];
+        $twitter               = $_POST["twitter"];
+        $website               = $_POST["website"];
+        $date_birth            = $_POST["date_birth"];
         $user       = $this->request->getSession()->getAttribut("user");
-        $this->user->changeUser($pass, $email, $firstname, $name, $date_birth);
+        $this->user->changeUser($email, $firstname, $name, $city, $linkedin, $github,
+        $twitter, $website, $date_birth);
         $user = $this->user->getUser($id_user);
         if ($user === false) {
             throw new Exception('Impossible de modifier l\' utilisateur !');
@@ -195,9 +201,36 @@ class ControllerUser extends Controller
             $this->generateView();
         }
     }
+}
 
-    // Modification d'identifiant :
-    public function updateusername()
+    // Modification de la Tab "Mot de passe" d'un User en Front :
+    public function updateuserpassword()
+    {
+      if (!empty($_POST['pass']) && !empty($_POST['passcheck'])) {
+        $user       = $this->request->getSession()->getAttribut("user");
+        $pass       = $this->request->getParameter("pass");
+        $passcheck  = $this->request->getParameter("passcheck");
+        $this->user->checkUserPass($pass, $passcheck);
+        $user = $this->user->getUser($id_user);
+        if ($user === false) {
+            throw new Exception('Impossible de modifier l\' utilisateur !');
+        } else {
+            $this->request->getSession()->setAttribut("user", $user);
+            $this->generateView();
+          }
+    }
+        else {
+          $errors['errors'] = 'Merci de renseigner le mot de passe dans les deux champs';
+          if (!empty($errors)) {
+              $_SESSION['errors'] = $errors;
+              header('Location: ' . BASE_URL . 'user/useredit#password');
+              exit;
+              }
+            }
+}
+
+    // Modification de la Tab "Identifiant" d'un User en Front :
+    public function updateuserusername()
     {
         $username = $this->request->getParameter("username");
         $user     = $this->request->getSession()->getAttribut("user");

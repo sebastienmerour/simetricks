@@ -39,7 +39,9 @@ section.has-divider .container {
 }
 
 /* Design des Cards */
-
 #onecard {
 	min-width: 250px;
+}
+.hiddenlist {
+  list-style: none; 
 }

@@ -36,6 +36,8 @@
 									</option>
 								</select><br>
 								<br>
+								<label for="city">Ville :</label><br>
+								<input type="text" class="form-control" name="city" id="city" value="<?= $this->clean($user['city']);?>" title="Modifiez la ville de résidence si besoin"><br>
 								<hr>
 						 		<label for="avatar">Avatar :</label><br>
 								<?php if (empty($user['avatar'])) {
@@ -63,15 +65,22 @@
 								<input class="form-control font-weight-bold" id="name" name="name" type="text" placeholder="Nom" value="<?= $this->clean($user['name']);?>"><br>
 								<label for="date_birth">Date de naissance :</label><br>
 								<input type="date" class="form-control" name="date_birth" id="date_birth" value="<?= strftime('%Y-%m-%d', strtotime($user['date_birth'])); ?>" title="Modifiez la date de naissance si besoin"><br>
+								<label for="linkedin">Linkedin :</label><br>
+								<input type="text" class="form-control" name="linkedin" id="linkedin" value="<?= $this->clean($user['linkedin']);?>" title="Modifiez la page Linkedin si besoin"><br>
+								<label for="github">Github :</label><br>
+								<input type="text" class="form-control" name="github" id="github" value="<?= $this->clean($user['github']);?>" title="Modifiez la page Github si besoin"><br>
+								<label for="twitter">Twitter :</label><br>
+								<input type="text" class="form-control" name="twitter" id="twitter" value="<?= $this->clean($user['twitter']);?>" title="Modifiez la page Twitter si besoin"><br>
+								<label for="website">Site web :</label><br>
+								<input type="text" class="form-control" name="website" id="website" value="<?= $this->clean($user['website']);?>" title="Modifiez le site web si besoin"><br>
 								<label for="date_register">Date d'enregistrement :</label><br>
 								<input type="text" readonly class="form-control" name="date_register" id="date_register" value="<?= $this->clean($user['date_register']); ?>" title="Date d'enregistrement"><br>
 								<label for="date_register">Dernière mise à jour :</label><br>
 								<input type="text" readonly class="form-control" name="date_update" id="date_update" value="<?= $this->clean($user['date_update']); ?>" title="Dernière mise à jour"><br>
-								<hr>
-								<br><br>
 	            </div>
 						</div>
 	        </div>
+					<hr>
 	        <div class="form-group">
 	             <div class="col-xs-12">
 	                  <br>

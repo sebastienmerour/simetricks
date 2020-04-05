@@ -95,7 +95,8 @@ class User extends Model
     // Affichage d'un utilisateur :
     public function getUser($id_user)
     {
-        $sql   = 'SELECT id_user, status, username, firstname, name, avatar, pass, email, DATE_FORMAT(date_birth, \'%Y-%m-%d \')
+        $sql   = 'SELECT id_user, status, username, firstname, name, city, linkedin, github,
+        twitter, website, avatar, pass, email, DATE_FORMAT(date_birth, \'%Y-%m-%d \')
        AS date_birth, DATE_FORMAT(date_register, \'%d/%m/%Y \') AS date_register, DATE_FORMAT(date_update, \'%d/%m/%Y \') AS date_update
        FROM users WHERE id_user = :id_user';
         $query = $this->dbConnect($sql, array(
@@ -138,14 +139,19 @@ class User extends Model
 
 
     // UPDATE
-    // Modification d'un utilisateur en front :
-    public function changeUser($pass, $email, $firstname, $name, $date_birth)
+    // Modification de la Tab "Infos" d'un User en Front :
+    public function changeUser($email, $firstname, $name, $city, $linkedin, $github,
+    $twitter, $website, $date_birth)
     {
         $identification = $_SESSION['id_user'];
-        $pass           = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
         $email          = !empty($_POST['email']) ? trim($_POST['email']) : null;
         $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
         $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
+        $city           = !empty($_POST["city"]) ? trim($_POST['city']) : null;
+        $linkedin       = !empty($_POST["linkedin"]) ? trim($_POST['linkedin']) : null;
+        $github         = !empty($_POST["github"]) ? trim($_POST['github']) : null;
+        $twitter        = !empty($_POST["twitter"]) ? trim($_POST['twitter']) : null;
+        $website        = !empty($_POST["website"]) ? trim($_POST['website']) : null;
         $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
 
         // Ensuite on vérifie si l'adresse mail possède un format valide :
@@ -153,30 +159,28 @@ class User extends Model
             $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
         }
 
-        // Ensuite on vérifie si les 2 mots de passe sont identiques :
-        if ($_POST['pass'] != $_POST['passcheck']) {
-            $errors['passdifferent'] = 'Désolé, les mots de passe ne correspondent pas !<br>';
-        }
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
             die(header('Location: ' . BASE_URL . 'user/useredit'));
             exit;
         }
-        // Maintenant, on hashe le mot de passe :
-        $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array(
-            "cost" => 12
-        ));
 
         $sql  = 'UPDATE users
-           SET pass = :pass, email= :email, firstname= :firstname, name= :name, date_birth= :date_birth,
+           SET email= :email, firstname= :firstname, name= :name,
+           city= :city, linkedin= :linkedin, github= :github,
+           twitter= :twitter, website= :website, date_birth= :date_birth,
            date_update = NOW()
            WHERE id_user= :id_user';
         $user = $this->dbConnect($sql, array(
             ':id_user' => htmlspecialchars($identification),
-            ':pass' => htmlspecialchars($passwordHash),
             ':email' => htmlspecialchars($email),
             ':firstname' => htmlspecialchars($firstname),
             ':name' => htmlspecialchars($name),
+            ':city' => htmlspecialchars($city),
+            ':linkedin' => htmlspecialchars($linkedin),
+            ':github' => htmlspecialchars($github),
+            ':twitter' => htmlspecialchars($twitter),
+            ':website' => htmlspecialchars($website),
             ':date_birth' => htmlspecialchars($date_birth)
         ));
 
@@ -188,13 +192,69 @@ class User extends Model
         }
     }
 
+    // Vérification du mot de passe avant modification du mot de passe :
+    public function checkUserPass($pass, $passcheck)
+    {
+        $errors     = array();
+        $messages   = array();
+        $user       = $_SESSION['id_user'];
+        $pass       = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
+        $passcheck  = !empty($_POST['passcheck']) ? trim($_POST['passcheck']) : null;
+
+        // Ensuite on vérifie si les 2 mots de passe sont identiques :
+        if ($_POST['pass'] != $_POST['passcheck']) {
+            $errors['passdifferent'] = 'Désolé, les mots de passe ne correspondent pas !<br>';
+        }
+
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            header('Location: ' . BASE_URL . 'user/useredit');
+            exit;
+        }
+
+        // Maintenant, on hasshe le mot de passe :
+        $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array(
+            "cost" => 12
+        ));
+
+        // OK, tout est correct, on peut alors à jour le mot de passe :
+        $this->updateUserPass($user, $passwordHash);
+    }
+
+
+    // Modification d'un mot de passe en front :
+    public function updateUserPass($user, $passwordHash)
+    {
+        $sql  = 'UPDATE users
+           SET pass = :pass
+           WHERE id_user= :id_user';
+        $user = $this->dbConnect($sql, array(
+            ':id_user' => $user,
+            ':pass' => $passwordHash
+        ));
+
+        $messages['confirmation'] = 'Votre mot de passe a bien été mis à jour !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: ' . BASE_URL . 'user');
+            exit;
+        }
+    }
+
     // Modification d'un utilisateur en Admin :
-    public function changeUserFromAdmin($id_user, $status, $firstname, $name, $email, $date_birth)
+    public function changeUserFromAdmin($id_user, $status, $firstname, $name, $email, $city, $linkedin, $github,
+    $twitter, $website, $date_birth)
+
     {
         $identification = $id_user;
         $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
         $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
         $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
+        $city           = !empty($_POST["city"]) ? trim($_POST['city']) : null;
+        $linkedin       = !empty($_POST["linkedin"]) ? trim($_POST['linkedin']) : null;
+        $github         = !empty($_POST["github"]) ? trim($_POST['github']) : null;
+        $twitter        = !empty($_POST["twitter"]) ? trim($_POST['twitter']) : null;
+        $website        = !empty($_POST["website"]) ? trim($_POST['website']) : null;
         $email          = !empty($_POST['email']) ? trim($_POST['email']) : null;
         $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
 
@@ -210,7 +270,9 @@ class User extends Model
         }
 
         $sql  = 'UPDATE users
-           SET status = :status, firstname= :firstname, name= :name, email= :email, date_birth= :date_birth,
+           SET status = :status, firstname= :firstname, name= :name,
+           email= :email, city= :city, linkedin= :linkedin, github= :github,
+           twitter= :twitter, website= :website, date_birth= :date_birth,
            date_update = NOW()
            WHERE id_user= :id_user';
         $user = $this->dbConnect($sql, array(
@@ -219,6 +281,11 @@ class User extends Model
             ':firstname' => htmlspecialchars($firstname),
             ':name' => htmlspecialchars($name),
             ':email' => htmlspecialchars($email),
+            ':city' => htmlspecialchars($city),
+            ':linkedin' => htmlspecialchars($linkedin),
+            ':github' => htmlspecialchars($github),
+            ':twitter' => htmlspecialchars($twitter),
+            ':website' => htmlspecialchars($website),
             ':date_birth' => htmlspecialchars($date_birth)
         ));
 
@@ -231,12 +298,18 @@ class User extends Model
     }
 
     // Modification de l'avatar d'un user en Admin :
-    public function changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $date_birth)
+    public function changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname,
+    $email, $city, $linkedin, $github, $twitter, $website, $date_birth)
     {
         $identification = $id_user;
         $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
         $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
         $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
+        $city           = !empty($_POST["city"]) ? trim($_POST['city']) : null;
+        $linkedin       = !empty($_POST["linkedin"]) ? trim($_POST['linkedin']) : null;
+        $github         = !empty($_POST["github"]) ? trim($_POST['github']) : null;
+        $twitter        = !empty($_POST["twitter"]) ? trim($_POST['twitter']) : null;
+        $website        = !empty($_POST["website"]) ? trim($_POST['website']) : null;
         $email          = !empty($_POST['email']) ? trim($_POST['email']) : null;
         $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
 
@@ -252,7 +325,9 @@ class User extends Model
         }
 
         $sql  = 'UPDATE users
-           SET status = :status, firstname= :firstname, name= :name, avatar= :avatar, email= :email, date_birth= :date_birth,
+           SET status = :status, firstname= :firstname, name= :name, avatar= :avatar,
+           city= :city, linkedin= :linkedin, github= :github, twitter= :twitter,
+           website= :website, email= :email, date_birth= :date_birth,
            date_update = NOW()
            WHERE id_user= :id_user';
         $user = $this->dbConnect($sql, array(
@@ -261,6 +336,11 @@ class User extends Model
             ':firstname' => htmlspecialchars($firstname),
             ':name' => htmlspecialchars($name),
             ':avatar' => htmlspecialchars($avatarname),
+            ':city' => htmlspecialchars($city),
+            ':linkedin' => htmlspecialchars($linkedin),
+            ':github' => htmlspecialchars($github),
+            ':twitter' => htmlspecialchars($twitter),
+            ':website' => htmlspecialchars($website),
             ':email' => htmlspecialchars($email),
             ':date_birth' => htmlspecialchars($date_birth)
         ));
