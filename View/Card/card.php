@@ -1,19 +1,29 @@
-<h1 class="ml-3"><?= $this->clean($card['title']) ?></h1>
-<div class="container"><!-- Contenu de la Card  -->
-  <div class="row justify-content-left position-relative">
-    <div class="pt-3 ml-3">
-      <img src="<?php echo BASE_URL; ?>public/images/card_images/<?= $this->clean($card['image'])?>" alt="<?= $this->clean($card['title']) ?>" class="w-85 rounded">
-    </div>
-  </div>
-  <div class="row justify-content-left ml-3">
-    <div class="mt-3">
-      <article class="article">
-        <dl class="row">
-          <dt class="col-sm-4"><h6>Définition</h6></dt>
-          <dd class="col-sm-8"><?= $this->cleantinymce($card['content']); ?></dd>
-        </dl>
-      </article>
-    </div>
-  </div>
-</div>
-<div class="pr-lg-4 ml-3"><!-- Commentaires  -->
+
+
+
+   <div class="container">
+     <div class="row justify-content-center">
+       <div class="col">
+         <div class="row">
+           <div class="col-md-12 col-lg-12">
+             <div class="card card-body bg-primary text-light">
+               <div class="d-flex justify-content-between mb-3">
+                 <div class="text-small d-flex">
+                   <h1 class="ml-3 text-black"><?= $this->clean($card['title']) ?></h1><br>
+                 </div>
+               </div>
+               <div class="d-flex">
+                 <div class="ml-3">
+                   <span class="h4 opacity-70">//&nbsp;<?= $this->clean($card['definition']); ?></span>
+                   <p></p>
+                   <h4 class="mb-1"><?= $this->cleantinymce($card['content']); ?></h4>
+                   <span class="opacity-70">|&nbsp;<?= $this->clean($card['date_creation_fr']) ?>&nbsp;|&nbsp;par <a href="<?= "user/profile/" . $this->clean($card['id_user']) ?>" title="<?= $this->clean($card['firstname']) . '&nbsp;' . $this->clean($card['name'])?>"><?= $this->clean($card['firstname']) . '&nbsp;' . $this->clean($card['name'])?></a></span>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+   <div class="pr-lg-4 ml-3"><!-- Commentaires  -->

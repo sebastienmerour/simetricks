@@ -15,19 +15,20 @@ class Card extends Model
     // CREATE
 
     // Création d'une nouvelle Card sans photo :
-    public function insertCard($id_user, $id_category, $title, $slugcard, $content)
+    public function insertCard($id_user, $id_category, $title, $slugcard, $definition, $content)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
 
-        $sql   = 'INSERT INTO cards (id_user, id_category, title, slug, content, date_creation)
-                      VALUES (:id_user, :id_category, :title, :slug, :content, NOW())';
+        $sql   = 'INSERT INTO cards (id_user, id_category, title, slug, definition, content, date_creation)
+                      VALUES (:id_user, :id_category, :title, :slug, :definition, :content, NOW())';
         $query = $this->dbConnectLastId($sql, array(
             ':id_user' => $id_user,
             ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slugcard,
+            ':definition' => $definition,
             ':content' => $content
         ));
 
@@ -40,20 +41,21 @@ class Card extends Model
     }
 
     // Création d'une nouvelle Card avec photo :
-    public function insertCardImage($id_user, $id_category, $title, $slug, $cardimagename, $content)
+    public function insertCardImage($id_user, $id_category, $title, $slug, $cardimagename, $definition, $content)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO cards (id_user, id_category, title, slug, image, content, date_creation)
+        $sql      = 'INSERT INTO cards (id_user, id_category, title, slug, image, definition, content, date_creation)
                       VALUES
-                      (:id_user, :id_category, :title, :slug, :image, :content, NOW())';
+                      (:id_user, :id_category, :title, :slug, :image, :definition, content, NOW())';
         $cards    = $this->dbConnect($sql, array(
             ':id_user' => $id_user,
             ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slug,
             ':image' => $cardimagename,
+            ':definition' => $definition,
             ':content' => $content
         ));
 
@@ -72,8 +74,8 @@ class Card extends Model
     public function getCards($cards_current_page)
     {
         $cards_start = (int) (($cards_current_page - 1) * $this->number_of_cards_by_page);
-        $sql         = 'SELECT id, title, slug, image, content,
-     DATE_FORMAT(date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+        $sql         = 'SELECT id, title, slug, image, definition, content,
+     DATE_FORMAT(date_creation, \'%d/%m/%Y\') AS date_creation_fr,
      DATE_FORMAT(date_update, \'%d/%m/%Y à %Hh%i\') AS date_update
      FROM cards
      WHERE bin != "yes"
@@ -86,7 +88,7 @@ class Card extends Model
     public function getPaginationCards($cards_current_page)
     {
         $start = (int) (($cards_current_page - 1) * $this->number_of_cards_by_page);
-        $sql   = 'SELECT id, title, slug, image, content,
+        $sql   = 'SELECT id, title, slug, image, definition,
     DATE_FORMAT(date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
     DATE_FORMAT(date_update, \'%d/%m/%Y à %Hh%i\') AS date_update
     FROM cards
@@ -99,10 +101,10 @@ class Card extends Model
     public function getCard($id_card)
     {
         $sql  = 'SELECT cards.id AS id, cards.id_category AS category, cards.title, cards.slug AS slug,
-        cards.image AS image, cards.content AS content,
+        cards.image AS image, cards.definition AS definition, cards.content AS content,
         DATE_FORMAT(cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
         DATE_FORMAT(cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-        users.id_user, users.avatar, users.firstname, users.name,
+        users.id_user, users.avatar, users.firstname AS firstname, users.name AS name,
         categories.name AS categoryname, categories.slug AS categoryslug
         FROM cards
         LEFT JOIN users
@@ -121,7 +123,7 @@ class Card extends Model
     public function getCardsDeleted($cards_deleted_current_page)
     {
         $cards_start   = (int) (($cards_deleted_current_page - 1) * $this->number_of_cards_by_page);
-        $sql           = 'SELECT id, title, slug, image, content,
+        $sql           = 'SELECT id, title, slug, image, definition,
      DATE_FORMAT(date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(date_update, \'%d/%m/%Y à %Hh%i\') AS date_update
      FROM cards
@@ -138,15 +140,16 @@ class Card extends Model
 
 
     // Modification d'une Card avec photo :
-    public function changeCardImage($id_category, $title, $slug, $cardimagename, $content, $id_card)
+    public function changeCardImage($id_category, $title, $slug, $cardimagename, $definition, $content, $id_card)
     {
         $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
-        $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
+        $definition                  = !empty($_POST['definition']) ? trim($_POST['definition']) : null;
+        $content              = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE cards
         SET id_category = :id_category, title = :title, slug = :slug, image = :image,
-        content = :content, date_update = NOW()
+        definition = :definition, content = :content, date_update = NOW()
         WHERE id = :id';
         $card                     = $this->dbConnect($sql, array(
             ':id' => $id_card,
@@ -154,6 +157,7 @@ class Card extends Model
             ':title' => $title,
             ':slug' => $slug,
             ':image' => $cardimagename,
+            ':definition' => $definition,
             ':content' => $content
         ));
         $messages['confirmation'] = 'Votre Card a bien été modifiée !';
@@ -165,20 +169,22 @@ class Card extends Model
     }
 
     // Modification d'une Card sans photo :
-    public function changeCard($id_category, $title, $slug, $content, $id_card)
+    public function changeCard($id_category, $title, $slug, $definition, $content, $id_card)
     {
         $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
         $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
         $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
-        $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
+        $definition                  = !empty($_POST['definition']) ? trim($_POST['definition']) : null;
+        $content              = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE cards
-        SET id_category = :id_category, title = :title, slug = :slug, content = :content, date_update = NOW()
+        SET id_category = :id_category, title = :title, slug = :slug, definition = :definition, content = :content, date_update = NOW()
         WHERE id = :id';
         $card                     = $this->dbConnect($sql, array(
             ':id' => $id_card,
             ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slug,
+            ':definition' => $definition,
             ':content' => $content
         ));
         $messages['confirmation'] = 'Merci ! Votre Card a bien été modifiée !';

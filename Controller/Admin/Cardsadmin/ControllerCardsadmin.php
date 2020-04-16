@@ -49,6 +49,7 @@ class ControllerCardsadmin extends Controller
             $id_user               = $_SESSION['id_user_admin'];
             $id_category           = $_POST['category'];
             $title                 = $_POST['title'];
+            $definition            = $_POST['definition'];
             $content               = $_POST['content'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];
@@ -68,7 +69,7 @@ class ControllerCardsadmin extends Controller
             $cardimagename         = "{$time}$slugcard.{$extension_upload}";
             $destination           = ROOT_PATH . 'public/images/card_images';
 
-            if (empty($title) || empty($content)) {
+            if (empty($title) || empty($definition)) {
                 $errors['errors'] = 'Veuillez remplir les champs <strong>Titre et Contenu</strong>';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
@@ -78,7 +79,7 @@ class ControllerCardsadmin extends Controller
             }
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->card->insertCard($id_user, $id_category, $title, $slugcard, $content);
+                $this->card->insertCard($id_user, $id_category, $title, $slugcard, $definition, $content);
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -106,7 +107,7 @@ class ControllerCardsadmin extends Controller
 
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
-                $this->card->insertCardImage($id_user, $id_category, $title, $slugcard, $cardimagename, $content);
+                $this->card->insertCardImage($id_user, $id_category, $title, $slugcard, $cardimagename, $definition, $content);
 
             }
         }
@@ -164,7 +165,8 @@ class ControllerCardsadmin extends Controller
             $id_category           = $_POST['category'];
             $title                 = $this->request->getParameter("title");
             $slugcard              = $_POST['slug'];
-            $content               = $this->request->getParameter("content");
+            $definition            = $this->request->getParameter("definition");
+            $content               = $_POST['content'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];
             $height                = $fileinfo[1];
@@ -185,7 +187,7 @@ class ControllerCardsadmin extends Controller
 
             if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $messages    = array();
-                $this->card->changeCard($id_category, $title, $slugcard, $content, $id_card);
+                $this->card->changeCard($id_category, $title, $slugcard, $definition, $content, $id_card);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -209,7 +211,7 @@ class ControllerCardsadmin extends Controller
                 }
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
-                $this->card->changeCardImage($id_category, $title, $slugcard, $cardimagename, $content, $id_card);
+                $this->card->changeCardImage($id_category, $title, $slugcard, $cardimagename, $definition, $content, $id_card);
             }
         }
     }
