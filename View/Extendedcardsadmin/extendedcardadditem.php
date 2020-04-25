@@ -39,7 +39,18 @@
 					<div class="col-12">
 						<input class="form-control font-weight-bold" id="title" name="title" placeholder="Titre" type="text"><br>
 						<input class="form-control" id="slug" name="slug" placeholder="Slug" type="text"><br>
-						<input class="form-control" id="version" name="version" placeholder="Version" type="text"><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<label for="content">Description :</label><br>
+						<textarea class="form-control" id="content" name="content" rows="5">Description...</textarea><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<label for="features">Fonctionnalités :</label><br>
+						<textarea class="form-control" id="features" name="features" rows="5">Fonctionnalités...</textarea><br>
 					</div>
 				</div>
 				<div class="row">
@@ -54,34 +65,42 @@
 				</div>
 				<div class="row">
 					<div class="col-6">
+						<label for="owner">Créateur :</label><br>
+						<input class="form-control" id="owner" name="owner" placeholder="Créateur" type="text"><br>
+					</div>
+					<div class="col-6">
+						<label for="os_supported">OS supportés :</label><br>
+						<input class="form-control" id="os_supported" name="os_supported" placeholder="OS supportés" type="text"><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<label for="version">Version :</label><br>
+						<input class="form-control" id="version" name="version" placeholder="Version" type="text"><br>
+					</div>
+					<div class="col-6">
 						<label for="licence">Licence :</label><br>
 						<input class="form-control" id="licence" name="licence" placeholder="Licence" type="text"><br>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-6">
 						<label for="langage">Langage :</label><br>
 						<input class="form-control" id="langage" name="langage" placeholder="Langage" type="text"><br>
 					</div>
-				</div>
-				<div class="row">
 					<div class="col-6">
 						<label for="sgbdr">SGBDR :</label><br>
 						<input class="form-control" id="sgbdr" name="sgbdr" placeholder="SGBDR" type="text"><br>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<label for="number_of_users">Nombre d'utilisateurs :</label><br>
+						<input class="form-control" id="number_of_users" name="number_of_users" placeholder="Nombre d'utilisateurs" type="text"><br>
+					</div>
 					<div class="col-6">
 						<label for="pdm">Part de Marché :</label><br>
 						<input class="form-control" id="pdm" name="pdm" placeholder="Part de Marché" type="text"><br>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12">
-						<label for="description">Description :</label><br>
-						<textarea class="form-control" id="description" name="description" rows="5">Description...</textarea><br>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12">
-						<label for="features">Fonctionnalités :</label><br>
-						<textarea class="form-control" id="features" name="features" rows="5">Fonctionnalités...</textarea><br>
 					</div>
 				</div>
 				<label for="links">Liens :</label><br>
@@ -113,8 +132,8 @@
 							<input class="custom-file-input" name="image" type="file" id="uploadimage"> <label class="custom-file-label" data-browse="Parcourir..." for="image"></label>
 						</div><label for="image">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label> <input name="MAX_FILE_SIZE" type="hidden" value="1048576">
 						<hr>
-						<h5><label for="content">Contenu :</label></h5>
-						<textarea class="form-control" id="content" name="content" rows="10">Aux dernières news...</textarea>
+						<h5><label for="last_news">Aux dernières news :</label></h5>
+						<textarea class="form-control" id="last_news" name="last_news" rows="10">Aux dernières news...</textarea>
 				</div>
 			</div>
 			<div class="form-group">

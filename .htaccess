@@ -50,3 +50,10 @@ RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?([a-zA
 
 # Réécrit une URL de type xxx/yyy/zzz en index.php?controller=xxx&action=yyy&id=zzz&id_comment=iii
 RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=$1&action=$2&id=$3&id_comment=$4 [NC,L]
+
+#--------------------------------------------------
+# Règles de réécriture d'URL pour la Sitemap :
+#--------------------------------------------------
+
+RewriteEngine On
+RewriteRule ^sitemap\.xml/?$ sitemap

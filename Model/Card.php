@@ -84,6 +84,16 @@ class Card extends Model
         return $cards;
     }
 
+    // Afficher la liste des Cards ur la Sitemap :
+    public function getAllCards()
+    {
+        $sql         = 'SELECT *
+     FROM cards
+     ORDER BY id ASC';
+        $cards       = $this->dbConnect($sql);
+        return $cards;
+    }
+
     // Pagniation des Cards :
     public function getPaginationCards($cards_current_page)
     {
@@ -142,11 +152,6 @@ class Card extends Model
     // Modification d'une Card avec photo :
     public function changeCardImage($id_category, $title, $slug, $cardimagename, $definition, $content, $id_card)
     {
-        $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
-        $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
-        $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
-        $definition                  = !empty($_POST['definition']) ? trim($_POST['definition']) : null;
-        $content              = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE cards
         SET id_category = :id_category, title = :title, slug = :slug, image = :image,
         definition = :definition, content = :content, date_update = NOW()
@@ -171,11 +176,6 @@ class Card extends Model
     // Modification d'une Card sans photo :
     public function changeCard($id_category, $title, $slug, $definition, $content, $id_card)
     {
-        $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
-        $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
-        $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
-        $definition                  = !empty($_POST['definition']) ? trim($_POST['definition']) : null;
-        $content              = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE cards
         SET id_category = :id_category, title = :title, slug = :slug, definition = :definition, content = :content, date_update = NOW()
         WHERE id = :id';

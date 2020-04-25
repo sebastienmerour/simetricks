@@ -15,28 +15,31 @@ class Item extends Model
     // CREATE
 
     // Création d'une nouvelle Extended Card sans photo :
-    public function insertItem($id_user, $id_category, $title, $slug, $description, $date_native, $year_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $version, $draft)
+    public function insertItem($id_user, $id_category, $title, $slug, $content, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
 
-        $sql   = 'INSERT INTO extended_cards (id_user, id_category, title, slug, description, date_native, year_native, licence, sgbdr, pdm, langage, features, content, version, draft, date_creation)
-                      VALUES (:id_user, :id_category, :title, :slug, :description, :date_native, :year_native, :licence, :sgbdr, :pdm, :langage, :features, :content, :version, :draft, NOW())';
+        $sql   = 'INSERT INTO extended_cards (id_user, id_category, title, slug, content, owner, date_native, year_native, licence, os_supported, sgbdr, number_of_users, pdm, langage, features, last_news, version, draft, date_creation)
+                      VALUES (:id_user, :id_category, :title, :slug, :content, :owner, :date_native, :year_native, :licence, :os_supported, :sgbdr, :number_of_users, :pdm, :langage, :features, :last_news, :version, :draft, NOW())';
         $query = $this->dbConnectLastId($sql, array(
             ':id_user' => $id_user,
             ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slug,
-            ':description' => $description,
+            ':content' => $content,
+            ':owner' => $owner,
             ':date_native' => $date_native,
             ':year_native' => $year_native,
             ':licence' => $licence,
+            ':os_supported' => $os_supported,
             ':sgbdr' => $sgbdr,
+            ':number_of_users' => $number_of_users,
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':content' => $content,
+            ':last_news' => $last_news,
             ':version' => $version,
             ':draft' => $draft
         ));
@@ -65,29 +68,32 @@ class Item extends Model
     }
 
     // Création d'une nouvelle Extended Card avec photo :
-    public function insertItemImage($id_user, $id_category, $title, $slug, $description, $itemimagename, $date_native, $year_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $version, $draft)
+    public function insertItemImage($id_user, $id_category, $title, $slug, $content, $itemimagename, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft)
     {
         $errors   = array();
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
-        $sql      = 'INSERT INTO extended_cards (id_user, id_category, title, slug, description, image, date_native, year_native, licence, sgbdr, pdm, langage, features, content, version, draft, date_creation)
+        $sql      = 'INSERT INTO extended_cards (id_user, id_category, title, slug, content, image, owner, date_native, year_native, licence, os_supported, sgbdr, number_of_users, pdm, langage, features, last_news, version, draft, date_creation)
                       VALUES
-                      (:id_user, :id_category, :title, :slug, :description, :image, :date_native, :year_native, :licence, :sgbdr, :pdm, :langage, :features, :content, :version, :draft, NOW())';
+                      (:id_user, :id_category, :title, :slug, :content, :image, :owner, :date_native, :year_native, :licence, :os_supported, :sgbdr, :number_of_users, :pdm, :langage, :features, :last_news, :version, :draft, NOW())';
         $items    = $this->dbConnect($sql, array(
             ':id_user' => $id_user,
             ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slug,
-            ':description' => $description,
+            ':content' => $content,
             ':image' => $itemimagename,
+            ':owner' => $owner,
             ':date_native' => $date_native,
             ':year_native' => $year_native,
             ':licence' => $licence,
+            ':os_supported' => $os_supported,
             ':sgbdr' => $sgbdr,
+            ':number_of_users' => $number_of_users,
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':content' => $content,
+            ':last_news' => $last_news,
             ':version' => $version,
             ':draft' => $draft
         ));
@@ -107,7 +113,7 @@ class Item extends Model
     public function getItemsFront($items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
+        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.last_news,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
      users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname,
@@ -127,7 +133,7 @@ class Item extends Model
     public function getItemsAdmin($items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
+        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.last_news,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
      extended_cards.draft AS draft,
@@ -144,11 +150,22 @@ class Item extends Model
         return $items;
     }
 
+    // Afficher la liste des Extended Cards ur la Sitemap :
+    public function getAllItems()
+    {
+        $sql         = 'SELECT *
+     FROM extended_cards
+     ORDER BY id ASC';
+        $items       = $this->dbConnect($sql);
+        return $items;
+    }
+
+
     // Afficher la liste des Extended Cards appartenant à une Catégorie en Front :
     public function getItemsFromCategoryFront($cat, $items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
+        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.last_news,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
      users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname,
@@ -172,7 +189,7 @@ class Item extends Model
     public function getPaginationItems($items_current_page)
     {
         $start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql   = 'SELECT extended_cards.id, extended_cards.id_category, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
+        $sql   = 'SELECT extended_cards.id, extended_cards.id_category, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.last_news,
     DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
     DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
     users.id_user, users.avatar, users.firstname, users.name FROM extended_cards
@@ -186,16 +203,19 @@ class Item extends Model
     // Afficher une Extended Card en particulier :
     public function getItem($id_item)
     {
-        $sql  = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS category, extended_cards.title AS title, extended_cards.slug AS slug, extended_cards.description AS description, extended_cards.image AS image,
+        $sql  = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS category, extended_cards.title AS title, extended_cards.slug AS slug, extended_cards.content AS content, extended_cards.image AS image,
         DATE_FORMAT(extended_cards.date_native, \'%Y-%m-%d\') AS date_native,
+        extended_cards.owner AS owner,
         extended_cards.year_native AS year_native,
         extended_cards.licence AS licence,
+        extended_cards.os_supported AS os_supported,
         extended_cards.sgbdr AS sgbdr,
+        extended_cards.number_of_users AS number_of_users,
         extended_cards.pdm AS pdm,
         extended_cards.langage AS langage,
         extended_cards.features AS features,
         extended_cards.links AS links,
-        extended_cards.content AS content,
+        extended_cards.last_news AS last_news,
         extended_cards.version AS version,
         extended_cards.views AS views,
         extended_cards.draft AS draft,
@@ -220,7 +240,7 @@ class Item extends Model
     public function getItemsDeleted($items_deleted_current_page)
     {
         $items_start   = (int) (($items_deleted_current_page - 1) * $this->number_of_items_by_page);
-        $sql           = 'SELECT extended_cards.id AS itemid, extended_cards.id_category, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.content,
+        $sql           = 'SELECT extended_cards.id AS itemid, extended_cards.id_category, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.last_news,
      DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
      DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
      users.id_user, users.firstname, users.name FROM extended_cards
@@ -238,40 +258,30 @@ class Item extends Model
     // UPDATE
 
     // Modification d'une Extended Card avec photo :
-    public function changeItemImage($id_category, $title, $slug, $description, $itemimagename, $date_native, $year_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $version, $draft, $id_item)
+    public function changeItemImage($id_category, $title, $slug, $content, $itemimagename, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft, $id_item)
     {
-        $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
-        $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
-        $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
-        $description              = !empty($_POST['description']) ? trim($_POST['description']) : null;
-        $date_native              = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
-        $year_native              = !empty($_POST['year_native']) ? trim($_POST['year_native']) : null;
-        $licence                  = !empty($_POST['licence']) ? trim($_POST['licence']) : null;
-        $sgbdr                    = !empty($_POST['sgbdr']) ? trim($_POST['sgbdr']) : null;
-        $pdm                      = !empty($_POST['pdm']) ? trim($_POST['pdm']) : null;
-        $features                 = !empty($_POST['features']) ? trim($_POST['features']) : null;
-        $langage                  = !empty($_POST['langage']) ? trim($_POST['langage']) : null;
-        $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
-        $version                  = !empty($_POST['version']) ? trim($_POST['version']) : null;
-        $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug, description = :description, image = :image,
-        date_native = :date_native, year_native = :year_native, licence = :licence, sgbdr = :sgbdr, pdm = :pdm,  langage = :langage, features = :features,
-        content = :content, version = :version, draft = :draft,
+        $sql                        = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug, content = :content, image = :image,
+        owner = :owner, date_native = :date_native, year_native = :year_native, licence = :licence, os_supported = :os_supported, sgbdr = :sgbdr, number_of_users = :number_of_users, pdm = :pdm,  langage = :langage, features = :features,
+        last_news = :last_news, version = :version, draft = :draft,
         date_update = NOW() WHERE id = :id';
         $item                     = $this->dbConnect($sql, array(
             ':id' => $id_item,
             ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slug,
-            ':description' => $description,
+            ':content' => $content,
             ':image' => $itemimagename,
+            ':owner' => $owner,
             ':date_native' => $date_native,
             ':year_native' => $year_native,
             ':licence' => $licence,
+            ':os_supported' => $os_supported,
             ':sgbdr' => $sgbdr,
+            ':number_of_users' => $number_of_users,
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':content' => $content,
+            ':last_news' => $last_news,
             ':version' => $version,
             ':draft' => $draft
         ));
@@ -284,38 +294,29 @@ class Item extends Model
     }
 
     // Modification d'une Extended Card sans photo :
-    public function changeItem($id_category, $title, $slug, $description, $date_native, $year_native, $licence, $sgbdr, $pdm, $langage, $features, $content, $version, $draft, $id_item)
+    public function changeItem($id_category, $title, $slug, $content, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft, $id_item)
     {
-        $id_category              = !empty($_POST['category']) ? trim($_POST['category']) : null;
-        $title                    = !empty($_POST['title']) ? trim($_POST['title']) : null;
-        $slug                     = !empty($_POST['slug']) ? trim($_POST['slug']) : null;
-        $description              = !empty($_POST['description']) ? trim($_POST['description']) : null;
-        $date_native              = !empty($_POST['date_native']) ? trim($_POST['date_native']) : null;
-        $year_native              = !empty($_POST['year_native']) ? trim($_POST['year_native']) : null;
-        $licence                  = !empty($_POST['licence']) ? trim($_POST['licence']) : null;
-        $sgbdr                    = !empty($_POST['sgbdr']) ? trim($_POST['sgbdr']) : null;
-        $pdm                      = !empty($_POST['pdm']) ? trim($_POST['pdm']) : null;
-        $langage                  = !empty($_POST['langage']) ? trim($_POST['langage']) : null;
-        $features                 = !empty($_POST['features']) ? trim($_POST['features']) : null;
-        $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
-        $version                  = !empty($_POST['version']) ? trim($_POST['version']) : null;
-        $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug,
-        description = :description, date_native = :date_native, year_native = :year_native, licence = :licence, sgbdr = :sgbdr, pdm = :pdm, langage = :langage, features = :features,
-        content = :content, version = :version, draft= :draft, date_update = NOW() WHERE id = :id';
+        $sql                        = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug,
+        content = :content,
+        owner = :owner, date_native = :date_native, year_native = :year_native, licence = :licence, os_supported = :os_supported, sgbdr = :sgbdr, number_of_users = :number_of_users, pdm = :pdm,  langage = :langage, features = :features,
+        last_news = :last_news, version = :version, draft= :draft, date_update = NOW() WHERE id = :id';
         $item                     = $this->dbConnect($sql, array(
             ':id' => $id_item,
             ':id_category' => $id_category,
             ':title' => $title,
             ':slug' => $slug,
-            ':description' => $description,
+            ':content' => $content,
+            ':owner' => $owner,
             ':date_native' => $date_native,
             ':year_native' => $year_native,
             ':licence' => $licence,
+            ':os_supported' => $os_supported,
             ':sgbdr' => $sgbdr,
+            ':number_of_users' => $number_of_users,
             ':pdm' => $pdm,
             ':langage' => $langage,
             ':features' => $features,
-            ':content' => $content,
+            ':last_news' => $last_news,
             ':version' => $version,
             ':draft' => $draft
         ));

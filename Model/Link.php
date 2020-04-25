@@ -95,9 +95,7 @@ class link extends Model
     // Modification d'un lien :
     public function changeLink($id_link, $id_item, $name, $url)
     {
-        $id_item                  = !empty($_POST['id_item']) ? trim($_POST['id_item']) : null;
-        $name                     = !empty($_POST['name']) ? trim($_POST['name']) : null;
-        $url                      = !empty($_POST['url']) ? trim($_POST['url']) : null;
+
         $sql                      = 'UPDATE links SET id_item = :id_item, name = :name, url = :url
         WHERE id = :id_link';
         $link                     = $this->dbConnect($sql, array(

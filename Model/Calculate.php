@@ -318,7 +318,8 @@ class Calculate extends Model
   {
       $sql                     = 'SELECT COUNT(id) as counter FROM comments
       WHERE report = :report
-      AND bin = :bin';
+      AND bin != :bin
+      ';
       $comments_reported_count = $this->dbConnect($sql, array(
           ':report' => "yes",
           ':bin'    => "no"

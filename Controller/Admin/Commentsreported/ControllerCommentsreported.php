@@ -52,7 +52,7 @@ class ControllerCommentsreported extends Controller
             'comments_reported_next_page' => $comments_reported_next_page,
             'number_of_comments_reported_pages' => $number_of_comments_reported_pages,
             'counter_comments_reported' => $counter_comments_reported
-        ));
+            ));
     }
 
 

@@ -15,11 +15,6 @@ class Login extends Model
     public function logInUser($username, $passwordAttempt)
     {
         if (isset($_POST['login'])) {
-            // On récupère les valeurs saisies dans le formulaire de login :
-            $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
-            $passwordAttempt = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
-
-            // On prépare une requête pour aller chercher le username dans la BBD :
             $sql    = 'SELECT id_user, username, pass FROM users WHERE username = :username';
             $req    = $this->dbConnect($sql, array(
                 'username' => $username
@@ -79,11 +74,6 @@ class Login extends Model
     {
         if (isset($_POST['login'])) {
 
-            // On récupère les valeurs saisies dans le formulaire de login :
-            $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
-            $passwordAttempt = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
-
-            // On prépare une requête pour aller chercher le username dans la BBD :
             $sql    = 'SELECT id_user, status, username, pass FROM users WHERE username = :username';
             $req    = $this->dbConnect($sql, array(
                 'username' => $username

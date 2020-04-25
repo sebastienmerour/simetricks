@@ -21,9 +21,6 @@ class User extends Model
     {
         $errors   = array();
         $messages = array();
-        $username = !empty($_POST['username']) ? trim($_POST['username']) : null;
-        $pass     = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
-        $email    = !empty($_POST['email']) ? trim($_POST['email']) : null;
 
         // On vérifie d'abord si l'identifiant choisi existe déjà ou non :
         // Préparation de la reqûete SQL et déclaration de la requête :
@@ -144,16 +141,6 @@ class User extends Model
     $twitter, $website, $date_birth)
     {
         $identification = $_SESSION['id_user'];
-        $email          = !empty($_POST['email']) ? trim($_POST['email']) : null;
-        $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
-        $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
-        $city           = !empty($_POST["city"]) ? trim($_POST['city']) : null;
-        $linkedin       = !empty($_POST["linkedin"]) ? trim($_POST['linkedin']) : null;
-        $github         = !empty($_POST["github"]) ? trim($_POST['github']) : null;
-        $twitter        = !empty($_POST["twitter"]) ? trim($_POST['twitter']) : null;
-        $website        = !empty($_POST["website"]) ? trim($_POST['website']) : null;
-        $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
-
         // Ensuite on vérifie si l'adresse mail possède un format valide :
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
@@ -198,11 +185,9 @@ class User extends Model
         $errors     = array();
         $messages   = array();
         $user       = $_SESSION['id_user'];
-        $pass       = !empty($_POST['pass']) ? trim($_POST['pass']) : null;
-        $passcheck  = !empty($_POST['passcheck']) ? trim($_POST['passcheck']) : null;
 
         // Ensuite on vérifie si les 2 mots de passe sont identiques :
-        if ($_POST['pass'] != $_POST['passcheck']) {
+        if ($pass != $passcheck) {
             $errors['passdifferent'] = 'Désolé, les mots de passe ne correspondent pas !<br>';
         }
 
@@ -247,17 +232,6 @@ class User extends Model
 
     {
         $identification = $id_user;
-        $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
-        $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
-        $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
-        $city           = !empty($_POST["city"]) ? trim($_POST['city']) : null;
-        $linkedin       = !empty($_POST["linkedin"]) ? trim($_POST['linkedin']) : null;
-        $github         = !empty($_POST["github"]) ? trim($_POST['github']) : null;
-        $twitter        = !empty($_POST["twitter"]) ? trim($_POST['twitter']) : null;
-        $website        = !empty($_POST["website"]) ? trim($_POST['website']) : null;
-        $email          = !empty($_POST['email']) ? trim($_POST['email']) : null;
-        $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
-
         // Ensuite on vérifie si l'adresse mail possède un format valide :
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Désolé, cette adresse e-mail n\'est pas valide.<br>';
@@ -302,16 +276,6 @@ class User extends Model
     $email, $city, $linkedin, $github, $twitter, $website, $date_birth)
     {
         $identification = $id_user;
-        $status         = !empty($_POST['status']) ? trim($_POST['status']) : null;
-        $firstname      = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
-        $name           = !empty($_POST['name']) ? trim($_POST['name']) : null;
-        $city           = !empty($_POST["city"]) ? trim($_POST['city']) : null;
-        $linkedin       = !empty($_POST["linkedin"]) ? trim($_POST['linkedin']) : null;
-        $github         = !empty($_POST["github"]) ? trim($_POST['github']) : null;
-        $twitter        = !empty($_POST["twitter"]) ? trim($_POST['twitter']) : null;
-        $website        = !empty($_POST["website"]) ? trim($_POST['website']) : null;
-        $email          = !empty($_POST['email']) ? trim($_POST['email']) : null;
-        $date_birth     = !empty($_POST['date_birth']) ? trim($_POST['date_birth']) : null;
 
         // Ensuite on vérifie si l'adresse mail possède un format valide :
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -357,7 +321,6 @@ class User extends Model
     public function checkUsername($username)
     {
         $identification = $_SESSION['id_user'];
-        $username       = !empty($_POST['username']) ? trim($_POST['username']) : null;
         $sql            = 'SELECT COUNT(id_user) AS num FROM users WHERE username = :username';
         $stmt           = $this->dbConnect($sql, array(
             ':username' => $username

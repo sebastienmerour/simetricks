@@ -53,7 +53,7 @@
 	</div>
 	<?php
 	if ($counter_comments_reported  < 1) {
-	  require __DIR__ . '/../errors/comments_not_found_admin.php';
+	  require __DIR__ . '/../errors/comments_reported_not_found_admin.php';
 	}
 	else {
 	require('commentsreported_pagination.php');}

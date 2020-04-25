@@ -79,9 +79,6 @@ class Category extends Model
     // Modification d'une catégorie :
     public function changeCategory($id_category, $name, $slugcategory, $description)
     {
-        $name                     = !empty($_POST['name']) ? trim($_POST['name']) : null;
-        $slugcategory             = !empty($_POST['slugcategory']) ? trim($_POST['slugcategory']) : null;
-        $description              = !empty($_POST['description']) ? trim($_POST['description']) : null;
         $sql                      = 'UPDATE categories SET name = :name, slug = :slug, description = :description
         WHERE id = :id_category';
         $category                 = $this->dbConnect($sql, array(

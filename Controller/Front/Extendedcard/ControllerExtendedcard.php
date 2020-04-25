@@ -208,6 +208,7 @@ class ControllerExtendedcard extends Controller
         $id_item                  = $this->calculate->getItemId();
         $item                     = $this->item->getItem($id_item);
         $number_of_items          = $this->calculate->getTotalOfItemsFront();
+        $number_of_cards          = $this->calculate->getTotalOfCards();
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
         $number_of_comments       = $this->calculate->countComments($id_item);
@@ -224,6 +225,7 @@ class ControllerExtendedcard extends Controller
             'comment' => $comment,
             'item' => $item,
             'number_of_items' => $number_of_items,
+            'number_of_cards' => $number_of_cards,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'comments_current_page' => $comments_current_page,

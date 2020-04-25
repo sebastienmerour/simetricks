@@ -126,7 +126,6 @@
     <tr>
       <td>
           <br>
-    <?= $content ?>
     </td>
   </tr>
   </tbody>
@@ -156,7 +155,9 @@
 
 
 
-  <div class="text-center text-muted" style="color: #636c72;" align="center">Cards | Extended Cards | 2.0</div>
+<div class="text-center text-muted" style="color: #636c72;" align="center">
+  <a href="<?= DOMAIN_NAME; ?>cards" class="nav-link">Cards</a> | <a href="<?= DOMAIN_NAME; ?>extendedcards" class="nav-link">Extended Cards</a> | <a href="<?= DOMAIN_NAME; ?>category/1/1/web" class="nav-link">Web</a>
+|                      <a href="<?= DOMAIN_NAME; ?>category/2/1/langages" class="nav-link">Langages</a> | <a href="<?= DOMAIN_NAME; ?>category/3/1/it" class="nav-link">IT</a></div>
 <table class="s-4 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
   <tbody>
     <tr>
@@ -167,100 +168,32 @@
   </tbody>
 </table>
 
-
-
-  <table class="table-unstyled text-muted " border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse; width: 100%; max-width: 100%; color: #636c72;" bgcolor="transparent">
-    <tbody>
-      <tr>
-        <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="left">© <?= WEBSITE_NAME; ?> - <?= COPYRIGHT_YEAR; ?> - Tous droits réservés</td>
-        <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="left">
-          <table class="float-right" align="right" border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse;">
+<table class="table-unstyled text-muted " border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse; width: 100%; max-width: 100%; color: #636c72;" bgcolor="transparent">
   <tbody>
     <tr>
-      <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="left">
-        <table class="pl-2" border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse;">
-  <tbody>
-    <tr>
-      <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; padding-left: 8px; margin: 0;" align="left">
-        <img class=" " width="20" height="20" src="<?= DOMAIN_NAME; ?>public/images/icons/facebook.png" style="height: auto; line-height: 100%; outline: none; text-decoration: none; border: 0 none;">
-      </td>
+      <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="center">© <?= WEBSITE_NAME; ?> - <?= COPYRIGHT_YEAR; ?> - Tous droits réservés</td>
     </tr>
   </tbody>
 </table>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-          <table class="float-right" align="right" border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse;">
-  <tbody>
-    <tr>
-      <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="left">
-        <table class="pl-2" border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse;">
-  <tbody>
-    <tr>
-      <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; padding-left: 8px; margin: 0;" align="left">
-        <img class=" " width="20" height="20" src="<?= DOMAIN_NAME; ?>public/images/icons/twitter.png" style="height: auto; line-height: 100%; outline: none; text-decoration: none; border: 0 none;">
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-          <table class="float-right" align="right" border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse;">
-  <tbody>
-    <tr>
-      <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="left">
-        <img class="" width="20" height="20" src="<?= DOMAIN_NAME; ?>public/images/icons/instagram.png" style="height: auto; line-height: 100%; outline: none; text-decoration: none; border: 0 none;">
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-        </td>
-      </tr>
-      <tr>
-        <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="left">Texte 1</td>
-        <td class="text-right" style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="right">Texte 2</td>
-      </tr>
-      <tr>
-        <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="left">Texte 3</td>
-        <td class="text-right" style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 0; border-bottom-width: 0; margin: 0;" align="right">Texte 4</td>
-      </tr>
-    </tbody>
-  </table>
 <table class="s-4 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
   <tbody>
     <tr>
-      <td height="24" style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 24px; width: 100%; height: 24px; margin: 0;" align="left">
-         
+      <td height="24" style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 24px; width: 100%; height: 24px; margin: 0;" align="left">         
       </td>
     </tr>
   </tbody>
 </table>
-
-
-
-
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
+</td>
+</tr>
+</tbody>
 </table>
-
-
-
-      </td>
-    </tr>
-  </tbody>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

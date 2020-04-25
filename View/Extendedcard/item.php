@@ -21,22 +21,30 @@
     <div class="mt-3">
       <article class="article">
         <dl class="row">
+          <?php if (!empty($this->cleantinymce($item['content']))) {?><dt class="col-sm-3"><h6>Description</h6></dt>
+          <dd class="col-sm-9"><?= $this->cleantinymce($item['content']);?></dd><?php };?>
+          <?php if (!empty($this->clean($item['features']))) {?><dt class="col-sm-3"><h6>Fonctionnalités</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['features']);?></dd><?php };?>
           <?php if(strtotime($item['date_native']) > 0) {?><dt class="col-sm-3"><h6>Date de création</h6></dt>
           <dd class="col-sm-9"><?= strftime('%d/%m/%Y', strtotime($item['date_native']));?></dd><?php };?>
           <?php if (!empty($this->clean($item['year_native']))) {?><dt class="col-sm-3"><h6>Année de création</h6></dt>
           <dd class="col-sm-9"><?= $this->clean($item['year_native']);?></dd><?php };?>
+          <?php if (!empty($this->clean($item['owner']))) {?><dt class="col-sm-3"><h6>Créateur</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['owner']);?></dd><?php };?>
+          <?php if (!empty($this->clean($item['os_supported']))) {?><dt class="col-sm-3"><h6>OS supportés</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['os_supported']);?></dd><?php };?>
+          <?php if (!empty($this->clean($item['version']))) {?><dt class="col-sm-3"><h6>Dernière version</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['version']);?></dd><?php };?>
           <?php if (!empty($this->clean($item['licence']))) {?><dt class="col-sm-3"><h6>Licence</h6></dt>
           <dd class="col-sm-9"><?= $this->clean($item['licence']);?></dd><?php };?>
-          <?php if (!empty($this->clean($item['sgbdr']))) {?><dt class="col-sm-3"><h6>SGBDR</h6></dt>
-          <dd class="col-sm-9"><?= $this->clean($item['sgbdr']);?></dd><?php };?>
-          <?php if (!empty($this->clean($item['pdm']))) {?><dt class="col-sm-3"><h6>Part de Marché</h6></dt>
-          <dd class="col-sm-9"><?= $this->clean($item['pdm']);?></dd><?php };?>
           <?php if (!empty($this->clean($item['langage']))) {?><dt class="col-sm-3"><h6>Langage</h6></dt>
           <dd class="col-sm-9"><?= $this->clean($item['langage']);?></dd><?php };?>
-          <?php if (!empty($this->clean($item['description']))) {?><dt class="col-sm-3"><h6>Description</h6></dt>
-          <dd class="col-sm-9"><?= $this->clean($item['description']);?></dd><?php };?>
-          <?php if (!empty($this->clean($item['features']))) {?><dt class="col-sm-3"><h6>Fonctionnalités</h6></dt>
-          <dd class="col-sm-9"><?= $this->clean($item['features']);?></dd><?php };?>
+          <?php if (!empty($this->clean($item['sgbdr']))) {?><dt class="col-sm-3"><h6>SGBDR</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['sgbdr']);?></dd><?php };?>
+          <?php if (!empty($this->clean($item['number_of_users']))) {?><dt class="col-sm-3"><h6>Nombre d'utilisateurs</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['number_of_users']);?></dd><?php };?>
+          <?php if (!empty($this->clean($item['pdm']))) {?><dt class="col-sm-3"><h6>Part de Marché</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['pdm']);?></dd><?php };?>
           <dt class="col-sm-3"><h6>Liens</h6></dt>
           <dd class="col-sm-9">
             <div class="">
@@ -45,10 +53,8 @@
               <?php endforeach; ?>
             </div>
           </dd>
-          <?php if (!empty($this->clean($item['content']))) {?><dt class="col-sm-3"><h6>Aux dernières nouvelles</h6></dt>
-          <dd class="col-sm-9"><?= $this->cleantinymce($item['content']);?></dd><?php };?>
-          <?php if (!empty($this->clean($item['version']))) {?><dt class="col-sm-3"><h6>Dernière version</h6></dt>
-          <dd class="col-sm-9"><?= $this->clean($item['version']);?></dd><?php };?>
+          <?php if (!empty($this->clean($item['last_news']))) {?><dt class="col-sm-3"><h6>Aux dernières nouvelles</h6></dt>
+          <dd class="col-sm-9"><?= $this->clean($item['last_news']);?></dd><?php };?>
         </dl>
       </article>
     </div>

@@ -233,7 +233,6 @@ class Comment extends Model
     public function changeCommentAdmin($content)
     {
         $comment                  = $_GET['id'];
-        $content                  = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $sql                      = 'UPDATE comments SET content = :content, date_update = NOW() WHERE id = :id';
         $this->dbConnect($sql, array(
             ':id' => $comment,

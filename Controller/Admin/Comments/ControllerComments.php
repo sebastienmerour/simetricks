@@ -76,7 +76,7 @@ class ControllerComments extends Controller
     {
         $id_comment = $this->request->getParameter("id");
         $comment    = $this->comment->getComment($id_comment);
-        $content    = $comment['content'];
+        $content    = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $this->comment->changeCommentAdmin($content);
     }
 

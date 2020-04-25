@@ -44,7 +44,22 @@
 						<div class="col-12">
 							<input class="form-control font-weight-bold" id="title" name="title" type="text" placeholder="<?= $this->clean($item['title']);?>" value="<?= $this->clean($item['title']);?>"><br>
 							<input class="form-control" id="slug" name="slug" type="text" placeholder="<?= $this->clean($item['slug']);?>" value="<?= $this->clean($item['slug']);?>"><br>
-							<input class="form-control" id="version" name="version" type="text" placeholder="<?= $this->clean($item['version']);?>" value="<?= $this->clean($item['version']);?>"><br>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<label for="content">Description :</label><br>
+							<textarea rows="5" cols="10" class="form-control" name="content" id="content"
+							placeholder="<?= $this->clean($item['content']);?>"
+							title="Modifiez la description si besoin"><?= $this->clean($item['content']);?></textarea><br>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<label for="features">Fonctionnalités :</label><br>
+							<textarea rows="5" cols="10" class="form-control" name="features" id="features"
+							placeholder="<?= $this->clean($item['features']);?>"
+							title="Modifiez les fonctionnalités si besoin"><?= $this->clean($item['features']);?></textarea><br>
 						</div>
 					</div>
 					<div class="row">
@@ -59,44 +74,42 @@
 				</div>
 				<div class="row">
 					<div class="col-6">
+						<label for="owner">Créateur :</label><br>
+						<input class="form-control" id="owner" name="owner" type="text" placeholder="<?= $this->clean($item['owner']);?>" value="<?= $this->clean($item['owner']);?>"><br>
+					</div>
+					<div class="col-6">
+						<label for="os_supported">OS supportés :</label><br>
+						<input class="form-control" id="os_supported" name="os_supported" type="text" placeholder="<?= $this->clean($item['os_supported']);?>" value="<?= $this->clean($item['os_supported']);?>"><br>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<label for="version">Version :</label><br>
+						<input class="form-control" id="version" name="version" type="text" placeholder="<?= $this->clean($item['version']);?>" value="<?= $this->clean($item['version']);?>"><br>
+					</div>
+					<div class="col-6">
 						<label for="licence">Licence :</label><br>
 						<input class="form-control" id="licence" name="licence" type="text" placeholder="<?= $this->clean($item['licence']);?>" value="<?= $this->clean($item['licence']);?>"><br>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-6">
 						<label for="sgbdr">Langage :</label><br>
 						<input class="form-control" id="langage" name="langage" type="text" placeholder="<?= $this->clean($item['langage']);?>" value="<?= $this->clean($item['langage']);?>"><br>
 					</div>
-				</div>
-				<div class="row">
 					<div class="col-6">
 						<label for="sgbdr">SGBDR :</label><br>
 						<input class="form-control" id="sgbdr" name="sgbdr" placeholder="<?= $this->clean($item['sgbdr']);?>" value="<?= $this->clean($item['sgbdr']);?>" type="text"><br>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<label for="number_of_users">Nombre d'utilisateurs :</label><br>
+						<input class="form-control" id="number_of_users" name="number_of_users" placeholder="<?= $this->clean($item['number_of_users']);?>" value="<?= $this->clean($item['number_of_users']);?>" type="text"><br>
+					</div>
 					<div class="col-6">
 						<label for="pdm">Part de Marché :</label><br>
 						<input class="form-control" id="pdm" name="pdm" placeholder="<?= $this->clean($item['pdm']);?>" value="<?= $this->clean($item['pdm']);?>" type="text"><br>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12">
-						<label for="sgbdr">Langage :</label><br>
-						<input class="form-control" id="langage" name="langage" type="text" placeholder="<?= $this->clean($item['langage']);?>" value="<?= $this->clean($item['langage']);?>"><br>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12">
-						<label for="features">Description :</label><br>
-						<textarea rows="5" cols="10" class="form-control" name="description" id="description"
-						placeholder="<?= $this->clean($item['description']);?>"
-						title="Modifiez la description si besoin"><?= $this->clean($item['description']);?></textarea><br>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12">
-						<label for="features">Fonctionnalités :</label><br>
-						<textarea rows="5" cols="10" class="form-control" name="features" id="features"
-						placeholder="<?= $this->clean($item['features']);?>"
-						title="Modifiez les fonctionnalités si besoin"><?= $this->clean($item['features']);?></textarea><br>
 					</div>
 				</div>
 				<div class="row">
@@ -137,10 +150,10 @@
 						<label for="image">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label>
 						<input type="hidden" name="MAX_FILE_SIZE" value="1048576">
 						<hr>
-						<h5><label for="content">Contenu :</label></h5>
-						<textarea rows="15" cols="10" class="form-control" name="content" id="content"
-						placeholder="<?= $this->clean($item['content']);?>"
-						title="Modifiez l'extended card si besoin"><?= $this->clean($item['content']);?></textarea>
+						<h5><label for="last_news">Aux dernières news :</label></h5>
+						<textarea rows="15" cols="10" class="form-control" name="last_news" id="last_news"
+						placeholder="<?= $this->clean($item['last_news']);?>"
+						title="Modifiez l'extended card si besoin"><?= $this->clean($item['last_news']);?></textarea>
 				</div>
 			</div>
 		</div>

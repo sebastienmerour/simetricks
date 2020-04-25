@@ -56,7 +56,7 @@ if ($counter_comments < 1) {
   require __DIR__ . '/../errors/comments_not_found_admin.php';
 }
 else {
-	require __DIR__ . '/../errors/comments_pagination.php';
+	require __DIR__ . '/../Comments/comments_pagination.php';
 }
 ?>
 </div>
