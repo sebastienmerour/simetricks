@@ -116,7 +116,7 @@ class ControllerCategories extends Controller
         ));
     }
 
-    // Déplacer un catégorie vers la Corbeille :
+    // Déplacer une catégorie vers la Corbeille :
     public function movecategorytobin()
     {
         $id_category = $this->request->getParameter("id");

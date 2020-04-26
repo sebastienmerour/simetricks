@@ -2,6 +2,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Model/Card.php';
 require_once 'Model/Category.php';
+require_once 'Model/Style.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
@@ -17,6 +18,7 @@ class ControllerCardsadmin extends Controller
     private $user;
     private $card;
     private $category;
+    private $style;
     private $calculate;
 
     public function __construct()
@@ -24,6 +26,7 @@ class ControllerCardsadmin extends Controller
         $this->user      = new User();
         $this->card      = new Card();
         $this->category  = new Category();
+        $this->style     = new Style();
         $this->calculate = new Calculate();
     }
 
@@ -35,8 +38,10 @@ class ControllerCardsadmin extends Controller
     {
         $categories_current_page = 1;
         $categories              = $this->category->getCategories($categories_current_page);
+        $styles                  = $this->style->getStyles();
         $this->generateadminView(array(
-            'categories' => $categories
+            'categories' => $categories,
+            'styles' => $styles
         ));
     }
 
@@ -48,6 +53,7 @@ class ControllerCardsadmin extends Controller
             $messages              = array();
             $id_user               = $_SESSION['id_user_admin'];
             $id_category           = $_POST['category'];
+            $id_style              = $_POST['style'];
             $title                 = $_POST['title'];
             $definition            = $_POST['definition'];
             $content               = $_POST['content'];
@@ -79,7 +85,7 @@ class ControllerCardsadmin extends Controller
             }
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->card->insertCard($id_user, $id_category, $title, $slugcard, $definition, $content);
+                $this->card->insertCard($id_user, $id_category, $id_style, $title, $slugcard, $definition, $content);
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -107,7 +113,7 @@ class ControllerCardsadmin extends Controller
 
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
-                $this->card->insertCardImage($id_user, $id_category, $title, $slugcard, $cardimagename, $definition, $content);
+                $this->card->insertCardImage($id_user, $id_category, $id_style, $title, $slugcard, $cardimagename, $definition, $content);
 
             }
         }
@@ -147,10 +153,15 @@ class ControllerCardsadmin extends Controller
         $categories  = $this->category->getCategories();
         $id_category = $card['category'];
         $category    = $this->category->getCategory($id_category);
+        $styles      = $this->style->getStyles();
+        $id_style    = $card['style'];
+        $style       = $this->style->getStyle($id_style);
         $this->generateadminView(array(
-            'card' => $card,
-            'category' => $category,
-            'categories' => $categories
+            'card'        => $card,
+            'category'    => $category,
+            'categories'  => $categories,
+            'style'       => $style,
+            'styles'      => $styles
         ));
     }
 
@@ -163,6 +174,7 @@ class ControllerCardsadmin extends Controller
         if (isset($_POST["update"])) {
             $id_card               = $this->request->getParameter("id");
             $id_category           = $_POST['category'];
+            $id_style              = $_POST['style'];
             $title                 = $this->request->getParameter("title");
             $slugcard              = $_POST['slug'];
             $definition            = $this->request->getParameter("definition");
@@ -187,7 +199,7 @@ class ControllerCardsadmin extends Controller
 
             if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $messages    = array();
-                $this->card->changeCard($id_category, $title, $slugcard, $definition, $content, $id_card);
+                $this->card->changeCard($id_category, $id_style, $title, $slugcard, $definition, $content, $id_card);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -211,7 +223,7 @@ class ControllerCardsadmin extends Controller
                 }
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
-                $this->card->changeCardImage($id_category, $title, $slugcard, $cardimagename, $definition, $content, $id_card);
+                $this->card->changeCardImage($id_category, $id_style, $title, $slugcard, $cardimagename, $definition, $content, $id_card);
             }
         }
     }

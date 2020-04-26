@@ -26,6 +26,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>styles">
+          <span data-feather="droplet"></span>
+          Styles
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>links">
           <span data-feather="link-2"></span>
           Liens

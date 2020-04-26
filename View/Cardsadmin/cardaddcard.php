@@ -33,6 +33,20 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
+						<label for="style">Style :</label><br>
+							<?php
+							foreach ($styles as $style):?>
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" type="radio" name="style" value="<?= $this->clean($style['id']);?>" id="<?= $this->clean($style['id']);?>">
+							  <label class="form-check-label btn-sm rounded text-white" style="background-color:<?= $this->clean($style['hexadecimal']); ?>" for="<?= $this->clean($style['id']);?>">
+							    <?= $this->clean($style['description']); ?>
+							  </label>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
 						<hr>
 						<label for="cardimage"></label>
 						<h5><label for="cardimage">Image principale de l'article :</label></h5>

@@ -36,6 +36,21 @@
 								<input class="form-control" id="slug" name="slug" type="text" placeholder="<?= $this->clean($card['slug']);?>" value="<?= $this->clean($card['slug']);?>"><br>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-12">
+								<label for="style">Style :</label><br>
+									<?php
+									foreach ($styles as $style):?>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" type="radio" name="style" <?= $style['id'] == $card['style'] ? "checked" : "" ?> value="<?= $this->clean($style['id']);?>" id="<?= $this->clean($style['id']);?>">
+									  <label class="form-check-label btn-sm rounded text-white" style="background-color:<?= $this->clean($style['hexadecimal']); ?>" for="<?= $this->clean($style['id']);?>">
+									    <?= $this->clean($style['description']); ?>
+									  </label>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					<hr>
 					<div class="row">
 						<div class="col-12">
 							<label for="cardimage"><h5>Image principale de la Card :</h5></label><br>

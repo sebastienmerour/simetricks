@@ -13,7 +13,7 @@
           }
   ?>
 <div id="onecard" class="col-md-12 col-lg-4 d-flex">
-    <div class="card card-body bg-primary text-light hover-shadow-3d rotate-left">
+    <div class="card card-body <?= $this->clean($card['stylename']) ?> text-light hover-shadow-3d rotate-left">
       <div class="d-flex justify-content-between">
         <div class="text-small d-flex">
           <div class="mr-2">

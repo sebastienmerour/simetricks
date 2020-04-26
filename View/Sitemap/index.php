@@ -1,4 +1,4 @@
-<?xml version = "1.0" encoding = "UTF-8"?>
+<?php echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
 <urlset xmlns = "https://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://simetricks.com</loc>

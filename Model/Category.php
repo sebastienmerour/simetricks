@@ -25,7 +25,7 @@ class Category extends Model
             ':slug' => $slugcategory,
             ':description' => $description
         ));
-        $messages['confirmation'] = 'Votre catégorie a bien été ajoutée !';
+        $messages['confirmation'] = 'La catégorie a bien été ajoutée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location:' . BASE_ADMIN_URL . 'categories');

@@ -14,8 +14,9 @@
     <thead>
       <tr>
         <th>Date</th>
+				<th>Titre</th>
+				<th>Style</th>
 				<th>Image</th>
-        <th>Titre</th>
         <th>Modification</th>
         <th>Suppression</th>
       </tr>
@@ -26,11 +27,12 @@
       ?>
       <tr>
         <td><h6 class="mt-2 text-left"><?= $this->clean($card['date_creation_fr']); ?></h6></td>
+				<td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'cardsadmin/cardread/' . $this->clean($card['id'])?>">
+				<h6 class="mt-2 text-left"><?= $this->clean($card['title']); ?></h6></a></span></td>
+				<td><h6 class="mt-2 mr-3 btn-sm rounded text-white" style="background-color:<?= $this->clean($card['stylehexadecimal']); ?>"><?= $this->clean($card['styledescription']); ?>&nbsp;</h6></td>
 				<td><a href="<?= BASE_ADMIN_URL.'cardsadmin/cardread/' . $this->clean($card['id'])?>">
 				<img width="125px" src="<?= BASE_URL. 'public/images/card_images/' .$this->clean($card['image'])?>" class="figure-img img-fluid rounded-right"
 				alt="<?= $this->clean($card['title']) ?>" title="<?= $this->clean($card['title']) ?>"></a></td>
-        <td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'cardsadmin/cardread/' . $this->clean($card['id'])?>">
-				<h6 class="mt-2 text-left"><?= $this->clean($card['title']); ?></h6></a></span></td>
         <td><a href="<?= BASE_ADMIN_URL. 'cardsadmin/cardread/' . $this->clean($card['id'])?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
         <td><a href="<?= BASE_ADMIN_URL. 'cardsadmin/movecardtobin/' . $this->clean($card['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
       </tr>

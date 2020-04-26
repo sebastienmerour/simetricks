@@ -1,12 +1,9 @@
-
-
-
    <div class="container">
      <div class="row justify-content-center">
        <div class="col">
          <div class="row">
            <div class="col-md-12 col-lg-12">
-             <div class="card card-body bg-primary text-light">
+             <div class="card card-body <?= $this->clean($card['stylename']) ?> text-light">
                <div class="d-flex justify-content-between mb-3">
                  <div class="text-small d-flex">
                    <h1 class="ml-3 text-black"><?= $this->clean($card['title']) ?></h1><br>
