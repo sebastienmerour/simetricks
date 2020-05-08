@@ -21,7 +21,7 @@ class Card extends Model
         $messages = array();
         $id_user  = $_SESSION['id_user_admin'];
 
-        $sql   = 'INSERT INTO cards (id_user, id_category, id_style, itle, slug, definition, content, date_creation)
+        $sql   = 'INSERT INTO cards (id_user, id_category, id_style, title, slug, definition, content, date_creation)
                       VALUES (:id_user, :id_category, :id_style, :title, :slug, :definition, :content, NOW())';
         $query = $this->dbConnectLastId($sql, array(
             ':id_user' => $id_user,
@@ -78,7 +78,7 @@ class Card extends Model
         $cards_start = (int) (($cards_current_page - 1) * $this->number_of_cards_by_page);
         $sql  = 'SELECT cards.id AS id, cards.id_category AS category, cards.id_style AS style, cards.title, cards.slug AS slug,
         cards.image AS image, cards.definition AS definition, cards.content AS content,
-        DATE_FORMAT(cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+        cards.date_creation AS date_creation_fr,
         DATE_FORMAT(cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
         categories.name AS categoryname, categories.slug AS categoryslug,
         styles.name AS stylename, styles.description AS styledescription, styles.hexadecimal AS stylehexadecimal

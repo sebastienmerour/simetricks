@@ -7,7 +7,6 @@ if ($comments_current_page > $number_of_comments_pages) {
 }
 ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
-  <hr>
   <ol class="comments">
   <?php foreach ($comments as $comment): ?>
   <li class="comment">
@@ -31,6 +30,6 @@ if ($comments_current_page > $number_of_comments_pages) {
         <?php };?>
     </div>
   </li>
+  <hr>
   <?php endforeach; ?>
 </ol>
-<hr>

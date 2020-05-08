@@ -10,6 +10,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL; ?>public/images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= BASE_URL; ?>public/images/icons/favicon-16x16.png">
     <link rel="manifest" href="<?= BASE_URL; ?>site.webmanifest">
+    <!-- Prism -->
+    <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>public/css/prism.css">
     <!-- style -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900" rel="stylesheet">

@@ -75,7 +75,7 @@ class ControllerCardsadmin extends Controller
             $cardimagename         = "{$time}$slugcard.{$extension_upload}";
             $destination           = ROOT_PATH . 'public/images/card_images';
 
-            if (empty($title) || empty($definition)) {
+            if (empty($title) || empty($content)) {
                 $errors['errors'] = 'Veuillez remplir les champs <strong>Titre et Contenu</strong>';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
@@ -177,7 +177,7 @@ class ControllerCardsadmin extends Controller
             $id_style              = $_POST['style'];
             $title                 = $this->request->getParameter("title");
             $slugcard              = $_POST['slug'];
-            $definition            = $this->request->getParameter("definition");
+            $definition            = $_POST['definition'];
             $content               = $_POST['content'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];

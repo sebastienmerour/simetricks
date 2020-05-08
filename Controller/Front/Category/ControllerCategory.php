@@ -32,7 +32,7 @@ class ControllerCategory extends Controller
         $this->user      = new User();
         $this->calculate = new Calculate();
     }
-    // Lister les catégories  :
+    // Lister les items liées à une Catégorie en Front :
     public function index()
     {
           $q                      = explode("/", $_SERVER['REQUEST_URI']);

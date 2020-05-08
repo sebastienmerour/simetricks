@@ -1,4 +1,3 @@
-<hr>
 <div id="addcomment"></div>
 <?php require __DIR__ . '/../errors/errors.php'; ?>
 <h5 class="my-4">Ajoutez un commentaire :</h5>

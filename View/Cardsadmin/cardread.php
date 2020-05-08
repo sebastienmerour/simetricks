@@ -74,15 +74,14 @@
 							<input type="hidden" name="MAX_FILE_SIZE" value="1048576">
 							<hr>
 							<label for="definition"><h5>Définition :</h5></label><br>
-							<input class="form-control" id="definition" name="definition" type="text" placeholder="<?= $this->clean($card['definition']);?>" value="<?= $this->clean($card['definition']);?>"><br>
-						<h5><label for="content">Contenu :</label></h5>
+								<input class="form-control" id="definition" name="definition" type="text" placeholder="<?= $this->clean($card['definition']);?>" value="<?= $this->clean($card['definition']);?>"><br>
+							<h5><label for="content">Contenu :</label></h5>
 								<textarea rows="15" cols="10" class="form-control" name="content" id="content"
-								placeholder="<?= $this->clean($card['content']);?>"
-								title="Modifiez la Card si besoin"><?= $this->clean($card['content']);?></textarea>
-				</div>
-			</div>
-		</div>
-		<div class="form-group">
+								title="Modifiez la Card si besoin"><?= $card['content'];?></textarea>
+							</div>
+						</div>
+					</div>
+				<div class="form-group">
 				 <div class="col-xs-12">
 							<br>
 							<button class="btn btn-md btn-success" name="update" type="submit">Enregistrer</button>

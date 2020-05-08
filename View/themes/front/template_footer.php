@@ -36,6 +36,7 @@
 
 <script src="<?= BASE_URL; ?>public/js/scroll.js"></script>
 <script src="<?= BASE_URL; ?>public/jquery/tab.js"></script>
+<script src="<?= BASE_URL; ?>public/js/prism.js"></script>
 <script src="<?= BASE_URL; ?>public/js/password_policy.js"></script>
 <script src="<?= BASE_URL; ?>public/js/theme.js"></script>
 <script>

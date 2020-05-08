@@ -13,7 +13,7 @@
                  <div class="ml-3">
                    <span class="h4 opacity-70">//&nbsp;<?= $this->clean($card['definition']); ?></span>
                    <p></p>
-                   <h4 class="mb-1"><?= $this->cleantinymce($card['content']); ?></h4>
+                   <h6 class="mb-1"><?= $card['content']; ?></h6>
                    <span class="opacity-70">|&nbsp;<?= $this->clean($card['date_creation_fr']) ?>&nbsp;|&nbsp;par <a href="<?= "user/profile/" . $this->clean($card['id_user']) ?>" title="<?= $this->clean($card['firstname']) . '&nbsp;' . $this->clean($card['name'])?>"><?= $this->clean($card['firstname']) . '&nbsp;' . $this->clean($card['name'])?></a></span>
                  </div>
                </div>

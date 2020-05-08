@@ -4,7 +4,7 @@
       <div class="row">
 <?php foreach ($items as $item):?>
 <?php
-        $intro = strip_tags($item['last_news']);
+        $intro = strip_tags($item['content']);
         if (strlen($intro) > 75) {
             $stringCut = substr($intro, 0, 75);
             $endPoint = strrpos($stringCut, ' ');

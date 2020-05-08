@@ -11,6 +11,7 @@
 
 <!-- Custom jquery for this theme -->
 <script src="<?php echo BASE_URL; ?>public/jquery/add_links.js"></script>
+<script src="<?= BASE_URL; ?>public/js/prism.js"></script>
 
 <!-- Custom JavaScript for this theme -->
 <script src="<?php echo BASE_URL; ?>public/js/scroll.js"></script>
