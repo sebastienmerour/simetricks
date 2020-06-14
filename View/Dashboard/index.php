@@ -50,47 +50,43 @@
 			</div>
 		</div>
 
-		<h2 id="lastcomments">Derniers Commentaires</h2>
+		<h2 id="lastcards">Dernières Cards</h2>
 		<div class="table-responsive">
 			<table class="table table-striped table-sm">
 				<thead>
 					<tr>
 						<th>Date</th>
-						<th>Utilisateur</th>
-						<th>Commentaire</th>
-						<th>Consultation</th>
-						<th>Suppression</th>
+						<th>Titre</th>
+						<th>Style</th>
+						<th>Image</th>
+		        <th>Modification</th>
+		        <th>Suppression</th>
 					</tr>
 				</thead>
 				<tbody>
-		      <?php
-		      while ($comment = $comments->fetch())
-		      {
-							$content = $this->cleantinymce($comment['content']);
-							$maxlen = 50;
-							if ( strlen($content) > $maxlen ){
-						    $content = substr($content,0,strrpos($content,". ",$maxlen-strlen($content))+50);
-							}
+					<?php
+		      while ($card = $cards->fetch()) {
 		      ?>
 		      <tr>
-		        <td><h6 class="mt-2 text-left"><?= $this->clean($comment['date_creation_fr']); ?></h6></td>
-		        <td><div class="media">
-		          <img class="img-fluid mr-3 rounded avatar" src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean(isset($comment['avatar_com'])) ? $this->clean($comment['avatar_com']) : $default ;?>" alt="user">
-		          <div class="media-body">
-		            <h6 class="mt-2 text-left"><?= $this->clean(isset($comment['firstname_com'], $comment['name_com']) ? $comment['firstname_com'] . ' ' . $comment['name_com'] : $comment['author']);?></h6><br>
-		          </div>
-		        </div></td>
-		        <td><h6 class="mt-2 text-left"><?= $content; ?> ...</h6></td>
-		        <td><a href="<?= BASE_ADMIN_URL. 'comments/commentread/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
-		        <td><a href="<?= BASE_ADMIN_URL. 'comments/movecommenttobin/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
+		        <td><h6 class="mt-2 text-left"><?= $this->clean($card['date_creation_fr']); ?></h6></td>
+						<td><span class="text-body newstitle"><a href="<?= BASE_ADMIN_URL.'cardsadmin/cardread/' . $this->clean($card['id'])?>">
+						<h6 class="mt-2 text-left"><?= $this->clean($card['title']); ?></h6></a></span></td>
+						<td><h6 class="mt-2 mr-3 btn-sm rounded text-white" style="background-color:<?= $this->clean($card['stylehexadecimal']); ?>"><?= $this->clean($card['styledescription']); ?>&nbsp;</h6></td>
+						<td><a href="<?= BASE_ADMIN_URL.'cardsadmin/cardread/' . $this->clean($card['id'])?>">
+						<img width="125px" src="<?= BASE_URL. 'public/images/card_images/' .$this->clean($card['image'])?>" class="figure-img img-fluid rounded-right"
+						alt="<?= $this->clean($card['title']) ?>" title="<?= $this->clean($card['title']) ?>"></a></td>
+		        <td><a href="<?= BASE_ADMIN_URL. 'cardsadmin/cardread/' . $this->clean($card['id'])?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
+		        <td><a href="<?= BASE_ADMIN_URL. 'cardsadmin/movecardtobin/' . $this->clean($card['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
 		      </tr>
-		      <?php }	?>
+		      <?php
+		        }
+		      ?>
 		    </tbody>
 		  </table>
 		</div>
 			<div class="d-flex flex-row-reverse btn-toolbar mb-3 mb-md-0">
 				<div class="btn-group mr-2">
-					<a href="<?= BASE_ADMIN_URL; ?>comments" role="button" class="float-right btn btn-sm btn-info">Tous les Commentaires</a>
+					<a href="<?= BASE_ADMIN_URL; ?>cardsadmin" role="button" class="float-right btn btn-sm btn-info">Toutes les Cards</a>
 				</div>
 			</div>
 

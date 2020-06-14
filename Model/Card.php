@@ -78,7 +78,7 @@ class Card extends Model
         $cards_start = (int) (($cards_current_page - 1) * $this->number_of_cards_by_page);
         $sql  = 'SELECT cards.id AS id, cards.id_category AS category, cards.id_style AS style, cards.title, cards.slug AS slug,
         cards.image AS image, cards.definition AS definition, cards.content AS content,
-        cards.date_creation AS date_creation_fr,
+        DATE_FORMAT(cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
         DATE_FORMAT(cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
         categories.name AS categoryname, categories.slug AS categoryslug,
         styles.name AS stylename, styles.description AS styledescription, styles.hexadecimal AS stylehexadecimal
@@ -88,7 +88,7 @@ class Card extends Model
         LEFT JOIN styles
         ON cards.id_style = styles.id
         WHERE cards.bin != "yes"
-        ORDER BY date_creation_fr DESC LIMIT ' . $cards_start . ', ' . $this->number_of_cards_by_page . '';
+        ORDER BY cards.date_creation DESC LIMIT ' . $cards_start . ', ' . $this->number_of_cards_by_page . '';
         $cards       = $this->dbConnect($sql);
         return $cards;
     }

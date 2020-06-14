@@ -1,7 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
-require_once 'Model/Comment.php';
+require_once 'Model/Card.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
@@ -16,14 +16,14 @@ class ControllerDashboard extends Controller
 {
     private $user;
     private $item;
-    private $comment;
+    private $card;
     private $calculate;
 
     public function __construct()
     {
         $this->user      = new User();
         $this->item      = new Item();
-        $this->comment   = new Comment();
+        $this->card      = new Card();
         $this->calculate = new Calculate();
     }
 
@@ -33,15 +33,15 @@ class ControllerDashboard extends Controller
     {
         $default               = "default.png";
         $items_current_page    = 1;
-        $comments_current_page = 1;
+        $cards_current_page = 1;
         $users_current_page    = 1;
         $items                 = $this->item->getItemsAdmin($items_current_page);
-        $comments              = $this->comment->selectComments($comments_current_page);
+        $cards                 = $this->card->getCards($cards_current_page);
         $users                 = $this->user->selectUsers($users_current_page);
         $this->generateadminView(array(
             'default' => $default,
             'items' => $items,
-            'comments' => $comments,
+            'cards' => $cards,
             'users' => $users
         ));
     }

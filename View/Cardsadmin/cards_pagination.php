@@ -10,7 +10,7 @@
           {
           ?>
           <li>
-              <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>cards/<?= $page_previous_cards ;?>" aria-label="Previous">
+              <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>cardsadmin/<?= $page_previous_cards ;?>" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>&nbsp;
           </li>
@@ -25,14 +25,14 @@
                 echo ' class="btn btn-outline-secondary disabled">'.$i.' </li>&nbsp;';
               }
               else {
-                echo '><a class="btn btn-outline-primary" href="'. BASE_ADMIN_URL .'cards/' . $i . '">' . $i . '</a>&nbsp;</li>';
+                echo '><a class="btn btn-outline-primary" href="'. BASE_ADMIN_URL .'cardsadmin/' . $i . '">' . $i . '</a>&nbsp;</li>';
               }
           }
           if ($cards_current_page < $number_of_cards_pages)
           {
           ?>
           <li>
-              <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>cards/<?= $page_next_cards; ?>" aria-label="Next">
+              <a class="btn btn-outline-secondary" href="<?= BASE_ADMIN_URL; ?>cardsadmin/<?= $page_next_cards; ?>" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
           </li>

@@ -190,7 +190,7 @@ class ControllerExtendedcardsadmin extends Controller
             $draft                 = "yes";
             $title                 = $this->request->getParameter("title");
             $slug                  = $_POST['slug'];
-            $content               = $_POST['content'];
+            $content               = $this->request->getParameter("content");
             $owner                 = $_POST['owner'];
             $date_native           = $_POST['date_native'];
             $year_native           = $_POST['year_native'];
@@ -201,7 +201,7 @@ class ControllerExtendedcardsadmin extends Controller
             $pdm                   = $_POST['pdm'];
             $langage               = $_POST['langage'];
             $features              = $_POST['features'];
-            $last_news             = $this->request->getParameter("last_news");
+            $last_news             = $_POST['last_news'];
             $version               = $_POST['version'];
             $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
             $width                 = $fileinfo[0];

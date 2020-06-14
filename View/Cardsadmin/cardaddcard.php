@@ -54,7 +54,6 @@
 							<input class="custom-file-input" name="image" type="file" id="uploadimage"> <label class="custom-file-label" data-browse="Parcourir..." for="image"></label>
 						</div><label for="image">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label> <input name="MAX_FILE_SIZE" type="hidden" value="1048576">
 						<hr>
-						<hr>
 						<label for="definition"><h5>Définition :</h5></label><br>
 						<input class="form-control" id="definition" name="definition" type="text"><br>
 						<h5><label for="content">Contenu :</label></h5>

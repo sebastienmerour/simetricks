@@ -12,7 +12,7 @@
               $intro = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
           }
   ?>
-<div id="onecard" class="col-md-12 col-lg-4 d-flex">
+<div id="onecard" class="col-md-12 col-lg-12 d-flex">
     <div class="card card-body <?= $this->clean($card['stylename']) ?> text-light hover-shadow-3d rotate-left">
       <div class="d-flex justify-content-between">
         <div class="text-small d-flex">

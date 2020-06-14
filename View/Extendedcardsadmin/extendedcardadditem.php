@@ -44,13 +44,13 @@
 				<div class="row">
 					<div class="col-12">
 						<label for="content">Description :</label><br>
-						<textarea class="form-control" id="content" name="content" rows="5">Description...</textarea><br>
+						<textarea class="form-control" id="content" name="content" rows="5"></textarea><br>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-12">
 						<label for="features">Fonctionnalités :</label><br>
-						<textarea class="form-control" id="features" name="features" rows="5">Fonctionnalités...</textarea><br>
+						<textarea class="form-control" id="features" name="features" rows="5"></textarea><br>
 					</div>
 				</div>
 				<div class="row">
@@ -133,7 +133,7 @@
 						</div><label for="image">(Formats autorisés : JPG, PNG ou GIF | max. 1 Mo)</label> <input name="MAX_FILE_SIZE" type="hidden" value="1048576">
 						<hr>
 						<h5><label for="last_news">Aux dernières news :</label></h5>
-						<textarea class="form-control" id="last_news" name="last_news" rows="10">Aux dernières news...</textarea>
+						<textarea class="form-control" id="last_news" name="last_news" rows="10"></textarea>
 				</div>
 			</div>
 			<div class="form-group">
