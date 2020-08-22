@@ -17,7 +17,7 @@ class Comment extends Model
     public function insertComment($id_item, $author, $content)
     {
         $id_item;
-        $sql     = 'INSERT INTO comments(id_item, author, content, date_creation) VALUES(?, ?, ?, NOW())';
+        $sql     = 'INSERT INTO comments(id_item, author, content, report, bin, date_creation) VALUES(?, ?, ?, "no", "no", NOW())';
         $comment = $this->dbConnect($sql, array(
             $id_item,
             $author,
@@ -37,7 +37,7 @@ class Comment extends Model
     {
         $id_item;
         $id_user                  = $_SESSION['id_user'];
-        $sql                      = 'INSERT INTO comments(id_item, id_user, author, content, date_creation) VALUES(?, ?, ?, ?, NOW())';
+        $sql                      = 'INSERT INTO comments(id_item, id_user, author, content, report, bin, date_creation) VALUES(?, ?, ?, ?, "no", "no", NOW())';
         $comment                  = $this->dbConnect($sql, array(
             $id_item,
             $id_user,
@@ -121,14 +121,19 @@ class Comment extends Model
     public function selectComments($comments_current_page)
     {
         $comments_start = (int) (($comments_current_page - 1) * $this->number_of_comments_by_page);
-        $sql            = 'SELECT comments.id, comments.id_user, comments.author, comments.content,
+        $sql            = 'SELECT comments.id, comments.id_item, comments.id_user, comments.author, comments.content,
     DATE_FORMAT(comments.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
     DATE_FORMAT(comments.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-     users.id_user, users.firstname AS firstname_com, users.name AS name_com, users.avatar AS avatar_com FROM comments
+    users.id_user, users.firstname AS firstname_com, users.name AS name_com, users.avatar AS avatar_com,
+    extended_cards.id AS extended_card_id, extended_cards.title AS extended_card_title, extended_cards.slug AS extended_card_slug
+    FROM comments
     LEFT JOIN users
     ON comments.id_user = users.id_user
-    WHERE comments.bin != "yes"
-    ORDER BY date_creation DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
+    LEFT JOIN extended_cards
+    ON comments.id_item = extended_cards.id
+    WHERE comments.bin = "no"
+    AND comments.report = "no"
+    ORDER BY date_creation_fr DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
         $comments       = $this->dbConnect($sql);
         return $comments;
     }
@@ -137,14 +142,18 @@ class Comment extends Model
     public function selectCommentsReported($comments_reported_current_page)
     {
         $comments_start    = (int) (($comments_reported_current_page - 1) * $this->number_of_comments_by_page);
-        $sql               = 'SELECT comments.id, comments.id_user, comments.author, comments.content,
+        $sql               = 'SELECT comments.id,comments.id_user, comments.author, comments.content,
     DATE_FORMAT(comments.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
     DATE_FORMAT(comments.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-     users.id_user, users.firstname AS firstname_com, users.name AS name_com, users.avatar AS avatar_com FROM comments
+    users.id_user, users.firstname AS firstname_com, users.name AS name_com, users.avatar AS avatar_com,
+    extended_cards.id AS extended_card_id, extended_cards.title AS extended_card_title, extended_cards.slug AS extended_card_slug
+    FROM comments
     LEFT JOIN users
     ON comments.id_user = users.id_user
+    LEFT JOIN extended_cards
+    ON comments.id_item = extended_cards.id
     WHERE report = :report AND comments.bin != "yes"
-    ORDER BY date_creation DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
+    ORDER BY date_creation_fr DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
         $comments_reported = $this->dbConnect($sql, array(
             ':report' => "yes"
         ));
@@ -158,13 +167,43 @@ class Comment extends Model
         $sql            = 'SELECT comments.id, comments.id_user, comments.author, comments.content,
     DATE_FORMAT(comments.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
     DATE_FORMAT(comments.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-     users.id_user, users.firstname AS firstname_com, users.name AS name_com, users.avatar AS avatar_com FROM comments
+    users.id_user, users.firstname AS firstname_com, users.name AS name_com, users.avatar AS avatar_com,
+    extended_cards.id AS extended_card_id, extended_cards.title AS extended_card_title, extended_cards.slug AS extended_card_slug
+    FROM comments
     LEFT JOIN users
     ON comments.id_user = users.id_user
+    LEFT JOIN extended_cards
+    ON comments.id_item = extended_cards.id
     WHERE comments.bin = :bin
-    ORDER BY date_creation DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
+    AND comments.report = :report
+    ORDER BY date_creation_fr DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
     $comments_deleted    = $this->dbConnect($sql, array(
-          ':bin' => "yes"
+          ':bin' => "yes",
+          ':report' => "no"
+      ));
+    return $comments_deleted;
+    }
+
+    // Afficher la liste complète des Commentaires Signalés dans la Corbeille en Admin :
+    public function selectCommentsReportedDeleted($comments_reported_deleted_current_page)
+    {
+        $comments_start = (int) (($comments_reported_deleted_current_page - 1) * $this->number_of_comments_by_page);
+        $sql            = 'SELECT comments.id, comments.id_user, comments.author, comments.content,
+    DATE_FORMAT(comments.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+    DATE_FORMAT(comments.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+    users.id_user, users.firstname AS firstname_com, users.name AS name_com, users.avatar AS avatar_com,
+    extended_cards.id AS extended_card_id, extended_cards.title AS extended_card_title, extended_cards.slug AS extended_card_slug
+    FROM comments
+    LEFT JOIN users
+    ON comments.id_user = users.id_user
+    LEFT JOIN extended_cards
+    ON comments.id_item = extended_cards.id
+    WHERE comments.bin = :bin
+    AND comments.report = :report
+    ORDER BY date_creation_fr DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
+    $comments_deleted    = $this->dbConnect($sql, array(
+          ':bin' => "yes",
+          ':report' => "yes"
       ));
     return $comments_deleted;
     }
@@ -299,10 +338,26 @@ class Comment extends Model
         }
     }
 
+    // Restaurer un commentaire signalé depuis la Corbeille
+    public function restoreCommentReported($id_comment)
+    {
+        $bin                      = "no";
+        $sql                      = 'UPDATE comments SET bin = :bin, date_update = NOW() WHERE id = :id';
+        $this->dbConnect($sql, array(
+            ':id' => $id_comment,
+            ':bin' => $bin
+        ));
+        $messages['confirmation'] = 'Merci ! Le commentaire a bien été restauré !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: '. BASE_ADMIN_URL. 'commentsreported/commentsreportedbin');
+            exit;
+        }
+    }
 
     // DELETE
 
-    // Déplacement d'un item vers la Corbeille
+    // Déplacement d'un commentaire vers la Corbeille
     public function moveComment($id_comment)
     {
         $bin                      = "yes";
@@ -315,6 +370,23 @@ class Comment extends Model
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
             header('Location: '. BASE_ADMIN_URL. 'comments');
+            exit;
+        }
+    }
+
+    // Déplacement d'un commentaire signalé vers la Corbeille
+    public function moveCommentReported($id_comment)
+    {
+        $bin                      = "yes";
+        $sql                      = 'UPDATE comments SET bin = :bin, date_update = NOW() WHERE id = :id';
+        $move                     = $this->dbConnect($sql, array(
+            ':id' => $id_comment,
+            ':bin' => $bin
+        ));
+        $messages['confirmation'] = 'Merci ! Le Commentaire a été déplacé dans la corbeille !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location: '. BASE_ADMIN_URL. 'commentsreported');
             exit;
         }
     }
@@ -335,13 +407,29 @@ class Comment extends Model
 
     }
 
-    // Vidage de la Corbeille :
+    // Suppression définitive d'un commentaire :
+    public function eraseCommentReported($id_comment)
+    {
+        $sql = 'DELETE FROM comments WHERE id = ' . (int) $id_comment;
+        $req = $this->dbConnect($sql);
+        $req->execute();
+        // Ici on affiche le message de confirmation :
+        $messages['confirmation'] = 'Merci ! Le commentaire a été supprimé !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location:' . BASE_ADMIN_URL. 'commentsreported/commentsreportedbin');
+            exit;
+        }
+
+    }
+
+    // Vidage de la Corbeille Commentaires:
     public function emptycommentsbin()
     {
-        $bin = "yes";
-        $sql = 'DELETE FROM comments WHERE bin = :bin';
+        $sql = 'DELETE FROM comments WHERE bin = :bin AND report = :report';
         $req = $this->dbConnect($sql, array(
-            ':bin' => $bin
+            ':bin' => "yes",
+            ':report' => "no"
         ));
         $req->execute();
         // Ici on affiche le message de confirmation :
@@ -353,5 +441,22 @@ class Comment extends Model
         }
     }
 
+    // Vidage de la Corbeille Commentaires Signalés:
+    public function emptycommentsreportedbin()
+    {
+        $sql = 'DELETE FROM comments WHERE bin = :bin AND report = :report';
+        $req = $this->dbConnect($sql, array(
+            ':bin' => "yes",
+            ':report' => 'yes'
+        ));
+        $req->execute();
+        // Ici on affiche le message de confirmation :
+        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
+        if (!empty($messages)) {
+            $_SESSION['messages'] = $messages;
+            header('Location:' . BASE_ADMIN_URL. 'commentsreported/commentsreportedbin');
+            exit;
+        }
+    }
 
 }

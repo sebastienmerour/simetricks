@@ -7,7 +7,7 @@
 <?php $this->title =  WEBSITE_NAME . ' |  Panneau d\'Administration'; ?>
 <?php require('comments_menu.php'); ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
-<h2 id="comments">Commentaires Publiés</h2>
+<h2 id="comments">&nbsp;</h2>
 <div class="table-responsive">
   <table class="table table-striped table-sm">
     <thead>
@@ -15,6 +15,7 @@
         <th>Date</th>
         <th>Utilisateur</th>
         <th>Commentaire</th>
+				<th>Article</th>
         <th>Consultation</th>
         <th>Suppression</th>
       </tr>
@@ -42,6 +43,8 @@
           </div>
         </div></td>
         <td><h6 class="mt-2 text-left"><?= $intro; ?> ...</h6></td>
+				<td><a href="<?= BASE_URL; ?><?= !ISSET($_SESSION['id_user']) ? "extendedcard/" . $this->clean($comment['extended_card_id'])  . "/1/". $this->clean($comment['extended_card_slug'])
+				 : "extendedcard/indexuser/" . $this->clean($comment['extended_card_id']). "/1/" .$this->clean($comment['extended_card_slug']);?>" target="_blank"><h6 class="mt-2 text-left"><?= $this->clean($comment['extended_card_title']); ?></h6></a></td>
         <td><a href="<?= BASE_ADMIN_URL. 'comments/commentread/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
         <td><a href="<?= BASE_ADMIN_URL. 'comments/movecommenttobin/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
       </tr>

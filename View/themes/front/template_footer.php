@@ -14,11 +14,13 @@
           </li>
           <li class="nav-item"><a href="extendedcards" class="nav-link">Extended Cards</a>
           </li>
-          <li class="nav-item"><a href="category/1/1/web" class="nav-link">Web</a>
+          <li class="nav-item"><a href="category/1/1/front-end" class="nav-link">Front-End</a>
+          </li>
+          <li class="nav-item"><a href="category/3/1/back-end" class="nav-link">Back-End</a>
           </li>
           <li class="nav-item"><a href="category/2/1/langages" class="nav-link">Langages</a>
           </li>
-          <li class="nav-item"><a href="category/3/1/it" class="nav-link">IT</a>
+          <li class="nav-item"><a href="category/4/1/outils" class="nav-link">Outils</a>
           </li>
         </ul>
       </div>

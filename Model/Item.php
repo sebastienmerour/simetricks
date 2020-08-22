@@ -130,6 +130,29 @@ class Item extends Model
     }
 
     // Afficher la liste des Extended Cards en Admin :
+    public function getItemsByCatAdmin($items_current_page, $cat_selected)
+    {
+
+        $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
+        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.last_news,
+     DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+     DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+     extended_cards.draft AS draft,
+     users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname,
+     categories.slug AS categoryslug
+     FROM extended_cards
+     LEFT JOIN users
+     ON extended_cards.id_user = users.id_user
+     LEFT JOIN categories
+     ON extended_cards.id_category = categories.id
+     WHERE extended_cards.bin != "yes"
+     AND categoryid =".$cat_selected."
+     ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
+     $items       = $this->dbConnect($sql);
+     return $items;
+    }
+
+    // Afficher la liste des Extended Cards en Admin :
     public function getItemsAdmin($items_current_page)
     {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
@@ -150,7 +173,7 @@ class Item extends Model
         return $items;
     }
 
-    // Afficher la liste des Extended Cards ur la Sitemap :
+    // Afficher la liste des Extended Cards sur la Sitemap :
     public function getAllItems()
     {
         $sql         = 'SELECT *

@@ -5,11 +5,11 @@
 	else {
 ?>
 <?php $this->title =  WEBSITE_NAME . ' |  Panneau d\'Administration'; ?>
-<?php require('comments_menu.php'); ?>
+<?php require('commentsreported_menu.php'); ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
-  <h2 id="commentsbin">Corbeille</h2>
+  <h2 id="commentsreportedbin">Corbeille</h2>
 	<?php
-	if ($counter_comments_deleted < 1) {
+	if ($counter_comments_reported_deleted < 1) {
 		require __DIR__ . '/../errors/empty_bin.php';
 	}
 	else {?>
@@ -28,7 +28,7 @@
     </thead>
     <tbody>
       <?php
-      while ($comment = $comments_deleted->fetch())
+      while ($comment = $comments_reported_deleted->fetch())
       {
 					$content = $this->cleantinymce($comment['content']);
 					$maxlen = 50;
@@ -45,19 +45,19 @@
         <td><h6 class="mt-2 text-left"><?= $content; ?> ...</h6></td>
 				<td><a href="<?= BASE_URL; ?><?= !ISSET($_SESSION['id_user']) ? "extendedcard/" . $this->clean($comment['extended_card_id'])  . "/1/". $this->clean($comment['extended_card_slug'])
 				 : "extendedcard/indexuser/" . $this->clean($comment['extended_card_id']). "/1/" .$this->clean($comment['extended_card_slug']);?>" target="_blank"><h6 class="mt-2 text-left"><?= $this->clean($comment['extended_card_title']); ?></h6></a></td>
-        <td><a href="<?= BASE_ADMIN_URL. 'comments/commentread/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
-				<td><a href="<?= BASE_ADMIN_URL. 'comments/restorethiscomment/' . $this->clean($comment['id'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
-				<td><a href="<?= BASE_ADMIN_URL. 'comments/removecomment/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer dédinitivement</a></td>
+        <td><a href="<?= BASE_ADMIN_URL. 'commentsreported/commentreportedread/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-primary">Consulter</a></td>
+				<td><a href="<?= BASE_ADMIN_URL. 'commentsreported/restorethiscommentreported/' . $this->clean($comment['id'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
+				<td><a href="<?= BASE_ADMIN_URL. 'commentsreported/removecommentreported/' . $this->clean($comment['id']) ;?>" role="button" class="btn btn-sm btn-danger">Supprimer dédinitivement</a></td>
       </tr>
             <?php
     }
   ?>
     </tbody>
   </table>
-	<?php require('commentsbin_pagination.php');?>
+	<?php require('commentsreportedbin_pagination.php');?>
 	<div class="d-flex flex-row-reverse btn-toolbar mb-3 mb-md-0">
 		<div class="btn-group mr-2">
-			<a href="<?= BASE_ADMIN_URL; ?>comments/emptycomments" role="button" class="float-right btn btn-sm btn-dark">Vider la Corbeille</a>
+			<a href="<?= BASE_ADMIN_URL; ?>commentsreported/emptycommentsreported" role="button" class="float-right btn btn-sm btn-dark">Vider la Corbeille</a>
 		</div>
 	</div>
 </div>

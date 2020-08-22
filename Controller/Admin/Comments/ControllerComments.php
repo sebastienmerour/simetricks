@@ -80,13 +80,6 @@ class ControllerComments extends Controller
         $this->comment->changeCommentAdmin($content);
     }
 
-    // Approuver un commentaire signalé :
-    public function approve()
-    {
-        $id_comment = $this->request->getParameter("id");
-        $this->comment->approveComment($id_comment);
-    }
-
 
     // DELETE
 

@@ -148,12 +148,20 @@ class ControllerExtendedcardsadmin extends Controller
         } else {
             $items_current_page = 1;
         }
-        $items                 = $this->item->getItemsAdmin($items_current_page);
+        if(isset($_REQUEST['catid'])){
+        $cat_selected           = $_REQUEST;
+        $items                  = $this->item->getItemsByCatAdmin($items_current_page, $cat_selected);
+        }
+        else {
+          $items                = $this->item->getItemsAdmin($items_current_page);
+        }
+        $categories            = $this->category->getCategories();
         $page_previous_items   = $items_current_page - 1;
         $page_next_items       = $items_current_page + 1;
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtAdmin();
         $this->generateadminView(array(
             'items' => $items,
+            'categories' => $categories,
             'number_of_items' => $number_of_items,
             'items_current_page' => $items_current_page,
             'page_previous_items' => $page_previous_items,

@@ -318,13 +318,12 @@ class Calculate extends Model
   {
       $sql                     = 'SELECT COUNT(id) as counter FROM comments
       WHERE report = :report
-      AND bin != :bin
+      AND bin = :bin
       ';
       $comments_reported_count = $this->dbConnect($sql, array(
           ':report' => "yes",
           ':bin'    => "no"
       ));
-
       $this->comments_reported_count = $comments_reported_count->fetch(\PDO::FETCH_ASSOC);
       $total_comments_reported_count = $this->comments_reported_count['counter'];
       return $total_comments_reported_count;
@@ -333,9 +332,10 @@ class Calculate extends Model
   // Calculer le nombre total de Commentaires supprimés :
   public function getTotalOfCommentsDeleted()
   {
-      $sql                  = 'SELECT COUNT(id) as counter FROM comments WHERE bin = :bin ';
+      $sql                  = 'SELECT COUNT(id) as counter FROM comments WHERE bin = :bin AND report = :report ';
       $comments_deleted           = $this->dbConnect($sql, array(
-          ':bin' => "yes"
+          ':bin' => "yes",
+          ':report'=> "no"
       ));
       $this->comments_deleted_count = $comments_deleted->fetch(\PDO::FETCH_ASSOC);
       $total_comments_deleted_count = $this->comments_deleted_count['counter'];
@@ -350,6 +350,26 @@ class Calculate extends Model
       return $number_of_comments_deleted_pages;
   }
 
+  // Calculer le nombre total de Commentaires signalés supprimés :
+  public function getTotalOfCommentsReportedDeleted()
+  {
+      $sql                  = 'SELECT COUNT(id) as counter FROM comments WHERE bin = :bin AND report = :report ';
+      $comments_reported_deleted           = $this->dbConnect($sql, array(
+          ':bin' => "yes",
+          ':report' => "yes"
+      ));
+      $this->comments_reported_deleted_count = $comments_reported_deleted->fetch(\PDO::FETCH_ASSOC);
+      $total_comments_reported_deleted_count = $this->comments_reported_deleted_count['counter'];
+      return $total_comments_reported_deleted_count;
+  }
+
+  // Calculer le nombre total de Pages de Commentaires Signalés Supprimés pour l'admin :
+  public function getNumberOfCommentsReportedDeletedPagesFromAdmin()
+  {
+      $total_comments_reported_deleted_count     = $this->getTotalOfCommentsReportedDeleted();
+      $number_of_comments_reported_deleted_pages = ceil($total_comments_reported_deleted_count / $this->number_of_comments_by_page);
+      return $number_of_comments_reported_deleted_pages;
+  }
 
   // USERS
   // ADMIN

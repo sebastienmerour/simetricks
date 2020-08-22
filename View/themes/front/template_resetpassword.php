@@ -136,8 +136,8 @@
                             </tbody>
                           </table>
                           <div class="text-center text-muted" style="color: #636c72;" align="center">
-                            <a href="<?= DOMAIN_NAME; ?>cards" class="nav-link">Cards</a> | <a href="<?= DOMAIN_NAME; ?>extendedcards" class="nav-link">Extended Cards</a> | <a href="<?= DOMAIN_NAME; ?>category/1/1/web" class="nav-link">Web</a>
-     |                      <a href="<?= DOMAIN_NAME; ?>category/2/1/langages" class="nav-link">Langages</a> | <a href="<?= DOMAIN_NAME; ?>category/3/1/it" class="nav-link">IT</a></div>
+                            <a href="<?= DOMAIN_NAME; ?>cards" class="nav-link">Cards</a> | <a href="<?= DOMAIN_NAME; ?>extendedcards" class="nav-link">Extended Cards</a> | <a href="<?= DOMAIN_NAME; ?>category/1/1/front-end" class="nav-link">Front-End</a> |
+                            <a href="<?= DOMAIN_NAME; ?>category/3/1/back-end" class="nav-link">Back-End</a> | <a href="<?= DOMAIN_NAME; ?>category/2/1/langages" class="nav-link">Langages</a> | <a href="<?= DOMAIN_NAME; ?>category/4/1/outils" class="nav-link">Outils</a></div>
      <table class="s-4 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
        <tbody>
          <tr>

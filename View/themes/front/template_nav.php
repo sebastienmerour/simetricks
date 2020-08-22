@@ -14,13 +14,16 @@
 							<a class="nav-link" href="extendedcards">Extended Cards</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="category/1/1/web">Web</a>
+							<a class="nav-link" href="category/1/1/front-end">Front-End</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="category/3/1/back-end">Back-End</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="category/2/1/langages">Langages</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="category/3/1/it">IT</a>
+							<a class="nav-link" href="category/4/1/outils">Outils</a>
 						</li>
 					</ul>
 				</div>

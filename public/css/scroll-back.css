@@ -31,13 +31,13 @@ nav ul {
   }
 }
 nav ul li a {
-  display: block;
+  /*display: block;*/
   padding: 0.5rem 1rem;
   color: white;
   text-decoration: none;
 }
 nav ul li a.current {
-  background: black;
+  /*background: black;*/
 }
 main {
   padding-bottom: 40rem;
