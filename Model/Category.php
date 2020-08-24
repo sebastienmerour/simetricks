@@ -38,10 +38,14 @@ class Category extends Model
     // Afficher la liste des Catégories :
     public function getCategories()
     {
-        $sql        = 'SELECT *
+        $sql        = 'SELECT categories.*,
+     COUNT(extended_cards.id_category) AS count
      FROM categories
-     WHERE bin != "yes"
-     ORDER BY id ASC LIMIT 0, 100';
+     LEFT JOIN extended_cards
+     ON extended_cards.id_category = categories.id
+     GROUP BY categories.id
+     HAVING categories.bin != "yes"
+     ORDER BY categories.id ASC LIMIT 0, 100';
         $categories = $this->dbConnect($sql);
         return $categories;
     }

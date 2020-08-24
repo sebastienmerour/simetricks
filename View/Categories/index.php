@@ -15,6 +15,7 @@
       <tr>
         <th>Nom</th>
         <th>Description</th>
+				<th>Nombre d'Articles</th>
 				<th>Modification</th>
         <th>Suppression</th>
       </tr>
@@ -27,6 +28,7 @@
         <td><h6 class="mt-2 text-left"><a href="<?= BASE_ADMIN_URL.'categories/categoryread/' . $this->clean($category['id']) ?>">
         <?= $this->clean($category['name']); ?></a></span></td>
 				<td><h6 class="mt-2 text-left"><?= $this->clean($category['description']); ?></h6></td>
+				<td><h6 class="mt-2 text-left"><?= $this->clean($category['count']); ?></h6></td>
 				<td><a href="<?= BASE_ADMIN_URL. 'categories/categoryread/' . $this->clean($category['id'])?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
         <td><a href="<?= BASE_ADMIN_URL. 'categories/movecategorytobin/' . $this->clean($category['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
 		  </tr>

@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-<a class="navbar-brand text-white bg-dark" href="<?= BASE_ADMIN_URL; ?>"><img alt="<?= WEBSITE_NAME; ?>" title="<?= WEBSITE_NAME; ?>" src="<?= BASE_URL; ?>public/images/logos/logo-sm-white.png"> | Panneau d'Administration</a>
+<a class="navbar-brand text-white" href="<?= BASE_ADMIN_URL; ?>"><img alt="<?= WEBSITE_NAME; ?>" title="<?= WEBSITE_NAME; ?>" src="<?= BASE_URL; ?>public/images/logos/logo-sm-white.png"> | Panneau d'Administration</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
 </button>
-<div class="collapse navbar-collapse" id="navbarCollapse">
-<ul class="navbar-nav mr-auto">
+<div class="collapse navbar-collapse bg-dark" id="navbarCollapse">
+<ul class="navbar-nav mr-auto bg-dark">
   <li class="nav-item">
   </li>
 </ul>
