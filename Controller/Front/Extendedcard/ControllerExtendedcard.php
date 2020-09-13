@@ -48,6 +48,8 @@ class ControllerExtendedcard extends Controller
         $category                 = $this->category->getCategory($id_category);
         $number_of_items          = $this->calculate->getTotalOfItemsFront();
         $number_of_cards          = $this->calculate->getTotalOfCards();
+        $number_of_links          = $this->calculate->getTotalOfLinks();
+        $number_of_links          = $this->calculate->getTotalOfLinks();
         $number_of_items_pages    = $this->calculate->getNumberOfPagesOfExtFront();
         $page_view                = $this->calculate->pageviewItemId($id_item);
         $number_of_comments       = $this->calculate->countComments($id_item);
@@ -65,6 +67,7 @@ class ControllerExtendedcard extends Controller
             'category' => $category,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'number_of_items_pages' => $number_of_items_pages,
             'comments' => $comments,
             'links' => $links,
@@ -89,6 +92,7 @@ class ControllerExtendedcard extends Controller
         $user                     = $this->user->getUser($_SESSION['id_user']);
         $number_of_items          = $this->calculate->getTotalOfItemsFront();
         $number_of_cards          = $this->calculate->getTotalOfCards();
+        $number_of_links          = $this->calculate->getTotalOfLinks();
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
         $links                    = $this->link->getLinks($id_item);
@@ -104,6 +108,7 @@ class ControllerExtendedcard extends Controller
             'category' => $category,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'user' => $user,
@@ -209,6 +214,7 @@ class ControllerExtendedcard extends Controller
         $item                     = $this->item->getItem($id_item);
         $number_of_items          = $this->calculate->getTotalOfItemsFront();
         $number_of_cards          = $this->calculate->getTotalOfCards();
+        $number_of_links          = $this->calculate->getTotalOfLinks();
         $total_comments_count     = $this->calculate->getTotalOfComments();
         $total_users_count        = $this->calculate->getTotalOfUsers();
         $number_of_comments       = $this->calculate->countComments($id_item);
@@ -226,6 +232,7 @@ class ControllerExtendedcard extends Controller
             'item' => $item,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'comments_current_page' => $comments_current_page,

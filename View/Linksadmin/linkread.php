@@ -15,7 +15,7 @@
 <div class="card my-4">
 	<h5 class="card-header">Modification du Lien <strong><?= $this->clean($link['name']);?></strong></h5>
     <div class="card-body">
-				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>links/updatelink/<?= $this->clean($link['id']);?>" method="post"
+				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>linksadmin/updatelink/<?= $this->clean($link['id']);?>" method="post"
 	        id="linkmodification" novalidate>
 				<div class="form-group">
 					<div class="row">
@@ -38,12 +38,18 @@
 					title="Modifiez le lien si besoin"><br>
 				</div>
 			</div>
+			<div class="row">
+			<div class="col-12">
+				<input type="url" class="form-control" name="description" id="description" value="<?= $this->clean($link['description']);?>"
+				title="Modifiez la description si besoin"><br>
+			</div>
+		</div>
 		<div class="form-group">
 				 <div class="col-xs-12">
 							<br>
 							<button class="btn btn-md btn-success" name="update" type="submit">Enregistrer</button>
 							<a href="#" role="button" class="btn btn-md btn-secondary" type="reset">Annuler</a>
-							<a href="<?= BASE_ADMIN_URL. 'links/removelink/' . $this->clean($link['id'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
+							<a href="<?= BASE_ADMIN_URL. 'linksadmin/removelink/' . $this->clean($link['id'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
 							<a href="<?= $_SERVER['HTTP_REFERER']; ?>" role="button" class="btn btn-md btn-primary" type="button">Retour</a>
 						</div>
 			</div>

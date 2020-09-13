@@ -31,6 +31,11 @@
 						<input class="form-control" id="url" name="url" placeholder="http://" type="url"><br>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-12">
+						<input class="form-control" id="description" name="description" placeholder="Description" type="text"><br>
+					</div>
+				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-xs-12">

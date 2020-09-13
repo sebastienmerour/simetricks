@@ -12,7 +12,7 @@ require_once 'Model/Calculate.php';
  * @author Sébastien Merour
  */
 
-class ControllerLinks extends Controller
+class ControllerLinksadmin extends Controller
 {
     private $user;
     private $item;
@@ -40,19 +40,20 @@ class ControllerLinks extends Controller
     public function createlink()
     {
         if (isset($_POST["create"])) {
-            $id_item = $_POST['id_item'];
-            $name    = $_POST['name'];
-            $url     = $_POST['url'];
+            $id_item     = $_POST['id_item'];
+            $name        = $_POST['name'];
+            $url         = $_POST['url'];
+            $description = $_POST['description'];
             if (empty($id_item) || empty($name) || empty($url)) {
                 $errors['errors'] = 'Veuillez remplir tous les champs !';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'links/linkadd');
+                    header('Location: ' . BASE_ADMIN_URL . 'linksadmin/linkadd');
                     exit;
                 }
             }
               else {
-            $this->link->insertLink($id_item, $name, $url);
+            $this->link->insertLink($id_item, $name, $url, $description);
           }
         }
     }
@@ -88,11 +89,12 @@ class ControllerLinks extends Controller
     public function updatelink()
     {
         if (isset($_POST["update"])) {
-            $id_link = $this->request->getParameter("id");
-            $id_item = $this->request->getParameter("id_item");
-            $name    = $this->request->getParameter("name");
-            $url     = $this->request->getParameter("url");
-            $this->link->changeLink($id_link, $id_item, $name, $url);
+            $id_link     = $this->request->getParameter("id");
+            $id_item     = $this->request->getParameter("id_item");
+            $name        = $this->request->getParameter("name");
+            $url         = $this->request->getParameter("url");
+            $description = $this->request->getParameter("description");
+            $this->link->changeLink($id_link, $id_item, $name, $url, $description);
         }
     }
 

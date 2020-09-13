@@ -128,6 +128,7 @@ class ControllerUser extends Controller
         $user                  = $this->user->getUser($_SESSION['id_user']);
         $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $number_of_cards       = $this->calculate->getTotalOfCards();
+        $number_of_links       = $this->calculate->getTotalOfLinks();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
@@ -135,6 +136,7 @@ class ControllerUser extends Controller
             'user' => $user,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'number_of_items_pages' => $number_of_items_pages
@@ -148,12 +150,14 @@ class ControllerUser extends Controller
         $user                 = $this->user->getUser($id_user);
         $number_of_items      = $this->calculate->getTotalOfItemsFront();
         $number_of_cards       = $this->calculate->getTotalOfCards();
+        $number_of_links       = $this->calculate->getTotalOfLinks();
         $total_comments_count = $this->calculate->getTotalOfComments();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
             'user' => $user,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count
         ));
@@ -166,6 +170,7 @@ class ControllerUser extends Controller
     {
         $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $number_of_cards       = $this->calculate->getTotalOfCards();
+        $number_of_links       = $this->calculate->getTotalOfLinks();
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $user                  = $this->request->getSession()->setAttribut("user", $this->user);
         $user                  = $this->user->getUser($_SESSION['id_user']);
@@ -173,6 +178,7 @@ class ControllerUser extends Controller
             'user' => $user,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'number_of_items_pages' => $number_of_items_pages
         ));
     }

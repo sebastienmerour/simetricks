@@ -6,6 +6,7 @@
     <ul class="list-unstyled mb-0">
       <a href="<?= BASE_URL; ?>extendedcards"><li class="lead hover-arrow"><?= $number_of_items ;?> Extended Cards</li></a>
       <a href="<?= BASE_URL; ?>cards"><li class="lead hover-arrow"><?= $number_of_cards ;?> Cards</li></a>
+      <a href="<?= BASE_URL; ?>links"><li class="lead hover-arrow"><?= $number_of_links ;?> Liens</li></a>
     </ul>
   </div>
 </div>

@@ -1,44 +1,47 @@
-<?php
-	if(!ISSET($_SESSION['id_user_admin'])){
-		header('location: '. BASE_ADMIN_URL);
-	}
-	else {
-?>
-<?php $this->title =  WEBSITE_NAME . ' |  Panneau d\'Administration'; ?>
-<?php require('links_menu.php'); ?>
-<?php require __DIR__ . '/../errors/confirmation.php'; ?>
-<div class="table-responsive">
-  <h2 id="lastitems">Liens Publiés</h2>
-  <div class="table-responsive">
-  <table class="table table-striped table-sm">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>URL</th>
-				<th>Extended Card ID</th>
-				<th>Modification</th>
-        <th>Suppression</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php
-      while ($link = $links->fetch()) {
-      ?>
-      <tr>
-        <td><h6 class="mt-2 text-left"><a href="<?= BASE_ADMIN_URL.'links/linkread/' . $this->clean($link['id']) ?>">
-        <?= $this->clean($link['name']); ?></a></span></td>
-				<td><h6 class="mt-2 text-left"><?= $this->clean($link['url']); ?></h6></td>
-				<td><h6 class="mt-2 text-left"><a href="<?= BASE_URL.'extendedcard/' . $this->clean($link['extended_cards']) ?>/1" target="_blank"><button type="button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="right" title="<?= $this->clean($link['title']); ?>"><?= $this->clean($link['extended_cards']); ?></button></a></span></td>
-				<td><a href="<?= BASE_ADMIN_URL. 'links/linkread/' . $this->clean($link['id'])?>" role="button" class="btn btn-sm btn-primary">Modifier</a></td>
-        <td><a href="<?= BASE_ADMIN_URL. 'links/movelinktobin/' . $this->clean($link['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer</a></td>
-		  </tr>
-      <?php
-        }
-      ?>
-    </tbody>
-  </table>
+<?php $this->title = WEBSITE_NAME; ?>
+<div class="row mb-4">
+    <div class="col-md-6 col-lg-8" data-aos-delay="200">
+      <div class="pr-lg-4">
+   <div class="row card card-body justify-content-between bg-primary text-light">
+     <div class="d-flex justify-content-between">
+       <div class="text-small d-flex">
+         <div class="mr-2">
+           <h1>Liens utiles</h1>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+ <div class="pr-lg-4">
+  <div class="row">
+<?php foreach ($links as $link):?>
+
+  <a href="<?= $this->clean($link['url']) ?>" target="_blank" class="card card-body flex-row align-items-center hover-shadow-sm">
+                <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                  <img class="icon bg-primary" src="assets/img/icons/theme/general/thunder-move.svg" alt="icon" data-inject-svg />
+                </div>
+                <div class="pl-4">
+                  <h3 class="mb-1"><?= $this->clean($link['name']) ?></h3>
+                  <span><?= $this->clean($link['description']) ?></span>
+                </div>
+              </a>
+
+<?php endforeach; ?>
+  </div>
+</div>
+  </div>
+<div class="col-md-6 col-lg-4 d-none d-md-block">
+  <?php if(!ISSET($_SESSION['id_user']))
+          {require __DIR__ . '/../themes/front/template_module_login.php'; }
+       else { require __DIR__ . '/../themes/front/template_module_logout.php';}
+       require( __DIR__ . '/../themes/front/template_module_stats.php');?>
 </div>
 </div>
-<?php
-};
-?>
+    <?php
+    if ($links_current_page > $number_of_links_pages) {
+      require __DIR__ . '/../errors/cards_not_found.php';
+    }
+    else {
+    require __DIR__ . '/../Links/index_pagination.php';
+    }
+    ?>

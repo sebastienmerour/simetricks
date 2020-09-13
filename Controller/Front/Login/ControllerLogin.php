@@ -35,12 +35,14 @@ class ControllerLogin extends Controller
     {
         $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $number_of_cards       = $this->calculate->getTotalOfCards();
+        $number_of_links       = $this->calculate->getTotalOfLinks();
         $total_comments_count  = $this->calculate->getTotalOfComments();
         $total_users_count     = $this->calculate->getTotalOfUsers();
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count,
             'number_of_items_pages' => $number_of_items_pages
@@ -64,6 +66,7 @@ class ControllerLogin extends Controller
         $number_of_items      = $this->calculate->getTotalOfItemsFront();
         $total_comments_count = $this->calculate->getTotalOfComments();
         $number_of_cards       = $this->calculate->getTotalOfCards();
+        $number_of_links       = $this->calculate->getTotalOfLinks();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         if (ISSET($_SESSION['id_user'])) {
             $this->request->getSession()->destroy();
@@ -73,6 +76,7 @@ class ControllerLogin extends Controller
             $this->generateView(array(
                 'number_of_items' => $number_of_items,
                 'number_of_cards' => $number_of_cards,
+                'number_of_links' => $number_of_links,
                 'total_comments_count' => $total_comments_count,
                 'total_users_count' => $total_users_count
             ));
@@ -86,11 +90,13 @@ class ControllerLogin extends Controller
     {
         $number_of_items      = $this->calculate->getTotalOfItemsFront();
         $number_of_cards       = $this->calculate->getTotalOfCards();
+        $number_of_links       = $this->calculate->getTotalOfLinks();
         $total_comments_count = $this->calculate->getTotalOfComments();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'total_comments_count' => $total_comments_count,
             'total_users_count' => $total_users_count
         ));

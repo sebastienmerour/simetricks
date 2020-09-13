@@ -10,25 +10,26 @@ require_once 'Framework/Model.php';
 
 class link extends Model
 {
-    public $number_of_links, $links_current_page, $number_of_links_pages, $number_of_links_by_page = 5;
+    public $number_of_links, $links_current_page, $number_of_links_pages, $number_of_links_by_page = 6;
 
     // CREATE
 
     // Création d'un nouveau lien :
-    public function insertLink($id_item, $name, $url)
+    public function insertLink($id_item, $name, $url, $description)
     {
-        $sql                      = 'INSERT INTO links (id_item, name, url)
+        $sql                      = 'INSERT INTO links (id_item, name, url, description)
                      VALUES
-                      (:id_item, :name, :url)';
+                      (:id_item, :name, :url, :description)';
         $links                    = $this->dbConnect($sql, array(
             ':id_item' => $id_item,
             ':name' => $name,
-            ':url' => $url
+            ':url' => $url,
+            ':description' => $description
         ));
         $messages['confirmation'] = 'Votre lien a bien été ajouté !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'links');
+            header('Location:' . BASE_ADMIN_URL . 'linksadmin');
             exit;
         }
     }
@@ -38,7 +39,7 @@ class link extends Model
     // Afficher la liste des liens d'un Article :
     public function getLinks($id_item)
     {
-        $sql   = 'SELECT id, id_item, name AS name, url, bin
+        $sql   = 'SELECT id, id_item, name AS name, url, description, bin
       FROM links
       WHERE id_item = ? AND bin != "yes"
       ORDER BY id';
@@ -48,10 +49,24 @@ class link extends Model
         return $links;
     }
 
+
+    // Afficher la liste des Liens en Front
+    public function getLinksList($links_current_page)
+    {
+        $links_start = (int) (($links_current_page - 1) * $this->number_of_links_by_page);
+        $sql  = 'SELECT *
+        FROM links
+        WHERE bin != "yes"
+        ORDER BY id ASC LIMIT ' . $links_start . ', ' . $this->number_of_links_by_page . '';
+        $links       = $this->dbConnect($sql);
+        return $links;
+    }
+
+
     // Afficher la liste des Liens en Admin :
     public function getLinksAdmin()
     {
-        $sql   = 'SELECT links.id AS id, links.id_item AS id_item, links.name AS name, links.url AS url, links.bin AS bin,
+        $sql   = 'SELECT links.id AS id, links.id_item AS id_item, links.name AS name, links.url AS url, links.description AS description, links.bin AS bin,
       extended_cards.id AS extended_cards, extended_cards.title AS title
      FROM links
      LEFT JOIN extended_cards
@@ -93,21 +108,22 @@ class link extends Model
     // UPDATE
 
     // Modification d'un lien :
-    public function changeLink($id_link, $id_item, $name, $url)
+    public function changeLink($id_link, $id_item, $name, $url, $description)
     {
 
-        $sql                      = 'UPDATE links SET id_item = :id_item, name = :name, url = :url
+        $sql                      = 'UPDATE links SET id_item = :id_item, name = :name, url = :url, description = :description
         WHERE id = :id_link';
         $link                     = $this->dbConnect($sql, array(
             ':id_link' => $id_link,
             ':id_item' => $id_item,
             ':name' => $name,
-            ':url' => $url
+            ':url' => $url,
+            ':description' => $description
         ));
         $messages['confirmation'] = 'Le lien a bien été modifié !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'links/linkread/' . $id_link);
+            header('Location: ' . BASE_ADMIN_URL . 'linksadmin/linkread/' . $id_link);
             exit;
         }
     }
@@ -124,7 +140,7 @@ class link extends Model
         $messages['confirmation'] = 'Merci ! Le lien a bien été restauré !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'links/linksbin');
+            header('Location: ' . BASE_ADMIN_URL . 'linksadmin/linksbin');
             exit;
         }
     }
@@ -144,7 +160,7 @@ class link extends Model
         $messages['confirmation'] = 'Merci ! Le lien a été déplacé dans la corbeille !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'links');
+            header('Location: ' . BASE_ADMIN_URL . 'linksadmin');
             exit;
         }
     }
@@ -162,7 +178,7 @@ class link extends Model
         $messages['confirmation'] = 'Merci ! Le lien a été supprimé !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'links/linksbin');
+            header('Location:' . BASE_ADMIN_URL . 'linksadmin/linksbin');
             exit;
         }
     }
@@ -183,7 +199,7 @@ class link extends Model
         $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'links/linksbin');
+            header('Location:' . BASE_ADMIN_URL . 'linksadmin/linksbin');
             exit;
         }
     }

@@ -32,7 +32,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>links">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>linksadmin">
           <span data-feather="link-2"></span>
           Liens
         </a>

@@ -36,10 +36,12 @@ class ControllerExtendedcards extends Controller
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtHome();
         $number_of_items       = $this->calculate->getTotalOfItemsHome();
         $number_of_cards       = $this->calculate->getTotalOfCards();
+        $number_of_links       = $this->calculate->getTotalOfLinks();
         $this->generateView(array(
             'items' => $items,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'items_current_page' => $items_current_page,
             'previous_page' => $previous_page,
             'next_page' => $next_page,

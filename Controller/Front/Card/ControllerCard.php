@@ -36,12 +36,14 @@ class ControllerCard extends Controller
         $id_card                  = $this->request->getParameter("id");
         $card                     = $this->card->getCard($id_card);
         $number_of_cards          = $this->calculate->getTotalOfCards();
-        $number_of_items       = $this->calculate->getTotalOfItemsHome();
+        $number_of_links          = $this->calculate->getTotalOfLinks();
+        $number_of_items          = $this->calculate->getTotalOfItemsHome();
         $number_of_cards_pages    = $this->calculate->getNumberOfPagesOfCards();
         $default                  = "default.png";
         $this->generateView(array(
             'card' => $card,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'number_of_items' => $number_of_items,
             'number_of_cards_pages' => $number_of_cards_pages,
             'default' => $default

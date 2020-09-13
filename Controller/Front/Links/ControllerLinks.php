@@ -1,51 +1,51 @@
 <?php
 require_once 'Framework/Controller.php';
-require_once 'Model/Item.php';
+require_once 'Model/Link.php';
 require_once 'Model/Calculate.php';
 
 
 /**
- * Contrôleur gérant la page d'accueil
+ * Contrôleur gérant la section Cards
  *
  * @version 1.0
  * @author Sébastien Merour
  */
 
-class ControllerHome extends Controller
+class ControllerLinks extends Controller
 {
-    private $item;
+    private $link;
     private $calculate;
 
     public function __construct()
     {
-        $this->item      = new Item();
+        $this->link      = new Link();
         $this->calculate = new Calculate();
     }
 
-    // Lister les articles en page d'accueil :
+    // Lister les Liens :
     public function index()
     {
         if (null != $this->request->ifParameter("id")) {
-            $items_current_page = $this->request->getParameter("id");
+            $links_current_page = $this->request->getParameter("id");
         } else {
-            $items_current_page = 1;
+            $links_current_page = 1;
         }
-        $items                 = $this->item->getItemsFront($items_current_page);
-        $previous_page         = $items_current_page - 1;
-        $next_page             = $items_current_page + 1;
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtHome();
+        $links                 = $this->link->getLinksList($links_current_page);
+        $previous_page         = $links_current_page - 1;
+        $next_page             = $links_current_page + 1;
+        $number_of_links_pages = $this->calculate->getNumberOfPagesOfLinks();
         $number_of_items       = $this->calculate->getTotalOfItemsHome();
         $number_of_cards       = $this->calculate->getTotalOfCards();
         $number_of_links      = $this->calculate->getTotalOfLinks();
         $this->generateView(array(
-            'items' => $items,
+            'links' => $links,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
             'number_of_links' => $number_of_links,
-            'items_current_page' => $items_current_page,
+            'links_current_page' => $links_current_page,
             'previous_page' => $previous_page,
             'next_page' => $next_page,
-            'number_of_items_pages' => $number_of_items_pages
+            'number_of_links_pages' => $number_of_links_pages
         ));
     }
 }

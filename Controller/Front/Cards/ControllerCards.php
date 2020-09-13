@@ -35,10 +35,12 @@ class ControllerCards extends Controller
         $next_page             = $cards_current_page + 1;
         $number_of_cards_pages = $this->calculate->getNumberOfPagesOfCards();
         $number_of_cards       = $this->calculate->getTotalOfCards();
+        $number_of_links      = $this->calculate->getTotalOfLinks();
         $number_of_items       = $this->calculate->getTotalOfItemsHome();
         $this->generateView(array(
             'cards' => $cards,
             'number_of_cards' => $number_of_cards,
+            'number_of_links' => $number_of_links,
             'number_of_items' => $number_of_items,
             'cards_current_page' => $cards_current_page,
             'previous_page' => $previous_page,

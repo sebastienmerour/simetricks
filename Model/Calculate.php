@@ -15,6 +15,7 @@ class Calculate extends Model
   $comments_current_page,
   $number_of_items_by_page = 6,
   $number_of_cards_by_page = 6,
+  $number_of_links_by_page = 6,
   $number_of_comments_by_page = 5,
   $number_of_comments_reported_by_page = 5,
   $number_of_users_by_page = 5,
@@ -196,14 +197,19 @@ class Calculate extends Model
       return $number_of_cards_pages;
   }
 
-  // Obtenir le nombre de pages des Cards :
-  public function getNumberOfCardsPages()
+
+  // LINKS
+  // FRONT
+
+  // Obtenir le nombre de pages des Links :
+  public function getNumberOfPagesOfLinks()
   {
-      $number_of_cards       = $this->getTotalOfCards();
+      $number_of_links       = $this->getTotalOfLinks();
       // Calculer le nombre de pages nécessaires :
-      $number_of_cards_pages = ceil($number_of_cards / $this->number_of_cards_by_page);
-      return $number_of_cards_pages;
+      $number_of_links_pages = ceil($number_of_links / $this->number_of_links_by_page);
+      return $number_of_links_pages;
   }
+
 
 
   // ADMIN
