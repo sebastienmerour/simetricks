@@ -28,6 +28,7 @@
           <input type="hidden" name="MAX_FILE_SIZE" value="1048576">
           <br>
           <input type="submit" class="btn btn-md btn-success" name="update" value="Envoyer">
+          <a href="<?= BASE_URL. 'user/profile/' .$this->clean($user['id_user']);?>"><span class="btn btn-md btn-info">Voir mon profil public</span></a>
         </form>
       </div>
     </span>

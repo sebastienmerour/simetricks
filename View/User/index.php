@@ -11,6 +11,7 @@
 				<div class="col-md-12 col-lg-12 d-flex">
 	      	<div class="card pt-2">
 						<?php require('user-badge.php'); ?>
+						<?php require('user-items.php'); ?>
 						<?php require('user-tabs.php'); ?>
 						<?php require('user-readonly.php'); ?>
 					</div>
@@ -22,6 +23,6 @@
 		          {require __DIR__ . '/../themes/front/template_module_login.php'; }
 		       else { require __DIR__ . '/../themes/front/template_module_logout.php';}
 		       require( __DIR__ . '/../themes/front/template_module_stats.php');?>
-		 </div>	 
+		 </div>
 	 </div>
 <?php	};?>

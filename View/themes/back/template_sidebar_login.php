@@ -20,6 +20,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>pagesadmin">
+          <span data-feather="layout"></span>
+          Pages
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="<?= BASE_ADMIN_URL; ?>categories">
           <span data-feather="folder"></span>
           Catégories

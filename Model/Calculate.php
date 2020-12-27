@@ -14,6 +14,7 @@ class Calculate extends Model
   $number_of_comments,
   $comments_current_page,
   $number_of_items_by_page = 6,
+  $number_of_pages_by_page = 6,
   $number_of_cards_by_page = 6,
   $number_of_links_by_page = 6,
   $number_of_comments_by_page = 5,
@@ -22,7 +23,7 @@ class Calculate extends Model
   $number_of_categories,
   $number_of_categories_by_page = 5;
 
-  // ITEMS
+  // EXTENDED CARDS
   // FRONT
 
   // Obtenir le nombre total des Items en Home :
@@ -86,15 +87,6 @@ class Calculate extends Model
       return $number_of_items_pages;
   }
 
-  // Obtenir le nombre de pages des Extended Cards en Admin :
-  public function getNumberOfPagesOfExtAdmin()
-  {
-      $number_of_items       = $this->getTotalOfItemsAdmin();
-      // Calculer le nombre de pages nécessaires :
-      $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
-      return $number_of_items_pages;
-  }
-
   // Obtenir le nombre de pages des Extended Cards d'une Catégorie précise :
   public function getNumberOfCatPagesFront($id_category)
   {
@@ -116,7 +108,6 @@ class Calculate extends Model
   // Ajouter 1 vue pour calculer le nombre de pages vues
   public function pageviewItemId($id_item)
   {
-
       $sql               = 'UPDATE extended_cards SET views = views+1
       WHERE id = :id';
       $item              = $this->dbConnect($sql, array(
@@ -125,7 +116,7 @@ class Calculate extends Model
 
   }
 
-  // Afficher le nombre de pages vues pour un item :
+  // Afficher le nombre de pages vues pour une Extended Card :
   public function displayPageView($id_item)
   {
       $sql               = 'SELECT * FROM extended_cards
@@ -138,8 +129,9 @@ class Calculate extends Model
 
 
   // ADMIN
+  // Extended Cards
 
-  // Obtenir le nombre total des Items en Admin :
+  // Obtenir le nombre total des Extended Cards en Admin :
   public function getTotalOfItemsAdmin()
   {
       $sql               = 'SELECT COUNT(id) AS counter FROM extended_cards
@@ -151,6 +143,14 @@ class Calculate extends Model
       return $number_of_items;
   }
 
+  // Obtenir le nombre de pages des Extended Cards en Admin :
+  public function getNumberOfPagesOfExtAdmin()
+  {
+      $number_of_items       = $this->getTotalOfItemsAdmin();
+      // Calculer le nombre de pages nécessaires :
+      $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
+      return $number_of_items_pages;
+  }
 
   // Obtenir le nombre total des Extended Cards supprimées :
   public function getTotalOfItemsDeleted()
@@ -173,6 +173,51 @@ class Calculate extends Model
       return $number_of_items_deleted_pages;
   }
 
+
+
+  // PAGES
+
+  // Obtenir le nombre de pages des Pages en Admin :
+  public function getNumberOfPagesOfPagesAdmin()
+  {
+    $number_of_pages       = $this->getTotalOfPagesAdmin();
+    // Calculer le nombre de pages nécessaires :
+    $number_of_pages_pages = ceil($number_of_pages / $this->number_of_pages_by_page);
+    return $number_of_pages_pages;
+  }
+
+  // Obtenir le nombre total des Pages en Admin :
+  public function getTotalOfPagesAdmin()
+  {
+      $sql               = 'SELECT COUNT(id) AS counter FROM pages
+      WHERE bin != "yes"
+      ';
+      $this->pages_count = $this->dbConnect($sql);
+      $pages             = $this->pages_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_pages   = $pages['counter'];
+      return $number_of_pages;
+  }
+
+  // Obtenir le nombre total des Pages supprimées :
+  public function getTotalOfPagesDeleted()
+  {
+      $sql                  = 'SELECT COUNT(id) AS counter FROM pages WHERE bin = :bin ';
+      $pages_deleted_count = $this->dbConnect($sql, array(
+          ':bin' => "yes"
+      ));
+      $this->pages_deleted_count = $pages_deleted_count->fetch(\PDO::FETCH_ASSOC);
+      $total_pages_deleted_count = $this->pages_deleted_count['counter'];
+      return $total_pages_deleted_count;
+  }
+
+  // Obtenir le nombre de pages des Pages supprimées :
+  public function getNumberOfPagesOfPagesDeleted()
+  {
+      $number_of_pages_deleted       = $this->getTotalOfPagesDeleted();
+      // Calculer le nombre de pages nécessaires :
+      $number_of_pages_deleted_pages = ceil($number_of_pages_deleted / $this->number_of_pages_by_page);
+      return $number_of_pages_deleted_pages;
+  }
 
   // CARDS
   // FRONT

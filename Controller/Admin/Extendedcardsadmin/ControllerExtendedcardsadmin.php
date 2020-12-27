@@ -96,7 +96,7 @@ class ControllerExtendedcardsadmin extends Controller
                 $errors['errors'] = 'Veuillez remplir les champs <strong>Titre et Contenu</strong>';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardadditem');
+                    header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardadditem');
                     exit;
                 }
             }

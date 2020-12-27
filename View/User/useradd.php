@@ -34,7 +34,7 @@
 			</div>
 			<div class="form-group custom-control custom-checkbox text-right">
 				<input type="checkbox" class="custom-control-input" id="cgu" name="cgu">
-				<label class="custom-control-label text-small text-muted" for="cgu">J'accepte les <a target="_blank" href="<?= BASE_URL. 'user/cgu';?>">
+				<label class="custom-control-label text-small text-muted" for="cgu">J'accepte les <a target="_blank" href="<?= BASE_URL. 'page/1/1/conditions-g-en-erales-d-utilisation';?>">
 					Conditions Générales d'Utilisation</a>
 				</label>
 			</div>

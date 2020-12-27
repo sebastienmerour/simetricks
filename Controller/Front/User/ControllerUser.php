@@ -1,7 +1,6 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/User.php';
-require_once 'Model/Cgu.php';
 require_once 'Model/Item.php';
 require_once 'Model/Calculate.php';
 require_once 'PHPMailer/PHPMailerAutoload.php';
@@ -16,7 +15,6 @@ require_once 'PHPMailer/PHPMailerAutoload.php';
 class ControllerUser extends Controller
 {
     private $user;
-    private $cgu;
     private $item;
     private $calculate;
     private $mail;
@@ -24,7 +22,6 @@ class ControllerUser extends Controller
     public function __construct()
     {
         $this->user      = new User();
-        $this->cgu       = new Cgu();
         $this->item      = new Item();
         $this->calculate = new Calculate();
         $this->mail      = new PHPMailer();
@@ -126,6 +123,7 @@ class ControllerUser extends Controller
     {
         //$user                  = $this->request->getSession()->setAttribut("user", $this->user);
         $user                  = $this->user->getUser($_SESSION['id_user']);
+        $items_from_user       = $this->user->getUserExtendedCards($_SESSION['id_user']);
         $number_of_items       = $this->calculate->getTotalOfItemsFront();
         $number_of_cards       = $this->calculate->getTotalOfCards();
         $number_of_links       = $this->calculate->getTotalOfLinks();
@@ -134,6 +132,7 @@ class ControllerUser extends Controller
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtFront();
         $this->generateView(array(
             'user' => $user,
+            'items_from_user' => $items_from_user,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
             'number_of_links' => $number_of_links,
@@ -148,6 +147,7 @@ class ControllerUser extends Controller
     {
         $id_user              = $this->request->getParameter("id");
         $user                 = $this->user->getUser($id_user);
+        $items_from_user       = $this->user->getUserExtendedCards($id_user);
         $number_of_items      = $this->calculate->getTotalOfItemsFront();
         $number_of_cards       = $this->calculate->getTotalOfCards();
         $number_of_links       = $this->calculate->getTotalOfLinks();
@@ -155,6 +155,7 @@ class ControllerUser extends Controller
         $total_users_count    = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
             'user' => $user,
+            'items_from_user' => $items_from_user,
             'number_of_items' => $number_of_items,
             'number_of_cards' => $number_of_cards,
             'number_of_links' => $number_of_links,
@@ -301,21 +302,6 @@ class ControllerUser extends Controller
                 $newAvatar = $this->user->changeAvatar($avatarname);
             }
         }
-    }
-
-    // Affichage des CGU :
-    public function cgu()
-    {
-        $number_of_items      = $this->calculate->getTotalOfItemsFront();
-        $total_comments_count = $this->calculate->getTotalOfComments();
-        $total_users_count    = $this->calculate->getTotalOfUsers();
-        $text                 = $this->cgu->conditions();
-        $this->generateView(array(
-            'number_of_items' => $number_of_items,
-            'total_comments_count' => $total_comments_count,
-            'total_users_count' => $total_users_count,
-            'text' => $text
-        ));
     }
 
 

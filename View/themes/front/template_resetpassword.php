@@ -112,7 +112,6 @@
                                                       Cependant, nous te conseillons de te connecter à ton compte et
                                                       de modifier ton mot de passe, car il se peut que quelqu'un tente
                                                       de deviner ton mot de passe.</p>
-                                                      <?= $content ?>
                                                     </td>
                                                   </tr>
                                                 </tbody>

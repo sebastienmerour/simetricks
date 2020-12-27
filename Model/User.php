@@ -103,6 +103,27 @@ class User extends Model
         return $user;
     }
 
+    // Affichage des 5 derniers Extended Cards d'un utisateur :
+    public function getUserExtendedCards($user)
+    {
+      $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.id_user, extended_cards.title AS title, extended_cards.slug AS slug, extended_cards.content, extended_cards.image, extended_cards.last_news,
+   DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y\') AS date_creation_fr,
+   DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+   users.id_user, users.avatar, users.firstname, users.name
+   FROM extended_cards
+   JOIN users
+   ON extended_cards.id_user = users.id_user
+   WHERE extended_cards.bin != "yes" AND extended_cards.draft = "no"
+   AND extended_cards.id_user = :user
+   ORDER BY extended_cards.date_creation DESC LIMIT  0, 5';
+   $query = $this->dbConnect($sql, array(
+       ':user' => $user
+   ));
+   $items_from_user = $query->fetchAll();
+   return $items_from_user;
+    }
+
+
     // Afficher la liste complète de tous les users en Admin :
     public function selectUsers($users_current_page)
     {
