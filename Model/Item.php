@@ -130,26 +130,48 @@ class Item extends Model
     }
 
     // Afficher la liste des Extended Cards en Admin :
-    public function getItemsByCatAdmin($items_current_page, $cat_selected)
-    {
 
+    public function getItemsForAdmin($items_current_page)
+    {
         $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
-        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title, extended_cards.slug, extended_cards.image, extended_cards.last_news,
-     DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
-     DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
-     extended_cards.draft AS draft,
-     users.id_user, users.avatar, users.firstname, users.name, categories.id, categories.name AS categoryname,
-     categories.slug AS categoryslug
-     FROM extended_cards
-     LEFT JOIN users
-     ON extended_cards.id_user = users.id_user
-     LEFT JOIN categories
-     ON extended_cards.id_category = categories.id
-     WHERE extended_cards.bin != "yes"
-     AND categoryid =".$cat_selected."
-     ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
-     $items       = $this->dbConnect($sql);
-     return $items;
+        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title AS title, extended_cards.slug AS slug, extended_cards.image AS image,
+  DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+  DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+  extended_cards.draft AS draft, extended_cards.bin AS bin,
+  users.id_user AS id_user, users.firstname AS firstname, users.name AS name, categories.id, categories.name AS categoryname,
+  categories.slug AS categoryslug
+  FROM extended_cards
+  LEFT JOIN users
+  ON extended_cards.id_user = users.id_user
+  LEFT JOIN categories
+  ON extended_cards.id_category = categories.id
+  WHERE extended_cards.bin != "yes"
+  ORDER BY extended_cards.date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
+        $items       = $this->dbConnect($sql);
+        return $items;
+    }
+
+    public function getItemsForCategory($id_category, $items_current_page)
+    {
+        $items_start = (int) (($items_current_page - 1) * $this->number_of_items_by_page);
+        $sql         = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS categoryid, extended_cards.title AS title, extended_cards.slug AS slug, extended_cards.image AS image,
+  DATE_FORMAT(extended_cards.date_creation, \'%d/%m/%Y à %Hh%i\') AS date_creation_fr,
+  DATE_FORMAT(extended_cards.date_update, \'%d/%m/%Y à %Hh%i\') AS date_update,
+  extended_cards.draft AS draft, extended_cards.bin AS bin,
+  users.id_user AS id_user, users.firstname AS firstname, users.name AS name, categories.id, categories.name AS categoryname,
+  categories.slug AS categoryslug
+  FROM extended_cards
+  LEFT JOIN users
+  ON extended_cards.id_user = users.id_user
+  LEFT JOIN categories
+  ON extended_cards.id_category = categories.id
+  WHERE extended_cards.bin != "yes"
+  AND extended_cards.id_category = ?
+  ORDER BY extended_cards.date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
+        $items       = $this->dbConnect($sql, array(
+            $id_category
+        ));
+        return $items;
     }
 
     // Afficher la liste des Extended Cards en Admin :
@@ -176,13 +198,12 @@ class Item extends Model
     // Afficher la liste des Extended Cards sur la Sitemap :
     public function getAllItems()
     {
-        $sql         = 'SELECT *
+        $sql   = 'SELECT *
      FROM extended_cards
      ORDER BY id ASC';
-        $items       = $this->dbConnect($sql);
+        $items = $this->dbConnect($sql);
         return $items;
     }
-
 
     // Afficher la liste des Extended Cards appartenant à une Catégorie en Front :
     public function getItemsFromCategoryFront($cat, $items_current_page)
@@ -283,7 +304,7 @@ class Item extends Model
     // Modification d'une Extended Card avec photo :
     public function changeItemImage($id_category, $title, $slug, $content, $itemimagename, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft, $id_item)
     {
-        $sql                        = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug, content = :content, image = :image,
+        $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug, content = :content, image = :image,
         owner = :owner, date_native = :date_native, year_native = :year_native, licence = :licence, os_supported = :os_supported, sgbdr = :sgbdr, number_of_users = :number_of_users, pdm = :pdm,  langage = :langage, features = :features,
         last_news = :last_news, version = :version, draft = :draft,
         date_update = NOW() WHERE id = :id';
@@ -319,7 +340,7 @@ class Item extends Model
     // Modification d'une Extended Card sans photo :
     public function changeItem($id_category, $title, $slug, $content, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft, $id_item)
     {
-        $sql                        = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug,
+        $sql                      = 'UPDATE extended_cards SET id_category = :id_category, title = :title, slug = :slug,
         content = :content,
         owner = :owner, date_native = :date_native, year_native = :year_native, licence = :licence, os_supported = :os_supported, sgbdr = :sgbdr, number_of_users = :number_of_users, pdm = :pdm,  langage = :langage, features = :features,
         last_news = :last_news, version = :version, draft= :draft, date_update = NOW() WHERE id = :id';

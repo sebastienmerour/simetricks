@@ -13,20 +13,23 @@
 	<div>
 		<select id="items-list" class="form-select mt-4 mb-4 custom-select" autocomplete="off">
 				<?php
-				if (isset($_POST['catid']) && is_numeric($_POST['catid'])) {
-            $id_category = intval($_POST['catid']);
-						}
-						else {?><option>Filtrer par Catégorie</option><?php
-							foreach($categories as $category)
-						{
-							echo '<option data-url="'.BASE_ADMIN_URL.'extendedcardsadmin/'.$category['catid'].'/1" value = "'.$category['catid'].'">'.$category['catname'].'</option>';
-						} 	}				?>
+        if (isset($_GET['catid']) && is_numeric($_GET['catid'])) {
+            $id_category = intval($_GET['catid']);
+            echo '<option data-url="'.BASE_ADMIN_URL.'extendedcardsadmin/'.$category['catid'].'/1" value = "'.$category['catid'].'">'.$category['name'].'</option>
+            <option data-url="'.BASE_ADMIN_URL.'extendedcardsadmin/">Supprimer le Filtre</option>';
+}
+						else {?><option>Supprimer le filtre</option><?php
+	}				?>
 			</select>
 	</div>
 
 	<img width="30px" src="<?php echo BASE_URL; ?>public/images/icons/loading.gif" id="loader">
 	<div id="items-data"></div>
-
+	<?php
+	if ($number_of_items == 0 AND $id_category > 0) {
+		echo "<h3>Aucune Extended Card dans cette Catégorie</h3>";
+	}
+	else{?>
 	<div id="items-default" class="table-responsive">
 		<table class="table table-striped table-sm">
 					<thead>
@@ -43,7 +46,6 @@
 					<tbody>
 
 	      <?php
-
 	      while ($item = $items->fetch()) {
 					?>
 	      	<tr>
@@ -66,11 +68,9 @@
 	  </table>
 
 	  <?php
-	  if ($items_current_page > $number_of_items_pages) {
-	  	require __DIR__ . '/../errors/items_not_found.php';
-	  }
-	  else {
-	  require('extendedcards_pagination.php');}
+
+	  require('filtercategory_pagination.php');
+	};
 	  ?>
 	</div>
 	</div>

@@ -70,6 +70,17 @@ abstract class Controller
         $view->generateadmin($datasView);
     }
 
+    protected function generateajaxView($datasView = array())
+    {
+        // Détermination du nom du fichier vue à partir du nom du contrôleur actuel
+        $classController = get_class($this);
+        $controller      = str_replace("Controller", "", $classController);
+        // Instanciation et génération de la vue
+        $view            = new View($this->action, $controller);
+        $view->generateajax($datasView);
+    }
+
+
     /**
      * Effectue une redirection vers un contrôleur et une action spécifiques
      *

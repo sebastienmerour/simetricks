@@ -45,7 +45,18 @@ class Category extends Model
      ON extended_cards.id_category = categories.id
      GROUP BY categories.id
      HAVING categories.bin != "yes"
-     ORDER BY categories.id ASC LIMIT 0, 100';
+     ORDER BY categories.name ASC LIMIT 0, 100';
+        $categories = $this->dbConnect($sql);
+        return $categories;
+    }
+
+    public function getCategoriesAdmin()
+    {
+        $sql        = 'SELECT categories.id AS catid, categories.name AS catname, categories.slug AS catslug,
+    categories.description AS catdesc, categories.bin AS catbin
+    FROM categories
+    WHERE categories.bin != "yes"
+    ORDER BY catname ASC';
         $categories = $this->dbConnect($sql);
         return $categories;
     }
@@ -53,7 +64,7 @@ class Category extends Model
     // Afficher une Catégorie en particulier :
     public function getCategory($id_category)
     {
-        $sql      = 'SELECT *
+        $sql      = 'SELECT id AS catid, name, slug, description, bin
         FROM categories
         WHERE id = ? ';
         $req      = $this->dbConnect($sql, array(

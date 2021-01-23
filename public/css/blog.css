@@ -186,3 +186,34 @@ footer {
 		flex: 1;
 	}
 }
+
+/*
+ * Style pour la rubrique Extended Cards en Admin
+  */
+table{
+	border:1px solid #eeeeee;
+	border-collapse: collapse;
+	width:100%;
+}
+
+table th{
+	border:1px solid #eeeeee;
+	text-align:center;
+	height:40px;
+}
+table td{
+	border:1px solid #eeeeee;
+	padding:5px;
+
+}
+#loader{
+	display:none;
+	margin-top:10px;
+}
+#items-data{
+	margin-top:10px;
+}
+#items-list{
+	height:30px;
+	width:250px;
+}

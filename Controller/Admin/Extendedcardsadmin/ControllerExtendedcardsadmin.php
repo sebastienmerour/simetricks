@@ -88,7 +88,7 @@ class ControllerExtendedcardsadmin extends Controller
             $itemimagename         = "{$time}$slug.{$extension_upload}";
             $destination           = ROOT_PATH . 'public/images/extendedcard_images';
 
-            if(isset($_POST['draft'])){
+            if (isset($_POST['draft'])) {
                 $draft = "no";
             }
 
@@ -139,6 +139,7 @@ class ControllerExtendedcardsadmin extends Controller
 
     // READ
 
+
     // Affichage de la page Extended Cards en Admnin :
     public function index()
     {
@@ -148,19 +149,19 @@ class ControllerExtendedcardsadmin extends Controller
         } else {
             $items_current_page = 1;
         }
-        if(isset($_REQUEST['catid'])){
-        $cat_selected           = $_REQUEST;
-        $items                  = $this->item->getItemsByCatAdmin($items_current_page, $cat_selected);
+        if (isset($_POST['catid']) && is_numeric($_POST['catid'])) {
+            $id_category = intval($_POST['catid']);
+        } else {
+            $id_category = 0;
         }
-        else {
-          $items                = $this->item->getItemsAdmin($items_current_page);
-        }
-        $categories            = $this->category->getCategories();
+        $items  = $this->item->getItemsForAdmin($items_current_page);
+        $categories            = $this->category->getCategoriesAdmin();
         $page_previous_items   = $items_current_page - 1;
         $page_next_items       = $items_current_page + 1;
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtAdmin();
         $this->generateadminView(array(
             'items' => $items,
+            'id_category' => $id_category,
             'categories' => $categories,
             'number_of_items' => $number_of_items,
             'items_current_page' => $items_current_page,
@@ -169,6 +170,40 @@ class ControllerExtendedcardsadmin extends Controller
             'number_of_items_pages' => $number_of_items_pages
         ));
     }
+
+
+    // Affichage de la page Extended Cards en Admnin - Partie en Ajax :
+    public function filtercategory()
+    {
+        if (isset($_GET['catid']) && is_numeric($_GET['catid'])) {
+            $id_category = intval($_GET['catid']);
+        } else {
+            $id_category = 0;
+        }
+        $number_of_items = $this->calculate->getTotalOfItemsFromCatFront($id_category);
+        if (null != $this->request->ifParameter("id")) {
+            $items_current_page = $this->request->getParameter("id");
+        } else {
+            $items_current_page = 1;
+        }
+        $categories            = $this->category->getCategoriesAdmin();
+        $category              = $this->category->getCategory($id_category);
+        $items                 = $this->item->getItemsForCategory($id_category, $items_current_page);
+        $page_previous_items   = $items_current_page - 1;
+        $page_next_items       = $items_current_page + 1;
+        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtAdminSelected($id_category);
+        $this->generateadminView(array(
+            'category' => $category,
+            'categories' => $categories,
+            'items' => $items,
+            'number_of_items' => $number_of_items,
+            'items_current_page' => $items_current_page,
+            'page_previous_items' => $page_previous_items,
+            'page_next_items' => $page_next_items,
+            'number_of_items_pages' => $number_of_items_pages
+        ));
+    }
+
 
     // Affichage d'une seule Extended Card :
     public function extendedcardread()
@@ -229,12 +264,12 @@ class ControllerExtendedcardsadmin extends Controller
             $itemimagename         = "{$time}$slug.{$extension_upload}";
             $destination           = ROOT_PATH . 'public/images/extendedcard_images';
 
-            if(isset($_POST['draft'])){
+            if (isset($_POST['draft'])) {
                 $draft = "no";
             }
 
             if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $messages    = array();
+                $messages = array();
                 $this->item->changeItem($id_category, $title, $slug, $content, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft, $id_item);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
@@ -322,17 +357,18 @@ class ControllerExtendedcardsadmin extends Controller
         $this->item->restoreItem($id_item);
     }
 
-    public function slugify($title, $delimiter) {
-    	$oldLocale = setlocale(LC_ALL, '0');
-    	setlocale(LC_ALL, 'en_US.UTF-8');
-    	$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
-      $clean = str_replace('\'', ' ', $clean);
-    	$clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
-    	$clean = strtolower($clean);
-    	$clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
-    	$clean = trim($clean, $delimiter);
-    	setlocale(LC_ALL, $oldLocale);
-    	return $clean;
+    public function slugify($title, $delimiter)
+    {
+        $oldLocale = setlocale(LC_ALL, '0');
+        setlocale(LC_ALL, 'en_US.UTF-8');
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
+        $clean = str_replace('\'', ' ', $clean);
+        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
+        $clean = strtolower($clean);
+        $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
+        $clean = trim($clean, $delimiter);
+        setlocale(LC_ALL, $oldLocale);
+        return $clean;
     }
 
 

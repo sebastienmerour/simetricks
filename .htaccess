@@ -35,6 +35,10 @@ RewriteRule ^admintricks?/?([a-zA-Z]*)?/?([a-zA-Z]*)?/?$ index.php?controller=$1
 # Réécrit une URL de l'interface d'admin de type admintricks/xxx/yyy en index.php?controller=xxx&action=yyy
 RewriteRule ^admintricks?/?([a-zA-Z]*)?/?$ index.php?controller=$1 [NC,L]
 
+# Réécrit une URL pour la Pagination des Items sélectionnés par Ajax
+RewriteRule ^admintricks?/?extendedcardsadmin?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?controller=extendedcardsadmin&action=filtercategory&catid=$1&id=$2 [NC,L]
+
+
 #--------------------------------------------------
 # Règles de réécriture d'URL pour le Front :
 #--------------------------------------------------

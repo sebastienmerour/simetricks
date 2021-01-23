@@ -96,6 +96,27 @@ class View
         echo $view;
     }
 
+    public function generateajax($datas)
+    {
+        // Génération de la partie spécifique de la vue
+        $content = $this->generateFile($this->file, $datas);
+        // On définit une variable locale accessible par la vue pour la racine Web
+        // Il s'agit du chemin vers le site sur le serveur Web
+        // Nécessaire pour les URI de type controller/action/id
+        $rootWeb = Configuration::get("rootWeb", "/");
+        // Génération du template commun utilisant la partie spécifique
+        $view    = $this->generateFile('View/themes/back/ajax.php', array(
+            'title' => $this->title,
+            'content' => $content,
+            'sidebar' => $this->sidebar,
+            'rootWeb' => $rootWeb
+        ));
+        // Renvoi de la vue générée au navigateur
+        echo $view;
+    }
+
+
+
     /**
      * Génère un fichier vue et renvoie le résultat produit
      *

@@ -152,6 +152,17 @@ class Calculate extends Model
       return $number_of_items_pages;
   }
 
+  // Obtenir le nombre de pages des Extended Cards d'une Catégorieen Admin :
+  public function getNumberOfPagesOfExtAdminSelected($id_category)
+  {
+      $number_of_items       = $this->getTotalOfItemsFromCatFront($id_category);
+      // Calculer le nombre de pages nécessaires :
+      $number_of_items_pages = ceil($number_of_items / $this->number_of_items_by_page);
+      return $number_of_items_pages;
+  }
+
+
+
   // Obtenir le nombre total des Extended Cards supprimées :
   public function getTotalOfItemsDeleted()
   {
