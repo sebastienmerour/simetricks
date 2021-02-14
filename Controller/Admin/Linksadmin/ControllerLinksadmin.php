@@ -2,8 +2,8 @@
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
 require_once 'Model/Link.php';
-require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 
 /**
  * Contrôleur gérant les Liens depuis l'administration du site
@@ -14,17 +14,17 @@ require_once 'Model/Calculate.php';
 
 class ControllerLinksadmin extends Controller
 {
-    private $user;
     private $item;
     private $link;
     private $calculate;
+    private $message;
 
     public function __construct()
     {
-        $this->user      = new User();
         $this->item      = new Item();
         $this->link      = new Link();
         $this->calculate = new Calculate();
+        $this->message   = new Message();
     }
 
 
@@ -54,6 +54,7 @@ class ControllerLinksadmin extends Controller
             }
               else {
             $this->link->insertLink($id_item, $name, $url, $description);
+            $this->message->linkCreated();
           }
         }
     }
@@ -95,6 +96,7 @@ class ControllerLinksadmin extends Controller
             $url         = $this->request->getParameter("url");
             $description = $this->request->getParameter("description");
             $this->link->changeLink($id_link, $id_item, $name, $url, $description);
+            $this->message->linkUpdated($id_link);
         }
     }
 
@@ -116,6 +118,7 @@ class ControllerLinksadmin extends Controller
     {
         $id_link = $this->request->getParameter("id");
         $this->link->moveLink($id_link);
+        $this->message->linkMovedToBin();
     }
 
     // Suppression définitive d'un Lien :
@@ -123,18 +126,14 @@ class ControllerLinksadmin extends Controller
     {
         $id_link = $this->request->getParameter("id");
         $this->link->eraseLink($id_link);
-        if ($id_link === false) {
-            throw new Exception('Impossible de supprimer le lien!');
-        } else {
-            $messages['confirmation'] = 'Le Lien a bien été supprimé !';
-            $this->generateadminView();
-        }
+        $this->message->linkErased();
     }
 
     // Vider la Corbeille Liens :
     public function emptylinks()
     {
         $this->link->emptybin();
+        $this->message->linkEmptyBin();
     }
 
     // Restaurer un lien depuis la Corbeille :
@@ -142,6 +141,7 @@ class ControllerLinksadmin extends Controller
     {
         $id_link = $this->request->getParameter("id");
         $this->link->restoreLink($id_link);
+        $this->message->linkRestored();
     }
 
 

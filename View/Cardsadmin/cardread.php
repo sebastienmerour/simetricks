@@ -6,11 +6,7 @@
 ?>
 <?php $this->title =  WEBSITE_NAME . ' |  Modification d\'une Card'; ?>
 <?php require('cards_menu.php'); ?>
-<?php if (empty($card)) {
-							require __DIR__ . '/../errors/card_not_found.php';
-			    }
-					else {
-					require __DIR__ . '/../errors/errors.php'; ?>
+<?php	require __DIR__ . '/../errors/errors.php'; ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="card my-4">
 	<h5 class="card-header">Modification de la Card <strong><?= $this->clean($card['title']);?></strong></h5>
@@ -94,6 +90,5 @@
 	</div>
 </div>
 <?php
-};
 };
 ?>

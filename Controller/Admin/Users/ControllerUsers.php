@@ -2,6 +2,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 
 /**
  * Contrôleur gérant les Utilisateurs depuis l'administration du site
@@ -14,11 +15,13 @@ class ControllerUsers extends Controller
 {
     private $user;
     private $calculate;
+    private $message;
 
     public function __construct()
     {
         $this->user      = new User();
         $this->calculate = new Calculate();
+        $this->message   = new Message();
     }
 
 
@@ -100,6 +103,7 @@ class ControllerUsers extends Controller
             if (!file_exists($_FILES["avatar"]["tmp_name"])) {
                 $this->user->changeUserFromAdmin($id_user, $status, $firstname, $name, $email, $city, $linkedin, $github,
                 $twitter, $website, $date_birth);
+                $this->message->userAccountUpdated($id_user);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -125,6 +129,7 @@ class ControllerUsers extends Controller
                 move_uploaded_file($_FILES['avatar']['tmp_name'], $destination . "/" . $avatarname);
                 $this->user->changeUserImageFromAdmin($id_user, $status, $firstname, $name, $avatarname, $email, $city, $linkedin, $github,
                 $twitter, $website, $date_birth);
+                $this->message->userAccountUpdated($id_user);
             }
         } else {
             $errors['errors'] = 'Merci de renseigner les champs <strong>Prénom et Nom</strong> !';
@@ -169,12 +174,14 @@ class ControllerUsers extends Controller
     {
         $id_user = $this->request->getParameter("id");
         $this->user->moveUser($id_user);
+        $this->message->userMovedToBin();
     }
 
     // Vider la Corbeille Utilisateurs
     public function emptyusers()
     {
         $this->user->emptyusersbin();
+        $this->message->userEmptyBin();
     }
 
     // Suppression d'un user définitivement :
@@ -182,6 +189,7 @@ class ControllerUsers extends Controller
     {
         $id_user = $this->request->getParameter("id");
         $this->user->eraseUser($id_user);
+        $this->message->userErased();
     }
 
     // Restaurer un user depuis la Corbeille :
@@ -189,6 +197,7 @@ class ControllerUsers extends Controller
     {
         $id_user = $this->request->getParameter("id");
         $this->user->restoreUser($id_user);
+        $this->message->userRestored();
     }
 
 

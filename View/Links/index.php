@@ -37,11 +37,4 @@
        require( __DIR__ . '/../themes/front/template_module_stats.php');?>
 </div>
 </div>
-    <?php
-    if ($links_current_page > $number_of_links_pages) {
-      require __DIR__ . '/../errors/cards_not_found.php';
-    }
-    else {
-    require __DIR__ . '/../Links/index_pagination.php';
-    }
-    ?>
+<?php   require __DIR__ . '/../Links/index_pagination.php'; ?>

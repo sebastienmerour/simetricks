@@ -33,12 +33,6 @@ class Card extends Model
             ':content' => $content
         ));
 
-        $messages['confirmation'] = 'Votre card a bien été ajoutée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'cardsadmin');
-            exit;
-        }
     }
 
     // Création d'une nouvelle Card avec photo :
@@ -61,19 +55,13 @@ class Card extends Model
             ':content' => $content
         ));
 
-        $messages['confirmation'] = 'Votre card a bien été ajoutée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'cardsadmin');
-            exit;
-        }
     }
 
 
     // READ
 
     // Afficher la liste des Cards :
-    public function getCards($cards_current_page)
+    public function getCards($cards_current_page,$number_of_cards_pages)
     {
         $cards_start = (int) (($cards_current_page - 1) * $this->number_of_cards_by_page);
         $sql  = 'SELECT cards.id AS id, cards.id_category AS category, cards.id_style AS style, cards.title, cards.slug AS slug,
@@ -89,9 +77,10 @@ class Card extends Model
         ON cards.id_style = styles.id
         WHERE cards.bin != "yes"
         ORDER BY cards.date_creation DESC LIMIT ' . $cards_start . ', ' . $this->number_of_cards_by_page . '';
-        $cards       = $this->dbConnect($sql);
-        return $cards;
-    }
+        if ($cards_current_page > $number_of_cards_pages)
+          throw new Exception("Aucune Card trouvée.");
+          else return $cards       = $this->dbConnect($sql);
+        }
 
     // Afficher la liste des Cards ur la Sitemap :
     public function getAllCards()
@@ -137,9 +126,12 @@ class Card extends Model
         $req  = $this->dbConnect($sql, array(
             $id_card
         ));
-        $card = $req->fetch();
-        return $card;
+        if ($req->rowCount() == 1)
+                   return $card = $req->fetch();
+               else
+                 throw new Exception("Cette Card n'existe pas.");
     }
+
 
     // Afficher la liste des Cards Supprimées :
     public function getCardsDeleted($cards_deleted_current_page)
@@ -178,12 +170,6 @@ class Card extends Model
             ':definition' => $definition,
             ':content' => $content
         ));
-        $messages['confirmation'] = 'Votre Card a bien été modifiée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);
-            exit;
-        }
     }
 
     // Modification d'une Card sans photo :
@@ -201,29 +187,6 @@ class Card extends Model
             ':definition' => $definition,
             ':content' => $content
         ));
-        $messages['confirmation'] = 'Merci ! Votre Card a bien été modifiée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);
-            exit;
-        }
-    }
-
-    // Restaurer une Card depuis la Corbeille
-    public function restoreCard($id_card)
-    {
-        $bin                      = "no";
-        $sql                      = 'UPDATE cards SET bin = :bin, date_update = NOW() WHERE id = :id';
-        $restore                  = $this->dbConnect($sql, array(
-            ':id' => $id_card,
-            ':bin' => $bin
-        ));
-        $messages['confirmation'] = 'Merci ! La Card a bien été restaurée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardsbin');
-            exit;
-        }
     }
 
     // DELETE
@@ -237,12 +200,6 @@ class Card extends Model
             ':id' => $id_card,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! La Card Card a été déplacée dans la corbeille !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'cardsadmin');
-            exit;
-        }
     }
 
     // Suppression définitive d'une Card avec ses commentaires associés.
@@ -253,14 +210,6 @@ class Card extends Model
         WHERE id = ' . (int) $id_card;
         $req = $this->dbConnect($sql);
         $req->execute();
-
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! Votre Card a bien été supprimée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'cardsadmin/cardsbin');
-            exit;
-        }
     }
 
     // Vidage de la Corbeille des Cards avec ses commentaires associés.
@@ -274,13 +223,17 @@ class Card extends Model
             ':bin' => $bin
         ));
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'cardsadmin/cardsbin');
-            exit;
-        }
+    }
+
+    // Restaurer une Card depuis la Corbeille
+    public function restoreCard($id_card)
+    {
+        $bin                      = "no";
+        $sql                      = 'UPDATE cards SET bin = :bin, date_update = NOW() WHERE id = :id';
+        $restore                  = $this->dbConnect($sql, array(
+            ':id' => $id_card,
+            ':bin' => $bin
+        ));
     }
 
 }

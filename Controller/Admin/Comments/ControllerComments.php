@@ -1,9 +1,8 @@
 <?php
 require_once 'Framework/Controller.php';
-require_once 'Model/Item.php';
 require_once 'Model/Comment.php';
-require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 
 /**
  * Contrôleur gérant l'administration des commentaires
@@ -14,17 +13,15 @@ require_once 'Model/Calculate.php';
 
 class ControllerComments extends Controller
 {
-    private $user;
-    private $item;
     private $comment;
     private $calculate;
+    private $message;
 
     public function __construct()
     {
-        $this->user      = new User();
-        $this->item      = new Item();
         $this->comment   = new Comment();
         $this->calculate = new Calculate();
+        $this->message = new Message();
     }
 
 
@@ -78,7 +75,12 @@ class ControllerComments extends Controller
         $comment    = $this->comment->getComment($id_comment);
         $content    = !empty($_POST['content']) ? trim($_POST['content']) : null;
         $this->comment->changeCommentAdmin($content);
+        $this->message->commentUpdated($id_comment);
     }
+
+
+
+
 
 
     // DELETE
@@ -113,6 +115,7 @@ class ControllerComments extends Controller
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->moveComment($id_comment);
+        $this->message->commentMovedToBin();
     }
 
     // Restaurer un commentaire depuis la Corbeille :
@@ -120,12 +123,14 @@ class ControllerComments extends Controller
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->restoreComment($id_comment);
+        $this->message->commentRestored();
     }
 
     // Vider la Corbeille Commentaires
     public function emptycomments()
     {
         $this->comment->emptycommentsbin();
+        $this->message->commentEmptyBin();
     }
 
     // Suppression d'un commentaire définitivement :
@@ -133,12 +138,7 @@ class ControllerComments extends Controller
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->eraseComment($id_comment);
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé définitivement!';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'comments');
-            exit;
-        }
+        $this->message->commentErased();
     }
 
 

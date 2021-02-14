@@ -65,13 +65,7 @@
 	    </tbody>
 	  </table>
 
-	  <?php
-	  if ($items_current_page > $number_of_items_pages) {
-	  	require __DIR__ . '/../errors/items_not_found.php';
-	  }
-	  else {
-	  require('extendedcards_pagination.php');}
-	  ?>
+	  <?php require('extendedcards_pagination.php'); ?>
 	</div>
 	</div>
 

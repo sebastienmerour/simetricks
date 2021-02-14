@@ -1,6 +1,8 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Style.php';
+require_once 'Model/Message.php';
+require_once 'Model/Calculate.php';
 
 /**
  * Contrôleur gérant les Styles depuis l'administration du site
@@ -12,10 +14,14 @@ require_once 'Model/Style.php';
 class ControllerStyles extends Controller
 {
     private $style;
+    private $message;
+    private $calculate;
 
     public function __construct()
     {
         $this->style     = new Style();
+        $this->message     = new Message();
+        $this->calculate     = new Calculate();
     }
 
 
@@ -45,6 +51,7 @@ class ControllerStyles extends Controller
             }
             else {
             $this->style->insertStyle($name, $description, $hexadecimal);
+            $this->message->styleCreated();
           }
         }
     }
@@ -83,6 +90,7 @@ class ControllerStyles extends Controller
             $description  = $this->request->getParameter("description");
             $hexadecimal  = $this->request->getParameter("hexadecimal");
             $this->style->changeStyle($id_style, $name, $description, $hexadecimal);
+            $this->message->styleUpdated($id_style);
         }
     }
 
@@ -91,6 +99,7 @@ class ControllerStyles extends Controller
     {
         $id_style = $this->request->getParameter("id");
         $this->category->restoreStyle($id_style);
+        $this->message->styleRestored();
     }
 
 
@@ -100,8 +109,10 @@ class ControllerStyles extends Controller
     public function stylesbin()
     {
         $styles_deleted          = $this->style->getStylesDeleted();
+        $number_of_styles_deleted =  $this->calculate->getTotalOfStylesDeleted();
         $this->generateadminView(array(
-            'styles_deleted' => $styles_deleted
+            'styles_deleted' => $styles_deleted,
+            'number_of_styles_deleted'=> $number_of_styles_deleted
         ));
     }
 
@@ -110,6 +121,7 @@ class ControllerStyles extends Controller
     {
         $id_style = $this->request->getParameter("id");
         $this->style->moveStyle($id_style);
+        $this->message->styleMovedToBin();
     }
 
     // Suppression définitive d'un Style :
@@ -117,18 +129,14 @@ class ControllerStyles extends Controller
     {
         $id_style = $this->request->getParameter("id");
         $this->style->eraseCategory($id_style);
-        if ($id_style === false) {
-            throw new Exception('Impossible de supprimer le style !');
-        } else {
-            $messages['confirmation'] = 'Le Style a bien été supprimé !';
-            $this->generateadminView();
-        }
+        $this->message->styleErased();
     }
 
     // Vider la Corbeille Styles :
-    public function emptycategories()
+    public function emptystyles()
     {
         $this->style->emptybin();
+        $this->message->styleEmptyBin();
     }
 
 }

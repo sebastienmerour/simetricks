@@ -1,8 +1,8 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Category.php';
-require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 
 /**
  * Contrôleur gérant les Catégories depuis l'administration du site
@@ -13,15 +13,15 @@ require_once 'Model/Calculate.php';
 
 class ControllerCategories extends Controller
 {
-    private $user;
     private $category;
     private $calculate;
+    private $message;
 
     public function __construct()
     {
-        $this->user      = new User();
         $this->category  = new Category();
         $this->calculate = new Calculate();
+        $this->message = new Message();
     }
 
 
@@ -52,6 +52,7 @@ class ControllerCategories extends Controller
             }
             else {
             $this->category->insertCategory($name, $slugcategory, $description);
+            $this->message->categoryCreated();
           }
         }
     }
@@ -72,7 +73,6 @@ class ControllerCategories extends Controller
     // Affichage d'une catégorie seule :
     public function categoryread()
     {
-
         $id_category = $this->request->getParameter("id");
         $category    = $this->category->getCategory($id_category);
         $this->generateadminView(array(
@@ -92,6 +92,7 @@ class ControllerCategories extends Controller
             $slugcategory = $this->request->getParameter("slugcategory");
             $description  = $this->request->getParameter("description");
             $this->category->changeCategory($id_category, $name, $slugcategory, $description);
+            $this->message->categoryUpdated($id_category);
         }
     }
 
@@ -100,6 +101,7 @@ class ControllerCategories extends Controller
     {
         $id_category = $this->request->getParameter("id");
         $this->category->restoreCategory($id_category);
+        $this->message->categoryRestored();
     }
 
 
@@ -121,6 +123,7 @@ class ControllerCategories extends Controller
     {
         $id_category = $this->request->getParameter("id");
         $this->category->moveCategory($id_category);
+        $this->message->categoryMoveTobBin();
     }
 
     // Suppression définitive d'une Catégorie :
@@ -128,18 +131,15 @@ class ControllerCategories extends Controller
     {
         $id_category = $this->request->getParameter("id");
         $this->category->eraseCategory($id_category);
-        if ($id_category === false) {
-            throw new Exception('Impossible de supprimer la catégorie !');
-        } else {
-            $messages['confirmation'] = 'La Catégorie a bien été supprimée !';
-            $this->generateadminView();
-        }
+        $this->message->categoryErased();
     }
 
     // Vider la Corbeille Catégorie :
     public function emptycategories()
     {
         $this->category->emptybin();
+        $this->message->categoryEmptyBin();
+
     }
 
     public function slugify($name, $delimiter) {

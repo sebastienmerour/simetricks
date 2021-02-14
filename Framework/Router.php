@@ -24,7 +24,13 @@ class Router
             $controller->executeAction($action);
         }
         catch (Exception $e) {
-            $this->manageError($e);
+            $q = explode("/", $_SERVER['REQUEST_URI']);
+            if ($q[1] != "admintricks") {
+              $this->manageError($e);
+            }
+            else {
+              $this->manageAdminError($e);
+            }
         }
     }
 
@@ -104,7 +110,7 @@ class Router
         return $action;
     }
 
-    // Gère une erreur d'exécution (exception)
+    // Gère une erreur d'exécution (exception)- en Front :
     private function manageError(Exception $exception)
     {
         $view = new View('error');
@@ -112,4 +118,16 @@ class Router
             'generalerror' => $exception->getMessage()
         ));
     }
+
+    // Gère une erreur d'exécution (exception)- en Admin :
+    private function manageAdminError(Exception $exception)
+    {
+        $view = new View('error');
+        $view->generateAdminError(array(
+            'generalerror' => $exception->getMessage()
+        ));
+    }
+
+
+
 }

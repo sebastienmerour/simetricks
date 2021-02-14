@@ -30,10 +30,10 @@ class ControllerLinks extends Controller
         } else {
             $links_current_page = 1;
         }
-        $links                 = $this->link->getLinksList($links_current_page);
+        $number_of_links_pages = $this->calculate->getNumberOfPagesOfLinks();
+        $links                 = $this->link->getLinksList($links_current_page, $number_of_links_pages);
         $previous_page         = $links_current_page - 1;
         $next_page             = $links_current_page + 1;
-        $number_of_links_pages = $this->calculate->getNumberOfPagesOfLinks();
         $number_of_items       = $this->calculate->getTotalOfItemsHome();
         $number_of_cards       = $this->calculate->getTotalOfCards();
         $number_of_links      = $this->calculate->getTotalOfLinks();

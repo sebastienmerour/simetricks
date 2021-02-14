@@ -8,6 +8,7 @@ require_once 'Framework/Model.php';
  * @author Sébastien Merour
  */
 
+
 class Comment extends Model
 {
     public $number_of_comments, $comments_current_page, $number_of_comments_by_page = 5, $number_of_comments_reported_by_page = 3;
@@ -23,13 +24,6 @@ class Comment extends Model
             $author,
             $content
         ));
-
-        $messages['confirmation'] = 'Votre commentaire a bien été ajouté !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_URL. 'extendedcard/' . $id_item . '/1/#comments');
-            exit;
-        }
     }
 
     // Création d'un commentaire d'un utilisateur connecté :
@@ -44,12 +38,6 @@ class Comment extends Model
             $author,
             $content
         ));
-        $messages['confirmation'] = 'Votre commentaire a bien été ajouté !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_URL. 'extendedcard/indexuser/' . $id_item . '/1/#comments');
-            exit;
-        }
     }
 
     // READ
@@ -110,9 +98,12 @@ class Comment extends Model
         $req     = $this->dbConnect($sql, array(
             $id_comment
         ));
-        $comment = $req->fetch();
-        return $comment;
-    }
+        if ($req->rowCount() == 1)
+           return $comment = $req->fetch();
+       else
+         throw new Exception("Ce commentaire n'existe pas.");
+}
+
 
     // READ
     // ADMIN
@@ -134,8 +125,8 @@ class Comment extends Model
     WHERE comments.bin = "no"
     AND comments.report = "no"
     ORDER BY date_creation_fr DESC LIMIT ' . $comments_start . ', ' . $this->number_of_comments_by_page . '';
-        $comments       = $this->dbConnect($sql);
-        return $comments;
+    $comments       = $this->dbConnect($sql);
+    return $comments;
     }
 
     // Afficher la liste complète des commentaires signalés en Admin :
@@ -226,17 +217,7 @@ class Comment extends Model
             ':id' => $comment,
             ':content' => $content
         ));
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été modifié !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_URL. 'extendedcard/commentread/' . $item . '/' . $comment);
-            exit;
-        }
     }
-
-
-    // UPDATE
-    // FRONT
 
     // Signaler des commentaires :
     public function reportBadComment($id_comment)
@@ -251,17 +232,6 @@ class Comment extends Model
             ':id' => $comment,
             ':report' => "yes"
         ));
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été signalé !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            if (ISSET($_SESSION['id_user'])) {
-                header('Location: '. BASE_URL. 'extendedcard/indexuser/' . $item . '/1/#comments');
-                exit;
-            } else {
-                header('Location: '. BASE_URL. 'extendedcard/' . $item . '/1/#comments');
-                exit;
-            }
-        }
     }
 
 
@@ -277,12 +247,6 @@ class Comment extends Model
             ':id' => $comment,
             ':content' => $content
         ));
-        $messages['confirmation'] = 'Merci ! Votre commentaire a bien été modifié !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'comments/commentread/' . $comment);
-            exit;
-        }
     }
 
     // Modification d'un commentaire signalé depuis l'Admin
@@ -295,30 +259,18 @@ class Comment extends Model
             ':id' => $comment,
             ':content' => $content
         ));
-        $messages['confirmation'] = 'Merci ! Votre commentaire a bien été modifié !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'commentsreported/commentreportedread/' . $comment);
-            exit;
-        }
     }
 
-    // Modification d'un commentaire signalé depuis l'Admin
+    // Approbation d'un commentaire signalé depuis l'Admin
     public function approveComment($id_comment)
     {
-        // $comment                  = $_GET['id'];
+        //$comment                  = $_GET['id'];
         $report                   = "no";
         $sql                      = 'UPDATE comments SET report = :report, date_update = NOW() WHERE id = :id';
         $this->dbConnect($sql, array(
             ':id' => $id_comment,
             ':report' => $report
         ));
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été approuvé !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'commentsreported/commentreportedread/'.$id_comment);
-            exit;
-        }
     }
 
     // Restaurer un commentaire depuis la Corbeille
@@ -330,12 +282,6 @@ class Comment extends Model
             ':id' => $id_comment,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été restauré !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'comments/commentsbin');
-            exit;
-        }
     }
 
     // Restaurer un commentaire signalé depuis la Corbeille
@@ -347,12 +293,6 @@ class Comment extends Model
             ':id' => $id_comment,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été restauré !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'commentsreported/commentsreportedbin');
-            exit;
-        }
     }
 
     // DELETE
@@ -366,12 +306,6 @@ class Comment extends Model
             ':id' => $id_comment,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! Le Commentaire a été déplacé dans la corbeille !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'comments');
-            exit;
-        }
     }
 
     // Déplacement d'un commentaire signalé vers la Corbeille
@@ -383,12 +317,6 @@ class Comment extends Model
             ':id' => $id_comment,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! Le Commentaire a été déplacé dans la corbeille !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: '. BASE_ADMIN_URL. 'commentsreported');
-            exit;
-        }
     }
 
     // Suppression définitive d'un commentaire :
@@ -397,14 +325,6 @@ class Comment extends Model
         $sql = 'DELETE FROM comments WHERE id = ' . (int) $id_comment;
         $req = $this->dbConnect($sql);
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! Le commentaire a été supprimé !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'comments/commentsbin');
-            exit;
-        }
-
     }
 
     // Suppression définitive d'un commentaire :
@@ -413,14 +333,6 @@ class Comment extends Model
         $sql = 'DELETE FROM comments WHERE id = ' . (int) $id_comment;
         $req = $this->dbConnect($sql);
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! Le commentaire a été supprimé !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'commentsreported/commentsreportedbin');
-            exit;
-        }
-
     }
 
     // Vidage de la Corbeille Commentaires:
@@ -432,13 +344,6 @@ class Comment extends Model
             ':report' => "no"
         ));
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'comments/commentsbin');
-            exit;
-        }
     }
 
     // Vidage de la Corbeille Commentaires Signalés:
@@ -450,13 +355,6 @@ class Comment extends Model
             ':report' => 'yes'
         ));
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL. 'commentsreported/commentsreportedbin');
-            exit;
-        }
     }
 
 }

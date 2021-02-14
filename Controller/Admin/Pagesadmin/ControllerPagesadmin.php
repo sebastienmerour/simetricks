@@ -2,9 +2,9 @@
 require_once 'Framework/Controller.php';
 require_once 'Model/Page.php';
 require_once 'Model/Category.php';
-require_once 'Model/Link.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 
 /**
  * Contrôleur gérant les Items de type Pages
@@ -18,16 +18,16 @@ require_once 'Model/Calculate.php';
      private $user;
      private $page;
      private $category;
-     private $link;
      private $calculate;
+     private $message;
 
      public function __construct()
      {
          $this->user      = new User();
          $this->page      = new Page();
          $this->category  = new Category();
-         $this->link      = new Link();
          $this->calculate = new Calculate();
+         $this->message = new Message();
      }
 
      // CREATE
@@ -35,10 +35,7 @@ require_once 'Model/Calculate.php';
      // Affichage du formulaire de création d'une Page :
      public function pageaddpage()
      {
-         $categories_current_page = 1;
-         $categories              = $this->category->getCategories($categories_current_page);
          $this->generateadminView(array(
-             'categories' => $categories
          ));
      }
 
@@ -69,7 +66,7 @@ require_once 'Model/Calculate.php';
              }
              else {
                  $this->page->insertPage($id_user, $title, $slug, $content, $draft);
-
+                 $this->message->pageCreated();
              }
          }
      }
@@ -123,6 +120,7 @@ require_once 'Model/Calculate.php';
            $delimiter             = '-';
            $slug                  = $this->slugify($title, $delimiter);
            $this->page->changePage($title, $slug, $content, $draft, $id_page);
+           $this->message->pageUpdated();
           }
           else {
              $id_page               = $this->request->getParameter("id");
@@ -133,6 +131,7 @@ require_once 'Model/Calculate.php';
              $delimiter             = '-';
              $slug                  = $this->slugify($title, $delimiter);
              $this->page->changePage($title, $slug, $content, $draft, $id_page);
+             $this->message->pageUpdated();
          }
      }
 
@@ -167,6 +166,7 @@ require_once 'Model/Calculate.php';
      {
          $id_page = $this->request->getParameter("id");
          $this->page->movePage($id_page);
+         $this->message->pageMovedToBin();
      }
 
      // Suppression définitive d'une Page :
@@ -174,18 +174,14 @@ require_once 'Model/Calculate.php';
      {
          $id_page = $this->request->getParameter("id");
          $this->page->erasePage($id_page);
-         if ($id_page === false) {
-             throw new Exception('Impossible de supprimer la Page !');
-         } else {
-             $messages['confirmation'] = 'La Page a bien été supprimée !';
-             $this->generateadminView();
-         }
+         $this->message->pageErased();
        }
 
        // Vider la Corbeille Pages :
        public function emptypages()
        {
            $this->page->emptybin();
+           $this->message->pageEmptyBin();
        }
 
        // Restaurer une page depuis la Corbeille :
@@ -193,6 +189,7 @@ require_once 'Model/Calculate.php';
        {
            $id_page = $this->request->getParameter("id");
            $this->page->restorePage($id_page);
+           $this->message->pageRestored();
        }
 
        public function slugify($title, $delimiter) {

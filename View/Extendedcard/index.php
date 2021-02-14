@@ -3,14 +3,13 @@
   <div class="row mb-4"><!-- Colonne de Gauche  -->
     <div class="col-md-8 col-lg-8">
       <div class="pr-lg-4">
-        <?php if (empty($item)) { require __DIR__ . '/../errors/item_not_found.php';}
-        else {?>
+
           <?php require('breadcrumb.php'); ?>
           <?php require('item.php'); ?>
           <?php require('comments.php'); ?>
           <?php require('comments_pagination.php');?>
           <?php require('comment_add.php');?>
-        <?php };?>
+
       </div>
     </div>
   </div>

@@ -59,12 +59,6 @@ class Item extends Model
             }
         }
 
-        $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcardsadmin');
-            exit;
-        }
     }
 
     // Création d'une nouvelle Extended Card avec photo :
@@ -98,12 +92,6 @@ class Item extends Model
             ':draft' => $draft
         ));
 
-        $messages['confirmation'] = 'Votre extended card a bien été ajoutée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcardsadmin');
-            exit;
-        }
     }
 
 
@@ -126,7 +114,10 @@ class Item extends Model
      WHERE extended_cards.bin != "yes" AND extended_cards.draft = "no"
      ORDER BY date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
         $items       = $this->dbConnect($sql);
-        return $items;
+        if ($items->rowCount() > 0)
+                   return $items;
+               else
+                 throw new Exception("Aucun article trouvé.");
     }
 
     // Afficher la liste des Extended Cards en Admin :
@@ -148,7 +139,10 @@ class Item extends Model
   WHERE extended_cards.bin != "yes"
   ORDER BY extended_cards.date_creation DESC LIMIT ' . $items_start . ', ' . $this->number_of_items_by_page . '';
         $items       = $this->dbConnect($sql);
-        return $items;
+        if ($items->rowCount() > 0)
+                   return $items;
+               else
+                 throw new Exception("Aucune Extended Card sur le site.");
     }
 
     public function getItemsForCategory($id_category, $items_current_page)
@@ -226,7 +220,10 @@ class Item extends Model
         $items       = $this->dbConnect($sql, array(
             ':cat' => $cat
         ));
-        return $items;
+        if ($items->rowCount() > 0)
+                   return $items;
+               else
+                 throw new Exception("Aucun article trouvé dans cette Catégorie.");
     }
 
     // Pagniation des Extended Cards :
@@ -244,10 +241,11 @@ class Item extends Model
         return $items;
     }
 
+
     // Afficher une Extended Card en particulier :
     public function getItem($id_item)
     {
-        $sql  = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS category, extended_cards.title AS title, extended_cards.slug AS slug, extended_cards.content AS content, extended_cards.image AS image,
+        $sql  = 'SELECT extended_cards.id AS itemid, extended_cards.id_category AS catid, extended_cards.title AS title, extended_cards.slug AS slug, extended_cards.content AS content, extended_cards.image AS image,
         DATE_FORMAT(extended_cards.date_native, \'%Y-%m-%d\') AS date_native,
         extended_cards.owner AS owner,
         extended_cards.year_native AS year_native,
@@ -276,8 +274,10 @@ class Item extends Model
         $req  = $this->dbConnect($sql, array(
             $id_item
         ));
-        $item = $req->fetch();
-        return $item;
+        if ($req->rowCount() == 1)
+                   return $id_item = $req->fetch();
+               else
+                 throw new Exception("Cet article n'existe pas.");
     }
 
     // Afficher la liste des Extended Cards Supprimées :
@@ -329,12 +329,7 @@ class Item extends Model
             ':version' => $version,
             ':draft' => $draft
         ));
-        $messages['confirmation'] = 'Votre Extended Card a bien été modifiée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardread/' . $id_item);
-            exit;
-        }
+
     }
 
     // Modification d'une Extended Card sans photo :
@@ -364,30 +359,9 @@ class Item extends Model
             ':version' => $version,
             ':draft' => $draft
         ));
-        $messages['confirmation'] = 'Merci ! Votre Extended Card a bien été modifiée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardread/' . $id_item);
-            exit;
-        }
+
     }
 
-    // Restaurer un item depuis la Corbeille
-    public function restoreItem($id_item)
-    {
-        $bin                      = "no";
-        $sql                      = 'UPDATE extended_cards SET bin = :bin, date_update = NOW() WHERE id = :id';
-        $restore                  = $this->dbConnect($sql, array(
-            ':id' => $id_item,
-            ':bin' => $bin
-        ));
-        $messages['confirmation'] = 'Merci ! L\'Extended Card a bien été restaurée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardsbin');
-            exit;
-        }
-    }
 
     // DELETE
 
@@ -400,12 +374,6 @@ class Item extends Model
             ':id' => $id_item,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! L\'Extended Card a été déplacée dans la corbeille !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin');
-            exit;
-        }
     }
 
     // Suppression définitive d'une Extended Card avec ses commentaires associés.
@@ -419,13 +387,6 @@ class Item extends Model
         $req = $this->dbConnect($sql);
         $req->execute();
 
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! Votre Extended Card a bien été supprimée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardsbin');
-            exit;
-        }
     }
 
     // Vidage de la Corbeille des Extended Cards avec ses commentaires associés.
@@ -441,13 +402,18 @@ class Item extends Model
             ':bin' => $bin
         ));
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardsbin');
-            exit;
-        }
     }
+
+    // Restaurer un item depuis la Corbeille
+    public function restoreItem($id_item)
+    {
+        $bin                      = "no";
+        $sql                      = 'UPDATE extended_cards SET bin = :bin, date_update = NOW() WHERE id = :id';
+        $restore                  = $this->dbConnect($sql, array(
+            ':id' => $id_item,
+            ':bin' => $bin
+        ));
+    }
+
 
 }

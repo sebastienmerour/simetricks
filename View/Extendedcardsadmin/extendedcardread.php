@@ -6,11 +6,7 @@
 ?>
 <?php $this->title =  WEBSITE_NAME . ' |  Modification d\'une Extended Card'; ?>
 <?php require('extendedcards_menu.php'); ?>
-<?php if (empty($item)) {
-							require __DIR__ . '/../errors/item_not_found.php';
-			    }
-					else {
-					require __DIR__ . '/../errors/errors.php'; ?>
+<?php require __DIR__ . '/../errors/errors.php'; ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="card my-4">
 	<h5 class="card-header">Modification de l'Extended Card <strong><?= $this->clean($item['title']);?></strong></h5>
@@ -30,9 +26,9 @@
 					</div>
 					<div class="row">
 						<div class="col-12">
-							<label for="category">Catégorie :</label>
-							<select class="form-control" name="category">
-								<option selected value="<?= $this->clean($item['category']); ?>" id="<?= $this->clean($item['category']); ?>"><?= $this->clean($item['categoryname']); ?></option>
+							<label for="catid">Catégorie :</label>
+							<select class="form-control" name="catid">
+								<option selected value="<?= $this->clean($item['catid']); ?>" id="<?= $this->clean($item['catid']); ?>"><?= $this->clean($item['categoryname']); ?></option>
 								<?php
 								foreach ($categories as $category):?>
 								<option value="<?= $this->clean($category['id']);?>" id="<?= $this->clean($category['id']);?>"><?= $this->clean($category['name']); ?></option>
@@ -171,6 +167,5 @@
 </div>
 
 <?php
-};
 };
 ?>

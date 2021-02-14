@@ -4,18 +4,15 @@
 	}
 	else {
 ?>
+
 <?php $this->title =  WEBSITE_NAME . ' |  Modification d\'une catégorie'; ?>
 <?php require('categories_menu.php'); ?>
-<?php if (empty($category)) {
-							require __DIR__ . '/../errors/category_not_found.php';
-			    }
-					else {
-					require __DIR__ . '/../errors/errors.php'; ?>
+<?php require __DIR__ . '/../errors/errors.php'; ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="card my-4">
 	<h5 class="card-header">Modification de la Catégorie <strong><?= $this->clean($category['name']);?></strong></h5>
     <div class="card-body">
-				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>categories/updatecategory/<?= $this->clean($category['id']);?>" method="post"
+				<form role="form" class="form needs-validation" action="<?= BASE_ADMIN_URL; ?>categories/updatecategory/<?= $this->clean($category['catid']);?>" method="post"
 	        id="categorymodification" novalidate>
 				<div class="form-group">
 						<div class="row">
@@ -41,7 +38,7 @@
 							<br>
 							<button class="btn btn-md btn-success" name="update" type="submit">Enregistrer</button>
 							<a href="#" role="button" class="btn btn-md btn-secondary" type="reset">Annuler</a>
-							<a href="<?= BASE_ADMIN_URL. 'categories/removecategory/' . $this->clean($category['id'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
+							<a href="<?= BASE_ADMIN_URL. 'categories/removecategory/' . $this->clean($category['catid'])?>" role="button" class="btn btn-md btn-danger">Supprimer définitivement</a>
 							<a href="<?= $_SERVER['HTTP_REFERER']; ?>" role="button" class="btn btn-md btn-primary" type="button">Retour</a>
 						</div>
 			</div>
@@ -50,6 +47,5 @@
 </div>
 
 <?php
-};
 };
 ?>

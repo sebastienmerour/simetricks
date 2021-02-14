@@ -1,9 +1,4 @@
 <?php $this->title =  WEBSITE_NAME . ' | Modification de commentaire'; ?>
-<?php
-if (empty($comment)) {
-							require __DIR__ . '/../errors/comment_not_found.php';
-			    } else {
- ?>
  <div class="container">
 	 <div class="row mb-4">
 		 <div class="col-md-8 col-lg-8">
@@ -46,7 +41,6 @@ if (empty($comment)) {
 	 	</div>
  	</div>
 </div>
-<?php } ;?>
 <?php require('comments.php'); ?>
 <?php require('comments_pagination.php');?>
 <?php require('comment_user_add.php');?>

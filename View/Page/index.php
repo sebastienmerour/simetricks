@@ -3,11 +3,8 @@
   <div class="row mb-4">
     <div class="col-md-8 col-lg-8">
       <div class="pr-lg-4">
-        <?php if (empty($page)) { require __DIR__ . '/../errors/page_not_found.php';}
-        else {?>
           <?php require('breadcrumb.php'); ?>
           <?php require('page.php'); ?>
-        <?php };?>
       </div>
     </div>
   </div>

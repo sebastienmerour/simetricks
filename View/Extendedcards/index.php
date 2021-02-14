@@ -52,11 +52,4 @@
        require( __DIR__ . '/../themes/front/template_module_stats.php');?>
 </div>
 </div>
-    <?php
-    if ($items_current_page > $number_of_items_pages) {
-      require __DIR__ . '/../errors/items_not_found.php';
-    }
-    else {
-    require __DIR__ . '/../Extendedcards/index_pagination.php';
-    }
-    ?>
+    <?php require __DIR__ . '/../Extendedcards/index_pagination.php'; ?>

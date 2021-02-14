@@ -6,12 +6,7 @@
 ?>
 <?php $this->title =  WEBSITE_NAME . ' | Modification d\'un commentaire'; ?>
 <?php require('comments_menu.php'); ?>
-<?php if (empty($comment)) {
-							require __DIR__ . '/../errors/comment_not_found.php';
-			    }
-					else {
-					require __DIR__ . '/../errors/confirmation.php'; ?>
-
+<?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <!-- Modification d'un commentaire -->
 <div class="media mb-4">
 	<img class="img-fluid mr-3 rounded avatar" src="<?= BASE_URL; ?>public/images/avatars/<?= $this->clean(isset($comment['avatar_com']) ? $comment['avatar_com'] : $default );?>" alt="user">
@@ -28,6 +23,7 @@
             </div>
         </div>
         <div class="form-group">
+
              <div class="col-xs-12">
                   <br>
 									<button class="btn btn-md btn-success" name="modify" type="submit">Modifier</button>
@@ -42,5 +38,5 @@
 
 <?php
 };
-};
+
 ?>

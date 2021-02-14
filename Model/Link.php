@@ -26,13 +26,8 @@ class link extends Model
             ':url' => $url,
             ':description' => $description
         ));
-        $messages['confirmation'] = 'Votre lien a bien été ajouté !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'linksadmin');
-            exit;
-        }
     }
+
 
     // READ
 
@@ -49,18 +44,18 @@ class link extends Model
         return $links;
     }
 
-
     // Afficher la liste des Liens en Front
-    public function getLinksList($links_current_page)
+    public function getLinksList($links_current_page, $number_of_links_pages)
     {
         $links_start = (int) (($links_current_page - 1) * $this->number_of_links_by_page);
         $sql  = 'SELECT *
         FROM links
         WHERE bin != "yes"
         ORDER BY id ASC LIMIT ' . $links_start . ', ' . $this->number_of_links_by_page . '';
-        $links       = $this->dbConnect($sql);
-        return $links;
-    }
+        if ($links_current_page > $number_of_links_pages)
+          throw new Exception("Aucun Lien trouvé.");
+          else return $links       = $this->dbConnect($sql);
+        }
 
 
     // Afficher la liste des Liens en Admin :
@@ -120,12 +115,6 @@ class link extends Model
             ':url' => $url,
             ':description' => $description
         ));
-        $messages['confirmation'] = 'Le lien a bien été modifié !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'linksadmin/linkread/' . $id_link);
-            exit;
-        }
     }
 
     // Restaurer un lien depuis la Corbeille
@@ -137,12 +126,6 @@ class link extends Model
             ':id' => $id_link,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! Le lien a bien été restauré !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'linksadmin/linksbin');
-            exit;
-        }
     }
 
 
@@ -157,12 +140,6 @@ class link extends Model
             ':id' => $id_link,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! Le lien a été déplacé dans la corbeille !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'linksadmin');
-            exit;
-        }
     }
 
     // Suppression définitive d'un lien
@@ -173,20 +150,11 @@ class link extends Model
         WHERE id = ' . (int) $id_link;
         $req = $this->dbConnect($sql);
         $req->execute();
-
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! Le lien a été supprimé !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'linksadmin/linksbin');
-            exit;
-        }
     }
 
     // Vidage de la Corbeille des liens.
     public function emptybin()
     {
-
         $bin = "yes";
         $sql = 'DELETE
         FROM links
@@ -195,13 +163,6 @@ class link extends Model
             ':bin' => $bin
         ));
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'linksadmin/linksbin');
-            exit;
-        }
     }
 
 

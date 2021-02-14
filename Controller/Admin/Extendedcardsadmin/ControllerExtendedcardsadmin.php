@@ -3,9 +3,9 @@ require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
 require_once 'Model/Category.php';
 require_once 'Model/Link.php';
-require_once 'Model/Comment.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 
 /**
  * Contrôleur gérant les Items de type ExtendedCards
@@ -20,8 +20,8 @@ class ControllerExtendedcardsadmin extends Controller
     private $item;
     private $category;
     private $link;
-    private $comment;
     private $calculate;
+    private $message;
 
     public function __construct()
     {
@@ -29,8 +29,8 @@ class ControllerExtendedcardsadmin extends Controller
         $this->item      = new Item();
         $this->category  = new Category();
         $this->link      = new Link();
-        $this->comment   = new Comment();
         $this->calculate = new Calculate();
+        $this->message = new Message();
     }
 
 
@@ -39,9 +39,8 @@ class ControllerExtendedcardsadmin extends Controller
     // Affichage du formulaire de création d'une Extended Card :
     public function extendedcardadditem()
     {
-        $categories_current_page = 1;
         $links_current_page      = 1;
-        $categories              = $this->category->getCategories($categories_current_page);
+        $categories              = $this->category->getCategories();
         $this->generateadminView(array(
             'categories' => $categories
         ));
@@ -103,6 +102,7 @@ class ControllerExtendedcardsadmin extends Controller
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $this->item->insertItem($id_user, $id_category, $title, $slug, $content, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft);
+                $this->message->extendedCardCreated();
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -131,6 +131,7 @@ class ControllerExtendedcardsadmin extends Controller
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
                 $this->item->insertItemImage($id_user, $id_category, $title, $slug, $content, $itemimagename, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft);
+                $this->message->extendedCardCreated();
 
             }
         }
@@ -204,14 +205,13 @@ class ControllerExtendedcardsadmin extends Controller
         ));
     }
 
-
     // Affichage d'une seule Extended Card :
     public function extendedcardread()
     {
         $id_item     = $this->request->getParameter("id");
-        $categories  = $this->category->getCategories();
         $item        = $this->item->getItem($id_item);
-        $id_category = $item['category'];
+        $categories  = $this->category->getCategories();
+        $id_category = $item['catid'];
         $category    = $this->category->getCategory($id_category);
         $links       = $this->link->getLinks($id_item);
         $this->generateadminView(array(
@@ -229,7 +229,7 @@ class ControllerExtendedcardsadmin extends Controller
     {
         if (isset($_POST["update"])) {
             $id_item               = $this->request->getParameter("id");
-            $id_category           = $_POST['category'];
+            $id_category           = $_POST['catid'];
             $draft                 = "yes";
             $title                 = $this->request->getParameter("title");
             $slug                  = $_POST['slug'];
@@ -271,6 +271,7 @@ class ControllerExtendedcardsadmin extends Controller
             if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $messages = array();
                 $this->item->changeItem($id_category, $title, $slug, $content, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft, $id_item);
+                $this->message->extendedCardUpdated($id_item);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -295,6 +296,7 @@ class ControllerExtendedcardsadmin extends Controller
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
                 $this->item->changeItemImage($id_category, $title, $slug, $content, $itemimagename, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $draft, $version, $id_item);
+                $this->message->extendedCardUpdated($id_item);
             }
         }
     }
@@ -329,6 +331,8 @@ class ControllerExtendedcardsadmin extends Controller
     {
         $id_item = $this->request->getParameter("id");
         $this->item->moveItem($id_item);
+        $this->message->extendedCardMoveToBin();
+
     }
 
     // Suppression définitive d'une Extended Card :
@@ -336,18 +340,14 @@ class ControllerExtendedcardsadmin extends Controller
     {
         $id_item = $this->request->getParameter("id");
         $this->item->eraseItem($id_item);
-        if ($id_item === false) {
-            throw new Exception('Impossible de supprimer l\' Extended Card !');
-        } else {
-            $messages['confirmation'] = 'L\'Extended Card a bien été supprimée !';
-            $this->generateadminView();
-        }
+        $this->message->extendedCardErased();
     }
 
     // Vider la Corbeille Extended Cards :
     public function emptyextendedcards()
     {
         $this->item->emptybin();
+        $this->message->extendedCardEmptyBin();
     }
 
     // Restaurer un item depuis la Corbeille :
@@ -355,8 +355,10 @@ class ControllerExtendedcardsadmin extends Controller
     {
         $id_item = $this->request->getParameter("id");
         $this->item->restoreItem($id_item);
+        $this->message->extendedCardRestored();
     }
 
+    // AUTRES FONCTIONS
     public function slugify($title, $delimiter)
     {
         $oldLocale = setlocale(LC_ALL, '0');

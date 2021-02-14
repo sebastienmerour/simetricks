@@ -3,7 +3,6 @@ require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
 require_once 'Model/Card.php';
 require_once 'Model/User.php';
-require_once 'Model/Calculate.php';
 
 /**
  * Contrôleur gérant la page d'accueil de l'administration du site
@@ -17,14 +16,12 @@ class ControllerDashboard extends Controller
     private $user;
     private $item;
     private $card;
-    private $calculate;
 
     public function __construct()
     {
         $this->user      = new User();
         $this->item      = new Item();
         $this->card      = new Card();
-        $this->calculate = new Calculate();
     }
 
 
@@ -35,8 +32,9 @@ class ControllerDashboard extends Controller
         $items_current_page    = 1;
         $cards_current_page = 1;
         $users_current_page    = 1;
+        $number_of_cards_pages = 1;
         $items                 = $this->item->getItemsAdmin($items_current_page);
-        $cards                 = $this->card->getCards($cards_current_page);
+        $cards                 = $this->card->getCards($cards_current_page, $number_of_cards_pages);
         $users                 = $this->user->selectUsers($users_current_page);
         $this->generateadminView(array(
             'default' => $default,

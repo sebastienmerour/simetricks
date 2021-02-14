@@ -6,11 +6,7 @@
 ?>
 <?php $this->title =  WEBSITE_NAME . ' |  Modification d\'une Page'; ?>
 <?php require('pages_menu.php'); ?>
-<?php if (empty($page)) {
-							require __DIR__ . '/../errors/page_not_found.php';
-			    }
-					else {
-					require __DIR__ . '/../errors/errors.php'; ?>
+<?php require __DIR__ . '/../errors/errors.php'; ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="card my-4">
 	<h5 class="card-header">Modification de la Page <strong><?= $this->clean($page['title']);?></strong></h5>
@@ -57,6 +53,5 @@
 </div>
 
 <?php
-};
 };
 ?>

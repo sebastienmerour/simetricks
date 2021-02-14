@@ -6,11 +6,7 @@
 ?>
 <?php $this->title =  WEBSITE_NAME . ' | Modification d\'un utilisateur'; ?>
 <?php require('users_menu.php'); ?>
-<?php if (empty($user)) {
-							require __DIR__ . '/../errors/user_not_found.php';
-			    }
-					else {
-					require __DIR__ . '/../errors/errors.php'; ?>
+<?php require __DIR__ . '/../errors/errors.php'; ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="card my-4">
   <h5 class="card-header">Modification de l'utilisateur <strong><?= $this->clean($user['firstname']);?> <?= $this->clean($user['name']);?></strong></h5>
@@ -94,6 +90,5 @@
     </div>
 </div>
 <?php
-};
 };
 ?>

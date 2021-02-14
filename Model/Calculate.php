@@ -299,10 +299,10 @@ class Calculate extends Model
   public function getTotalOfComments()
   {
       $sql                  = 'SELECT COUNT(id) as counter FROM comments
-      WHERE bin != "yes"
+      WHERE bin != "yes" AND report !="yes"
       ';
       $comments             = $this->dbConnect($sql);
-      $this->comments_count = $comments->fetch(\PDO::FETCH_ASSOC);
+      $this->comments_count = $comments->fetch();
       $total_comments_count = $this->comments_count['counter'];
       return $total_comments_count;
   }
@@ -530,6 +530,31 @@ class Calculate extends Model
       $this->links_deleted_count = $links_deleted_count->fetch(\PDO::FETCH_ASSOC);
       $total_links_deleted_count = $this->links_deleted_count['counter'];
       return $total_links_deleted_count;
+  }
+
+
+  // STYLES
+  // ADMIN
+
+  // Obtenir le nombre total des Styles :
+  public function getTotalOfStyles()
+  {
+      $sql               = 'SELECT COUNT(id) AS counter FROM styles
+      WHERE bin != "yes"';
+      $this->styles_count = $this->dbConnect($sql);
+      $styles             = $this->styles_count->fetch(\PDO::FETCH_ASSOC);
+      $number_of_styles   = $styles['counter'];
+      return $number_of_styles;
+  }
+
+  // Obtenir le nombre total des Styles supprimés :
+  public function getTotalOfStylesDeleted()
+  {
+      $sql               = 'SELECT id FROM styles
+      WHERE bin = "yes"';
+      $req = $this->dbConnect($sql);
+      $number_of_styles_deleted = $req->rowCount();
+      return $number_of_styles_deleted;
   }
 
 

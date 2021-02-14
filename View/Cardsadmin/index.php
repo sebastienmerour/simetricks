@@ -41,16 +41,7 @@
       ?>
     </tbody>
   </table>
-
-  <?php
-  if ($cards_current_page > $number_of_cards_pages) {
-  	require __DIR__ . '/../errors/card_not_found.php';
-  }
-  else {
-  require('cards_pagination.php');}
-  ?>
+  <?php require('cards_pagination.php');?>
 </div>
 </div>
-<?php
-};
-?>
+<?php };?>

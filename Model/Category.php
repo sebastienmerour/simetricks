@@ -14,6 +14,7 @@ class Category extends Model
 
     // CREATE
 
+
     // Création d'une nouvelle catégorie :
     public function insertCategory($name, $slugcategory, $description)
     {
@@ -25,12 +26,6 @@ class Category extends Model
             ':slug' => $slugcategory,
             ':description' => $description
         ));
-        $messages['confirmation'] = 'La catégorie a bien été ajoutée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'categories');
-            exit;
-        }
     }
 
     // READ
@@ -46,9 +41,12 @@ class Category extends Model
      GROUP BY categories.id
      HAVING categories.bin != "yes"
      ORDER BY categories.name ASC LIMIT 0, 100';
-        $categories = $this->dbConnect($sql);
-        return $categories;
-    }
+     $categories = $this->dbConnect($sql);
+     if ($categories->rowCount() > 0)
+                return $categories;
+            else
+              throw new Exception("Aucune Catégorie trouvée.");
+ }
 
     public function getCategoriesAdmin()
     {
@@ -69,10 +67,11 @@ class Category extends Model
         WHERE id = ? ';
         $req      = $this->dbConnect($sql, array(
             $id_category
-
         ));
-        $category = $req->fetch();
-        return $category;
+        if ($req->rowCount() == 1)
+                   return $category = $req->fetch();
+               else
+                 throw new Exception("Cette Catégorie n'existe pas.");
     }
 
     // Afficher la liste des Catégories Supprimées :
@@ -102,12 +101,6 @@ class Category extends Model
             ':name' => $name,
             ':description' => $description
         ));
-        $messages['confirmation'] = 'La Catégorie a bien été modifiée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'categories/categoryread/' . $id_category);
-            exit;
-        }
     }
 
     // Restaurer une Catégorie depuis la Corbeille
@@ -119,12 +112,6 @@ class Category extends Model
             ':id' => $id_category,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! La Catégorie a bien été restaurée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'categories/categoriesbin');
-            exit;
-        }
     }
 
     // DELETE
@@ -138,12 +125,6 @@ class Category extends Model
             ':id' => $id_category,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! La Catégorie a été déplacée dans la corbeille !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'categories');
-            exit;
-        }
     }
 
     // Suppression définitive d'une catégorie
@@ -154,20 +135,11 @@ class Category extends Model
         WHERE id = ' . (int) $id_category;
         $req = $this->dbConnect($sql);
         $req->execute();
-
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La Catégorie a été supprimée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'categories/categoriesbin');
-            exit;
-        }
     }
 
     // Vidage de la Corbeille des catégories.
     public function emptybin()
     {
-
         $bin = "yes";
         $sql = 'DELETE
         FROM categories
@@ -176,13 +148,6 @@ class Category extends Model
             ':bin' => $bin
         ));
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'categories/categoriesbin');
-            exit;
-        }
     }
 
 

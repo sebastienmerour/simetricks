@@ -6,6 +6,7 @@ require_once 'Model/Category.php';
 require_once 'Model/Comment.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 
 /**
  * Contrôleur des actions liées aux Extended Cards
@@ -22,6 +23,7 @@ class ControllerExtendedcard extends Controller
     private $comment;
     private $user;
     private $calculate;
+    private $message;
 
     /**
      * Constructeur
@@ -34,6 +36,8 @@ class ControllerExtendedcard extends Controller
         $this->comment   = new Comment();
         $this->user      = new User();
         $this->calculate = new Calculate();
+        $this->message = new Message();
+
     }
 
     // ITEMS
@@ -44,7 +48,7 @@ class ControllerExtendedcard extends Controller
     {
         $id_item                  = $this->request->getParameter("id");
         $item                     = $this->item->getItem($id_item);
-        $id_category              = $item['category'];
+        $id_category              = $item['catid'];
         $category                 = $this->category->getCategory($id_category);
         $number_of_items          = $this->calculate->getTotalOfItemsFront();
         $number_of_cards          = $this->calculate->getTotalOfCards();
@@ -87,7 +91,7 @@ class ControllerExtendedcard extends Controller
     {
         $id_item                  = $this->request->getParameter("id");
         $item                     = $this->item->getItem($id_item);
-        $id_category              = $item['category'];
+        $id_category              = $item['catid'];
         $category                 = $this->category->getCategory($id_category);
         $user                     = $this->user->getUser($_SESSION['id_user']);
         $number_of_items          = $this->calculate->getTotalOfItemsFront();
@@ -124,6 +128,7 @@ class ControllerExtendedcard extends Controller
     }
 
 
+
     // COMMENTS //
     // Create
 
@@ -142,6 +147,7 @@ class ControllerExtendedcard extends Controller
 
                 if ($responseData->success) {
                     $this->comment->insertComment($id_item, $author, $content);
+                    $this->message->commentCreated($id_item);
                 } else {
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
@@ -182,6 +188,7 @@ class ControllerExtendedcard extends Controller
 
                 if ($responseData->success) {
                     $this->comment->insertCommentLoggedIn($id_item, $id_user, $author, $content);
+                    $this->message->commentCreatedLoggedIn($id_item);
                 } else {
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {
@@ -256,6 +263,7 @@ class ControllerExtendedcard extends Controller
         $comment    = $this->comment->getComment($id_comment);
         $content    = $comment['content'];
         $this->comment->changeComment($content);
+        $this->message->commentUpdated();
     }
 
     // Signaler un commentaire :
@@ -274,6 +282,7 @@ class ControllerExtendedcard extends Controller
         $comment                  = $this->comment->getComment($id_comment);
         $number_of_comments_pages = $this->calculate->getNumberOfCommentsPagesFromItem($id_item);
         $this->comment->reportBadComment($id_comment);
+        $this->message->commentReported($id_item);
         $default = "default.png";
         $this->generateView(array(
             'comment' => $comment,

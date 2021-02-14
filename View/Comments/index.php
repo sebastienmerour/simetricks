@@ -8,6 +8,11 @@
 <?php require('comments_menu.php'); ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <h2 id="comments">&nbsp;</h2>
+<?php
+if ($counter_comments < 1) {
+  require __DIR__ . '/../errors/comments_not_found_admin.php';
+}
+else {?>
 <div class="table-responsive">
   <table class="table table-striped table-sm">
     <thead>
@@ -55,10 +60,6 @@
   </table>
 </div>
 <?php
-if ($counter_comments < 1) {
-  require __DIR__ . '/../errors/comments_not_found_admin.php';
-}
-else {
 	require __DIR__ . '/../Comments/comments_pagination.php';
 }
 ?>

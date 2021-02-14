@@ -1,7 +1,4 @@
 <?php $this->title = WEBSITE_NAME . ' | Profil de '.$this->clean($user['firstname']). ' '. $this->clean($user['name']).'' ?>
-<!-- Vérification de l'existence de l'utilisateur -->
-<?php if (empty($user)) { require __DIR__ . '/../errors/user_not_found.php';}
-else {?>
 <div class="row mb-4">
     <div class="col-md-6 col-lg-8 d-flex" data-aos-delay="200">
       <div class="row">
@@ -78,4 +75,3 @@ else {?>
        require( __DIR__ . '/../themes/front/template_module_stats.php');?>
 </div>
 </div>
-<?php };?>

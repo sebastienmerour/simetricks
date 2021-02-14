@@ -1,7 +1,6 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Card.php';
-require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
 /**
@@ -14,7 +13,6 @@ require_once 'Model/Calculate.php';
 class ControllerCard extends Controller
 {
     private $card;
-    private $user;
     private $calculate;
 
     /**
@@ -23,7 +21,6 @@ class ControllerCard extends Controller
     public function __construct()
     {
         $this->card      = new Card();
-        $this->user      = new User();
         $this->calculate = new Calculate();
     }
 

@@ -1,7 +1,6 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Model/Page.php';
-require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
 /**
@@ -14,7 +13,6 @@ require_once 'Model/Calculate.php';
 class ControllerPage extends Controller
 {
     private $page;
-    private $user;
     private $calculate;
 
     /**
@@ -23,7 +21,6 @@ class ControllerPage extends Controller
     public function __construct()
     {
         $this->page      = new Page();
-        $this->user      = new User();
         $this->calculate = new Calculate();
     }
 

@@ -3,6 +3,7 @@ require_once 'Framework/Controller.php';
 require_once 'Model/User.php';
 require_once 'Model/Item.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 require_once 'PHPMailer/PHPMailerAutoload.php';
 
 /**
@@ -17,6 +18,7 @@ class ControllerUser extends Controller
     private $user;
     private $item;
     private $calculate;
+    private $message;
     private $mail;
 
     public function __construct()
@@ -24,6 +26,7 @@ class ControllerUser extends Controller
         $this->user      = new User();
         $this->item      = new Item();
         $this->calculate = new Calculate();
+        $this->message   = new Message();
         $this->mail      = new PHPMailer();
 
     }
@@ -200,6 +203,7 @@ class ControllerUser extends Controller
         $user       = $this->request->getSession()->getAttribut("user");
         $this->user->changeUser($email, $firstname, $name, $city, $linkedin, $github,
         $twitter, $website, $date_birth);
+        $this->message->userUpdated();
         $user = $this->user->getUser($id_user);
         if ($user === false) {
             throw new Exception('Impossible de modifier l\' utilisateur !');
@@ -218,6 +222,7 @@ class ControllerUser extends Controller
         $pass       = $this->request->getParameter("pass");
         $passcheck  = $this->request->getParameter("passcheck");
         $this->user->checkUserPass($pass, $passcheck);
+        $this->message->userPasswordUpdated();
         $user = $this->user->getUser($id_user);
         if ($user === false) {
             throw new Exception('Impossible de modifier l\' utilisateur !');
@@ -242,13 +247,7 @@ class ControllerUser extends Controller
         $username = $this->request->getParameter("username");
         $user     = $this->request->getSession()->getAttribut("user");
         $this->user->checkUsername($username);
-        $user = $this->user->getUser($id_user);
-        if ($user === false) {
-            throw new Exception('Impossible de modifier l\' identifiant !');
-        } else {
-            $this->request->getSession()->setAttribut("user", $user);
-            $this->generateView();
-        }
+        $this->message->userUsernameUpdated();
     }
 
     // Modification de l'avatar :
@@ -300,6 +299,7 @@ class ControllerUser extends Controller
             } else {
                 move_uploaded_file($_FILES['avatar']['tmp_name'], $destination . "/" . $avatarname);
                 $newAvatar = $this->user->changeAvatar($avatarname);
+                $this->message->userAvatarUpdated();
             }
         }
     }

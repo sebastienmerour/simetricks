@@ -99,8 +99,10 @@ class User extends Model
         $query = $this->dbConnect($sql, array(
             ':id_user' => $id_user
         ));
-        $user  = $query->fetch(\PDO::FETCH_ASSOC);
-        return $user;
+        if ($query->rowCount() == 1)
+                   return $user = $query->fetch();
+               else
+                 throw new Exception("Cet utilisateur n'existe pas.");
     }
 
     // Affichage des 5 derniers Extended Cards d'un utisateur :
@@ -191,14 +193,8 @@ class User extends Model
             ':website' => htmlspecialchars($website),
             ':date_birth' => htmlspecialchars($date_birth)
         ));
-
-        $messages['confirmation'] = 'Votre compte a bien été mis à jour !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_URL . 'user');
-            exit;
-        }
     }
+
 
     // Vérification du mot de passe avant modification du mot de passe :
     public function checkUserPass($pass, $passcheck)
@@ -238,13 +234,6 @@ class User extends Model
             ':id_user' => $user,
             ':pass' => $passwordHash
         ));
-
-        $messages['confirmation'] = 'Votre mot de passe a bien été mis à jour !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_URL . 'user');
-            exit;
-        }
     }
 
     // Modification d'un utilisateur en Admin :
@@ -283,13 +272,6 @@ class User extends Model
             ':website' => htmlspecialchars($website),
             ':date_birth' => htmlspecialchars($date_birth)
         ));
-
-        $messages['confirmation'] = 'Le compte a bien été mis à jour !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'users/userread/' . $id_user);
-            exit;
-        }
     }
 
     // Modification de l'avatar d'un user en Admin :
@@ -330,12 +312,6 @@ class User extends Model
             ':date_birth' => htmlspecialchars($date_birth)
         ));
 
-        $messages['confirmation'] = 'Le compte a bien été mis à jour !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'users/userread/' . $id_user);
-            exit;
-        }
     }
 
     // Vérification de disponibilité du username :
@@ -376,13 +352,6 @@ class User extends Model
             ':id_user' => htmlspecialchars($identification),
             ':username' => htmlspecialchars($username)
         ));
-
-        $messages['confirmation'] = 'Votre identifiant a bien été modifié !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_URL . 'user/useredit#username');
-            exit;
-        }
     }
 
 
@@ -398,12 +367,6 @@ class User extends Model
             ':avatar' => htmlspecialchars($avatarname),
             ':id_user' => htmlspecialchars($id_user)
         ));
-        $messages['confirmation'] = 'Votre avatar a bien été modifié !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_URL . 'user');
-            exit;
-        }
     }
 
     // Restaurer un user depuis la Corbeille :
@@ -415,12 +378,6 @@ class User extends Model
             ':id' => $id_user,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été restauré !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'users/usersbin');
-            exit;
-        }
     }
 
 
@@ -435,12 +392,6 @@ class User extends Model
             ':id' => $id_user,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été déplacé dans la corbeille !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'users');
-            exit;
-        }
     }
 
     // Suppression définitive d'un user avec ses commentaires associés :
@@ -453,12 +404,6 @@ class User extends Model
         WHERE users.id_user = ' . (int) $id_user;
         $req = $this->dbConnect($sql);
         $req->execute();
-        $messages['confirmation'] = 'Merci ! L\'utilisateur a bien été supprimé !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'users');
-            exit;
-        }
     }
 
     // Vidage de la Corbeille des Users et des Commentaires associés :
@@ -474,13 +419,6 @@ class User extends Model
             ':bin' => $bin
         ));
         $req->execute();
-
-        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'users/usersbin');
-            exit;
-        }
     }
 
     // Génération d'un mot de passe depuis la page "Mot de passe oublié"
@@ -572,12 +510,6 @@ class User extends Model
         $this->deleteToken($email);
         unset($_SESSION['username']);
         unset($_SESSION['email']);
-        $messages['confirmation'] = 'Votre mot de passe a bien été mis à jour !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_URL . 'login');
-            exit;
-        }
     }
 
     public function deleteToken($email)

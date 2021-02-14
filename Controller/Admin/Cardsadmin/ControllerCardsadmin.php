@@ -5,6 +5,7 @@ require_once 'Model/Category.php';
 require_once 'Model/Style.php';
 require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 
 /**
  * Contrôleur gérant les Items de type Cards depuis l'administration du site
@@ -20,6 +21,7 @@ class ControllerCardsadmin extends Controller
     private $category;
     private $style;
     private $calculate;
+    private $message;
 
     public function __construct()
     {
@@ -28,6 +30,7 @@ class ControllerCardsadmin extends Controller
         $this->category  = new Category();
         $this->style     = new Style();
         $this->calculate = new Calculate();
+        $this->message = new Message();
     }
 
 
@@ -36,8 +39,7 @@ class ControllerCardsadmin extends Controller
     // Affichage du formulaire de création d'une card :
     public function cardaddcard()
     {
-        $categories_current_page = 1;
-        $categories              = $this->category->getCategories($categories_current_page);
+        $categories              = $this->category->getCategories();
         $styles                  = $this->style->getStyles();
         $this->generateadminView(array(
             'categories' => $categories,
@@ -86,6 +88,7 @@ class ControllerCardsadmin extends Controller
 
             else if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $this->card->insertCard($id_user, $id_category, $id_style, $title, $slugcard, $definition, $content);
+                $this->message->cardCreated();
             }
 
             else if (!in_array($extension_upload, $extensions_authorized)) {
@@ -114,7 +117,7 @@ class ControllerCardsadmin extends Controller
             else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
                 $this->card->insertCardImage($id_user, $id_category, $id_style, $title, $slugcard, $cardimagename, $definition, $content);
-
+                $this->message->cardCreated();
             }
         }
     }
@@ -131,10 +134,10 @@ class ControllerCardsadmin extends Controller
         } else {
             $cards_current_page = 1;
         }
-        $cards                 = $this->card->getCards($cards_current_page);
+        $number_of_cards_pages = $this->calculate->getNumberOfPagesOfCards();
+        $cards                 = $this->card->getCards($cards_current_page, $number_of_cards_pages);
         $page_previous_cards   = $cards_current_page - 1;
         $page_next_cards       = $cards_current_page + 1;
-        $number_of_cards_pages = $this->calculate->getNumberOfPagesOfCards();
         $this->generateadminView(array(
             'cards' => $cards,
             'number_of_cards' => $number_of_cards,
@@ -200,6 +203,7 @@ class ControllerCardsadmin extends Controller
             if (!file_exists($_FILES["image"]["tmp_name"])) {
                 $messages    = array();
                 $this->card->changeCard($id_category, $id_style, $title, $slugcard, $definition, $content, $id_card);
+                $this->message->cardUpdated($id_card);
             } else if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -224,6 +228,7 @@ class ControllerCardsadmin extends Controller
             } else {
                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
                 $this->card->changeCardImage($id_category, $id_style, $title, $slugcard, $cardimagename, $definition, $content, $id_card);
+                $this->message->cardUpdated($id_card);
             }
         }
     }
@@ -258,6 +263,7 @@ class ControllerCardsadmin extends Controller
     {
         $id_card = $this->request->getParameter("id");
         $this->card->moveCard($id_card);
+        $this->message->cardMoveTobBin();
     }
 
     // Suppression définitive d'une Card :
@@ -265,18 +271,15 @@ class ControllerCardsadmin extends Controller
     {
         $id_card = $this->request->getParameter("id");
         $this->card->eraseCard($id_card);
-        if ($id_card === false) {
-            throw new Exception('Impossible de supprimer la Card !');
-        } else {
-            $messages['confirmation'] = 'La Card a bien été supprimée !';
-            $this->generateadminView();
-        }
+        $this->message->cardErased();
     }
+
 
     // Vider la Corbeille Cards :
     public function emptycards()
     {
         $this->card->emptybin();
+        $this->message->cardEmptyBin();
     }
 
     // Restaurer une Card depuis la Corbeille :
@@ -284,6 +287,7 @@ class ControllerCardsadmin extends Controller
     {
         $id_card = $this->request->getParameter("id");
         $this->card->restoreCard($id_card);
+        $this->message->cardRestored();
     }
 
     public function slugify($title, $delimiter) {

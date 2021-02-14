@@ -4,6 +4,7 @@ require_once 'Model/Login.php';
 require_once 'Model/User.php';
 require_once 'Model/Item.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 require_once 'PHPMailer/PHPMailerAutoload.php';
 
 /**
@@ -19,6 +20,7 @@ class ControllerLogin extends Controller
     private $user;
     private $item;
     private $calculate;
+    private $message;
     private $mail;
 
     public function __construct()
@@ -27,6 +29,7 @@ class ControllerLogin extends Controller
         $this->user      = new User();
         $this->item      = new Item();
         $this->calculate = new Calculate();
+        $this->message   = new Message();
         $this->mail      = new PHPMailer();
     }
 
@@ -243,6 +246,7 @@ class ControllerLogin extends Controller
                     ));
                     // OK, tout est correct, on peut alors insérer le nouveau mot de passe :
                     $this->user->updatePassword($username, $passwordHash, $email);
+                    $this->message->userPasswordUpdatedFromLogin();
                 } else {
                     $errors['errors'] = 'La vérification a échoué. Merci de re-essayer plus tard.';
                     if (!empty($errors)) {

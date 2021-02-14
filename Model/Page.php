@@ -30,13 +30,6 @@ class Page extends Model
             ':content' => $content,
             ':draft' => $draft
         ));
-
-        $messages['confirmation'] = 'Votre page a bien été ajoutée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'pagesadmin');
-            exit;
-        }
     }
 
     // READ
@@ -101,8 +94,10 @@ class Page extends Model
         $req  = $this->dbConnect($sql, array(
             $id_page
         ));
-        $page = $req->fetch();
-        return $page;
+        if ($req->rowCount() == 1)
+                   return $page = $req->fetch();
+               else
+                 throw new Exception("Cette page n'existe pas.");
     }
 
     // Afficher la liste des Pages Supprimées :
@@ -139,12 +134,6 @@ class Page extends Model
             ':content' => $content,
             ':draft' => $draft
         ));
-        $messages['confirmation'] = 'Merci ! Votre Page a bien été modifiée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'pagesadmin/pageread/' . $id_page);
-            exit;
-        }
     }
 
     // Restaurer une page depuis la Corbeille
@@ -156,12 +145,6 @@ class Page extends Model
             ':id' => $id_page,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! La Page a bien été restaurée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'pagesadmin/pagesbin');
-            exit;
-        }
     }
 
     // DELETE
@@ -175,12 +158,6 @@ class Page extends Model
             ':id' => $id_page,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! La Page a été déplacée dans la corbeille !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'pagesadmin');
-            exit;
-        }
     }
 
     // Suppression définitive d'une Page.
@@ -191,14 +168,6 @@ class Page extends Model
         WHERE pages.id = ' . (int) $id_page;
         $req = $this->dbConnect($sql);
         $req->execute();
-
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! Votre Page a bien été supprimée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'pagesadmin/pagesbin');
-            exit;
-        }
     }
 
     // Vidage de la Corbeille des Pages.
@@ -212,13 +181,6 @@ class Page extends Model
             ':bin' => $bin
         ));
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'pagesadmin/pagesbin');
-            exit;
-        }
     }
 
 }

@@ -10,7 +10,7 @@
   <h2 id="cardsbin">Corbeille</h2>
   <?php
   if ($cards_deleted_current_page > $number_of_cards_deleted_pages) {
-  	require __DIR__ . '/../errors/empty_bin.php';
+		require __DIR__ . '/../errors/empty_bin.php';
   }
   else {?>
 		<div class="table-responsive">

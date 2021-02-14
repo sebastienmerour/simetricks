@@ -24,4 +24,4 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title><?= $title ?></title>
 </head>
-<body>
+<body class="h-100">

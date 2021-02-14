@@ -25,12 +25,6 @@ class Style extends Model
             ':description' => $description,
             ':hexadecimal' => $hexadecimal
         ));
-        $messages['confirmation'] = 'Le style a bien été ajouté !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'styles');
-            exit;
-        }
     }
 
     // READ
@@ -87,12 +81,6 @@ class Style extends Model
             ':description' => $description,
             ':hexadecimal' => $hexadecimal
         ));
-        $messages['confirmation'] = 'Le Style a bien été modifié !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'styles/styleread/' . $id_style);
-            exit;
-        }
     }
 
     // Restaurer un Style depuis la Corbeille
@@ -104,12 +92,6 @@ class Style extends Model
             ':id' => $id_style,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! Le Style a bien été restauré !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'styles/stylesbin');
-            exit;
-        }
     }
 
     // DELETE
@@ -123,12 +105,6 @@ class Style extends Model
             ':id' => $id_style,
             ':bin' => $bin
         ));
-        $messages['confirmation'] = 'Merci ! Le Style a été déplacé dans la corbeille !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'styles');
-            exit;
-        }
     }
 
     // Suppression définitive d'un style
@@ -139,20 +115,11 @@ class Style extends Model
         WHERE id = ' . (int) $id_style;
         $req = $this->dbConnect($sql);
         $req->execute();
-
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! Le Style a été supprimé !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'styles/stylesbin');
-            exit;
-        }
     }
 
     // Vidage de la Corbeille des styles.
     public function emptybin()
     {
-
         $bin = "yes";
         $sql = 'DELETE
         FROM styles
@@ -161,13 +128,6 @@ class Style extends Model
             ':bin' => $bin
         ));
         $req->execute();
-        // Ici on affiche le message de confirmation :
-        $messages['confirmation'] = 'Merci ! La corbeille a été vidée !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location:' . BASE_ADMIN_URL . 'styles/stylesbin');
-            exit;
-        }
     }
 
 

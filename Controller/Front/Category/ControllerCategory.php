@@ -2,8 +2,6 @@
 require_once 'Framework/Controller.php';
 require_once 'Model/Item.php';
 require_once 'Model/Category.php';
-require_once 'Model/Comment.php';
-require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
 
 /**
@@ -17,8 +15,6 @@ class ControllerCategory extends Controller
 {
     private $item;
     private $category;
-    private $comment;
-    private $user;
     private $calculate;
 
     /**
@@ -28,8 +24,6 @@ class ControllerCategory extends Controller
     {
         $this->item      = new Item();
         $this->category  = new Category();
-        $this->comment   = new Comment();
-        $this->user      = new User();
         $this->calculate = new Calculate();
     }
     // Lister les items liées à une Catégorie en Front :

@@ -1,9 +1,8 @@
 <?php
 require_once 'Framework/Controller.php';
-require_once 'Model/Item.php';
 require_once 'Model/Comment.php';
-require_once 'Model/User.php';
 require_once 'Model/Calculate.php';
+require_once 'Model/Message.php';
 
 /**
  * Contrôleur gérant l'administration des commentaires signalés
@@ -14,17 +13,15 @@ require_once 'Model/Calculate.php';
 
 class ControllerCommentsreported extends Controller
 {
-    private $user;
-    private $item;
     private $comment;
     private $calculate;
+    private $message;
 
     public function __construct()
     {
-        $this->user      = new User();
-        $this->item      = new Item();
         $this->comment   = new Comment();
         $this->calculate = new Calculate();
+        $this->message = new Message();
     }
 
 
@@ -78,6 +75,7 @@ class ControllerCommentsreported extends Controller
         $comment    = $this->comment->getComment($id_comment);
         $content    = $comment['content'];
         $this->comment->changeCommentReportedAdmin($content);
+        $this->message->commentUpdated($id_comment);
     }
 
     // Approuver un commentaire signalé :
@@ -85,6 +83,7 @@ class ControllerCommentsreported extends Controller
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->approveComment($id_comment);
+        $this->message->commentApprovedAdmin($id_comment);
     }
 
 
@@ -120,6 +119,7 @@ class ControllerCommentsreported extends Controller
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->moveCommentReported($id_comment);
+        $this->message->commentReportedMovedToBin();
     }
 
 
@@ -128,12 +128,14 @@ class ControllerCommentsreported extends Controller
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->restoreCommentReported($id_comment);
+        $this->message->commentReportedRestored();
     }
 
     // Vider la Corbeille Commentaires Signalés
     public function emptycommentsreported()
     {
         $this->comment->emptycommentsreportedbin();
+        $this->message->commentReportedEmptyBin();
     }
 
 
@@ -142,12 +144,7 @@ class ControllerCommentsreported extends Controller
     {
         $id_comment = $this->request->getParameter("id");
         $this->comment->eraseCommentReported($id_comment);
-        $messages['confirmation'] = 'Merci ! Le commentaire a bien été supprimé !';
-        if (!empty($messages)) {
-            $_SESSION['messages'] = $messages;
-            header('Location: ' . BASE_ADMIN_URL . 'commentsreported');
-            exit;
-        }
+        $this->message->commentReportedErased();
     }
 
 
