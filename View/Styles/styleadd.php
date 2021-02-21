@@ -9,7 +9,7 @@
 <?php require __DIR__ . '/../errors/errors.php'; ?>
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="card my-4">
-	<h5 class="card-header">Ajout d'un <strong>Style</strong></h5>
+	<h5 class="card-header"><em class="far fa-plus-square mr-1"></em>Ajout d'un <strong>Style</strong></h5>
 	<div class="card-body">
 		<form action="<?= BASE_ADMIN_URL; ?>styles/createstyle" method="post">
 			<div class="form-group">

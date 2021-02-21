@@ -3,8 +3,8 @@
   <div class="btn-toolbar mb-3 mb-md-0">
     <div class="btn-group mr-2">
       <?php if(ISSET($_SESSION['id_user_admin'])){?>
-      <a href="<?= BASE_ADMIN_URL; ?>commentsreported" role="button" class="btn btn-sm btn-primary">Commentaires Signalés</a>
-      <a href="<?= BASE_ADMIN_URL; ?>commentsreported/commentsreportedbin" role="button" class="btn btn-sm btn-danger">Corbeille</a>
+      <a href="<?= BASE_ADMIN_URL; ?>commentsreported" role="button" class="btn btn-sm btn-primary mr-2"><em class="far fa-folder-open mr-1"></em>Commentaires Signalés</a>
+      <a href="<?= BASE_ADMIN_URL; ?>commentsreported/commentsreportedbin" role="button" class="btn btn-sm btn-danger"><em class="far fa-trash-alt mr-1"></em>Corbeille</a>
     <?php } else {}?>
     </div>
   </div>

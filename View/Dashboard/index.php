@@ -46,7 +46,7 @@
   </table>
 		<div class="d-flex flex-row-reverse btn-toolbar mb-3 mb-md-0">
 			<div class="btn-group mr-2">
-				<a href="<?= BASE_ADMIN_URL; ?>extendedcardsadmin" role="button" class="float-right btn btn-sm btn-info">Toutes les Extended Cards</a>
+				<a href="<?= BASE_ADMIN_URL; ?>extendedcardsadmin" role="button" class="float-right btn btn-sm btn-info"><em class="far fa-folder-open mr-1"></em>Toutes les Extended Cards</a>
 			</div>
 		</div>
 
@@ -86,7 +86,7 @@
 		</div>
 			<div class="d-flex flex-row-reverse btn-toolbar mb-3 mb-md-0">
 				<div class="btn-group mr-2">
-					<a href="<?= BASE_ADMIN_URL; ?>cardsadmin" role="button" class="float-right btn btn-sm btn-info">Toutes les Cards</a>
+					<a href="<?= BASE_ADMIN_URL; ?>cardsadmin" role="button" class="float-right btn btn-sm btn-info"><em class="far fa-folder-open mr-1"></em>Toutes les Cards</a>
 				</div>
 			</div>
 
@@ -130,7 +130,7 @@
 			</div>
 			<div class="d-flex flex-row-reverse btn-toolbar mb-3 mb-md-0">
 				<div class="btn-group mr-2">
-					<a href="<?= BASE_ADMIN_URL; ?>users" role="button" class="float-right btn btn-sm btn-info">Tous les Utilisateurs</a>
+					<a href="<?= BASE_ADMIN_URL; ?>users" role="button" class="float-right btn btn-sm btn-info"><em class="far fa-folder-open mr-1"></em>Tous les Utilisateurs</a>
 				</div>
 			</div>
 

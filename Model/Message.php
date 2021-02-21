@@ -626,7 +626,6 @@ class Message extends Model
 
     public function userEmptyBin()
     {
-
         $messages['confirmation'] = 'La corbeille a été vidée !';
         if (!empty($messages)) {
             $_SESSION['messages'] = $messages;

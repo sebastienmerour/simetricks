@@ -3,9 +3,9 @@
   <div class="btn-toolbar mb-3 mb-md-0">
     <div class="btn-group mr-2">
       <?php if(ISSET($_SESSION['id_user_admin'])){?>
-      <a href="<?= BASE_ADMIN_URL; ?>pagesadmin/pageaddpage" role="button" class="btn btn-sm btn-success">Créer une Page</a>
-      <a href="<?= BASE_ADMIN_URL; ?>pagesadmin" role="button" class="btn btn-sm btn-primary">Pages Publiées</a>
-      <a href="<?= BASE_ADMIN_URL; ?>pagesadmin/pagesbin" role="button" class="btn btn-sm btn-danger">Corbeille</a>
+      <a href="<?= BASE_ADMIN_URL; ?>pagesadmin/pageaddpage" role="button" class="btn btn-sm btn-success mr-2"><em class="far fa-plus-square mr-1"></em>Créer</a>
+      <a href="<?= BASE_ADMIN_URL; ?>pagesadmin" role="button" class="btn btn-sm btn-primary mr-2"><em class="far fa-folder-open mr-1"></em>Pages Publiées</a>
+      <a href="<?= BASE_ADMIN_URL; ?>pagesadmin/pagesbin" role="button" class="btn btn-sm btn-danger"><em class="far fa-trash-alt mr-1"></em>Corbeille</a>
     <?php } else {}?>
     </div>
   </div>
