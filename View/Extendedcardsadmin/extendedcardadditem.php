@@ -43,7 +43,7 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
-						<label for="content">Description :</label><br>
+						<label for="content"><span class="font-weight-bold">Description :</span></label><br>
 						<textarea class="form-control" id="content" name="content" rows="5"></textarea><br>
 					</div>
 				</div>

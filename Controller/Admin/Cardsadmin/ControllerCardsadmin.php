@@ -59,24 +59,8 @@ class ControllerCardsadmin extends Controller
             $title                 = $_POST['title'];
             $definition            = $_POST['definition'];
             $content               = $_POST['content'];
-            $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
-            $width                 = $fileinfo[0];
-            $height                = $fileinfo[1];
-            $extensions_authorized = array(
-                "gif",
-                "png",
-                "jpg",
-                "jpeg"
-            );
-            $extension_upload      = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-            $time                  = date("Y-m-d-H-i-s") . "-";
             $delimiter             = '-';
             $slugcard              = $this->slugify($title, $delimiter);
-            $cardimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
-            $cardimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $cardimagename);
-            $cardimagename         = "{$time}$slugcard.{$extension_upload}";
-            $destination           = ROOT_PATH . 'public/images/card_images';
-
             if (empty($title) || empty($content)) {
                 $errors['errors'] = 'Veuillez remplir les champs <strong>Titre et Contenu</strong>';
                 if (!empty($errors)) {
@@ -85,38 +69,53 @@ class ControllerCardsadmin extends Controller
                     exit;
                 }
             }
-
-            else if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $this->card->insertCard($id_user, $id_category, $id_style, $title, $slugcard, $definition, $content);
-                $this->message->cardCreated();
-            }
-
-            else if (!in_array($extension_upload, $extensions_authorized)) {
-                $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardaddcard');
-                    exit;
-                }
-            } else if (($_FILES["image"]["size"] > 1000000)) {
-                $errors['errors'] = 'Le fichier est trop lourd.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardaddcard');
-                    exit;
-                }
-            } else if ($width < "250" && $height < "250") {
-                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 250 X 250 px';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardaddcard');
-                    exit;
-                }
-            }
-
+            if(!empty($_FILES['image']['tmp_name'])
+                 && file_exists($_FILES['image']['tmp_name'])) {
+                   $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
+                   $width                 = $fileinfo[0];
+                   $height                = $fileinfo[1];
+                   $extensions_authorized = array(
+                       "gif",
+                       "png",
+                       "jpg",
+                       "jpeg"
+                   );
+                   $extension_upload      = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+                   $time                  = date("Y-m-d-H-i-s") . "-";
+                   $cardimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
+                   $cardimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $cardimagename);
+                   $cardimagename         = "{$time}$slugcard.{$extension_upload}";
+                   $destination           = ROOT_PATH . 'public/images/card_images';
+                   if (!in_array($extension_upload, $extensions_authorized)) {
+                       $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
+                       if (!empty($errors)) {
+                           $_SESSION['errors'] = $errors;
+                           header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardaddcard');
+                           exit;
+                       }
+                   } else if (($_FILES["image"]["size"] > 1000000)) {
+                       $errors['errors'] = 'Le fichier est trop lourd.';
+                       if (!empty($errors)) {
+                           $_SESSION['errors'] = $errors;
+                           header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardaddcard');
+                           exit;
+                       }
+                   } else if ($width < "250" && $height < "250") {
+                       $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 250 X 250 px';
+                       if (!empty($errors)) {
+                           $_SESSION['errors'] = $errors;
+                           header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardaddcard');
+                           exit;
+                       }
+                   }
+                   else {
+                     move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
+                     $this->card->insertCardImage($id_user, $id_category, $id_style, $title, $slugcard, $cardimagename, $definition, $content);
+                     $this->message->cardCreated();
+                   }
+                 }
             else {
-                move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
-                $this->card->insertCardImage($id_user, $id_category, $id_style, $title, $slugcard, $cardimagename, $definition, $content);
+                $this->card->insertCard($id_user, $id_category, $id_style, $title, $slugcard, $definition, $content);
                 $this->message->cardCreated();
             }
         }
@@ -182,56 +181,61 @@ class ControllerCardsadmin extends Controller
             $slugcard              = $_POST['slug'];
             $definition            = $_POST['definition'];
             $content               = $_POST['content'];
-            $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
-            $width                 = $fileinfo[0];
-            $height                = $fileinfo[1];
-            $extensions_authorized = array(
-                "gif",
-                "png",
-                "jpg",
-                "jpeg"
-            );
-            $extension_upload      = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-            $time                  = date("Y-m-d-H-i-s") . "-";
             $delimiter             = '-';
             $slugcard              = $this->slugify($title, $delimiter);
-            $cardimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
-            $cardimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $cardimagename);
-            $cardimagename         = "{$time}$slugcard.{$extension_upload}";
-            $destination           = ROOT_PATH . 'public/images/card_images';
 
-            if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $messages    = array();
-                $this->card->changeCard($id_category, $id_style, $title, $slugcard, $definition, $content, $id_card);
-                $this->message->cardUpdated($id_card);
-            } else if (!in_array($extension_upload, $extensions_authorized)) {
-                $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);
-                    exit;
-                }
-            } else if (($_FILES["image"]["size"] > 1000000)) {
-                $errors['errors'] = 'Le fichier est trop lourd.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);
-                    exit;
-                }
-            } else if ($width < "250" && $height < "250") {
-                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 250 X 250 px';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);
-                    exit;
-                }
-            } else {
-                move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
-                $this->card->changeCardImage($id_category, $id_style, $title, $slugcard, $cardimagename, $definition, $content, $id_card);
-                $this->message->cardUpdated($id_card);
+
+            if(!empty($_FILES['image']['tmp_name'])
+                 && file_exists($_FILES['image']['tmp_name'])) {
+                   $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
+                   $width                 = $fileinfo[0];
+                   $height                = $fileinfo[1];
+                   $extensions_authorized = array(
+                       "gif",
+                       "png",
+                       "jpg",
+                       "jpeg"
+                   );
+                   $extension_upload      = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+                   $time                  = date("Y-m-d-H-i-s") . "-";
+                   $cardimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
+                   $cardimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $cardimagename);
+                   $cardimagename         = "{$time}$slugcard.{$extension_upload}";
+                   $destination           = ROOT_PATH . 'public/images/card_images';
+                   if (!in_array($extension_upload, $extensions_authorized)) {
+                       $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
+                       if (!empty($errors)) {
+                           $_SESSION['errors'] = $errors;
+                           header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);
+                           exit;
+                       }
+                   } else if (($_FILES["image"]["size"] > 1000000)) {
+                       $errors['errors'] = 'Le fichier est trop lourd.';
+                       if (!empty($errors)) {
+                           $_SESSION['errors'] = $errors;
+                           header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);
+                           exit;
+                       }
+                   } else if ($width < "250" && $height < "250") {
+                       $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 250 X 250 px';
+                       if (!empty($errors)) {
+                           $_SESSION['errors'] = $errors;
+                           header('Location: ' . BASE_ADMIN_URL . 'cardsadmin/cardread/' . $id_card);
+                           exit;
+                       }
+                 }
+                 move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $cardimagename);
+                 $this->card->changeCardImage($id_category, $id_style, $title, $slugcard, $cardimagename, $definition, $content, $id_card);
+                 $this->message->cardUpdated($id_card);
+}
+                 else {
+                   $messages    = array();
+                   $this->card->changeCard($id_category, $id_style, $title, $slugcard, $definition, $content, $id_card);
+                   $this->message->cardUpdated($id_card);
+                 }
             }
         }
-    }
+
 
     // DELETE
 

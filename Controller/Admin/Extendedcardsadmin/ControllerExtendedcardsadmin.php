@@ -30,17 +30,16 @@ class ControllerExtendedcardsadmin extends Controller
         $this->category  = new Category();
         $this->link      = new Link();
         $this->calculate = new Calculate();
-        $this->message = new Message();
+        $this->message   = new Message();
     }
-
 
     // CREATE
 
     // Affichage du formulaire de création d'une Extended Card :
     public function extendedcardadditem()
     {
-        $links_current_page      = 1;
-        $categories              = $this->category->getCategories();
+        $links_current_page = 1;
+        $categories         = $this->category->getCategories();
         $this->generateadminView(array(
             'categories' => $categories
         ));
@@ -69,9 +68,8 @@ class ControllerExtendedcardsadmin extends Controller
             $features              = $_POST['features'];
             $last_news             = $_POST['last_news'];
             $version               = $_POST['version'];
-            $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
-            $width                 = $fileinfo[0];
-            $height                = $fileinfo[1];
+            $delimiter             = '-';
+            $slug                  = $this->slugify($title, $delimiter);
             $extensions_authorized = array(
                 "gif",
                 "png",
@@ -79,64 +77,62 @@ class ControllerExtendedcardsadmin extends Controller
                 "jpeg"
             );
             $extension_upload      = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-            $time                  = date("Y-m-d-H-i-s") . "-";
-            $delimiter             = '-';
-            $slug                  = $this->slugify($title, $delimiter);
-            $itemimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
-            $itemimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $itemimagename);
-            $itemimagename         = "{$time}$slug.{$extension_upload}";
-            $destination           = ROOT_PATH . 'public/images/extendedcard_images';
-
             if (isset($_POST['draft'])) {
                 $draft = "no";
             }
-
             if (empty($title) || empty($content)) {
-                $errors['errors'] = 'Veuillez remplir les champs <strong>Titre et Contenu</strong>';
+                $errors['errors'] = 'Veuillez remplir les champs <strong>Titre et Description</strong>';
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
                     header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardadditem');
                     exit;
                 }
             }
+            if (!empty($_FILES['image']['tmp_name']) && file_exists($_FILES['image']['tmp_name'])) {
+                $fileinfo      = @getimagesize($_FILES["image"]["tmp_name"]);
+                $width         = $fileinfo[0];
+                $height        = $fileinfo[1];
+                $time          = date("Y-m-d-H-i-s") . "-";
+                $width         = $fileinfo[0];
+                $height        = $fileinfo[1];
+                $time          = date("Y-m-d-H-i-s") . "-";
+                $itemimagename = str_replace(' ', '-', strtolower($_FILES['image']['name']));
+                $itemimagename = preg_replace("/\.[^.\s]{3,4}$/", "", $itemimagename);
+                $itemimagename = "{$time}$slug.{$extension_upload}";
+                $destination   = ROOT_PATH . 'public/images/extendedcard_images';
+                if (!in_array($extension_upload, $extensions_authorized)) {
+                    $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardadditem');
+                        exit;
+                    }
+                } else if (($_FILES["image"]["size"] > 1000000)) {
+                    $errors['errors'] = 'Le fichier est trop lourd.';
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardadditem');
+                        exit;
+                    }
+                } else if ($width < "800" && $height < "600") {
+                    $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardadditem');
+                        exit;
+                    }
+                } else {
+                    move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
+                    $this->item->insertItemImage($id_user, $id_category, $title, $slug, $content, $itemimagename, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft);
+                    $this->message->extendedCardCreated();
 
-            else if (!file_exists($_FILES["image"]["tmp_name"])) {
+                }
+            } else {
                 $this->item->insertItem($id_user, $id_category, $title, $slug, $content, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft);
                 $this->message->extendedCardCreated();
             }
-
-            else if (!in_array($extension_upload, $extensions_authorized)) {
-                $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardadditem');
-                    exit;
-                }
-            } else if (($_FILES["image"]["size"] > 1000000)) {
-                $errors['errors'] = 'Le fichier est trop lourd.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardadditem');
-                    exit;
-                }
-            } else if ($width < "800" && $height < "600") {
-                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardadditem');
-                    exit;
-                }
-            }
-
-            else {
-                move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->insertItemImage($id_user, $id_category, $title, $slug, $content, $itemimagename, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft);
-                $this->message->extendedCardCreated();
-
-            }
         }
     }
-
 
     // READ
 
@@ -150,52 +146,11 @@ class ControllerExtendedcardsadmin extends Controller
         } else {
             $items_current_page = 1;
         }
-        if (isset($_POST['catid']) && is_numeric($_POST['catid'])) {
-            $id_category = intval($_POST['catid']);
-        } else {
-            $id_category = 0;
-        }
-        $items  = $this->item->getItemsForAdmin($items_current_page);
-        $categories            = $this->category->getCategoriesAdmin();
+        $items                 = $this->item->getItemsForAdmin($items_current_page);
         $page_previous_items   = $items_current_page - 1;
         $page_next_items       = $items_current_page + 1;
         $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtAdmin();
         $this->generateadminView(array(
-            'items' => $items,
-            'id_category' => $id_category,
-            'categories' => $categories,
-            'number_of_items' => $number_of_items,
-            'items_current_page' => $items_current_page,
-            'page_previous_items' => $page_previous_items,
-            'page_next_items' => $page_next_items,
-            'number_of_items_pages' => $number_of_items_pages
-        ));
-    }
-
-
-    // Affichage de la page Extended Cards en Admnin - Partie en Ajax :
-    public function filtercategory()
-    {
-        if (isset($_GET['catid']) && is_numeric($_GET['catid'])) {
-            $id_category = intval($_GET['catid']);
-        } else {
-            $id_category = 0;
-        }
-        $number_of_items = $this->calculate->getTotalOfItemsFromCatFront($id_category);
-        if (null != $this->request->ifParameter("id")) {
-            $items_current_page = $this->request->getParameter("id");
-        } else {
-            $items_current_page = 1;
-        }
-        $categories            = $this->category->getCategoriesAdmin();
-        $category              = $this->category->getCategory($id_category);
-        $items                 = $this->item->getItemsForCategory($id_category, $items_current_page);
-        $page_previous_items   = $items_current_page - 1;
-        $page_next_items       = $items_current_page + 1;
-        $number_of_items_pages = $this->calculate->getNumberOfPagesOfExtAdminSelected($id_category);
-        $this->generateadminView(array(
-            'category' => $category,
-            'categories' => $categories,
             'items' => $items,
             'number_of_items' => $number_of_items,
             'items_current_page' => $items_current_page,
@@ -224,31 +179,34 @@ class ControllerExtendedcardsadmin extends Controller
 
     // UPDATE
 
+
     // Modification d'une Extended Card :
     public function updateitem()
     {
         if (isset($_POST["update"])) {
-            $id_item               = $this->request->getParameter("id");
-            $id_category           = $_POST['catid'];
-            $draft                 = "yes";
-            $title                 = $this->request->getParameter("title");
-            $slug                  = $_POST['slug'];
-            $content               = $this->request->getParameter("content");
-            $owner                 = $_POST['owner'];
-            $date_native           = $_POST['date_native'];
-            $year_native           = $_POST['year_native'];
-            $licence               = $_POST['licence'];
-            $os_supported          = $_POST['os_supported'];
-            $sgbdr                 = $_POST['sgbdr'];
-            $number_of_users       = $_POST['number_of_users'];
-            $pdm                   = $_POST['pdm'];
-            $langage               = $_POST['langage'];
-            $features              = $_POST['features'];
-            $last_news             = $_POST['last_news'];
-            $version               = $_POST['version'];
-            $fileinfo              = @getimagesize($_FILES["image"]["tmp_name"]);
-            $width                 = $fileinfo[0];
-            $height                = $fileinfo[1];
+            $id_item         = $this->request->getParameter("id");
+            $id_category     = $_POST['catid'];
+            $draft           = "yes";
+            $title           = $this->request->getParameter("title");
+            $slug            = $_POST['slug'];
+            $content         = $this->request->getParameter("content");
+            $owner           = $_POST['owner'];
+            $date_native     = $_POST['date_native'];
+            $year_native     = $_POST['year_native'];
+            $licence         = $_POST['licence'];
+            $os_supported    = $_POST['os_supported'];
+            $sgbdr           = $_POST['sgbdr'];
+            $number_of_users = $_POST['number_of_users'];
+            $pdm             = $_POST['pdm'];
+            $langage         = $_POST['langage'];
+            $features        = $_POST['features'];
+            $last_news       = $_POST['last_news'];
+            $version         = $_POST['version'];
+            $delimiter       = '-';
+            $slug            = $this->slugify($title, $delimiter);
+            if (isset($_POST['draft'])) {
+                $draft = "no";
+            }
             $extensions_authorized = array(
                 "gif",
                 "png",
@@ -256,46 +214,44 @@ class ControllerExtendedcardsadmin extends Controller
                 "jpeg"
             );
             $extension_upload      = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-            $time                  = date("Y-m-d-H-i-s") . "-";
-            $delimiter             = '-';
-            $slug                  = $this->slugify($title, $delimiter);
-            $itemimagename         = str_replace(' ', '-', strtolower($_FILES['image']['name']));
-            $itemimagename         = preg_replace("/\.[^.\s]{3,4}$/", "", $itemimagename);
-            $itemimagename         = "{$time}$slug.{$extension_upload}";
-            $destination           = ROOT_PATH . 'public/images/extendedcard_images';
-
-            if (isset($_POST['draft'])) {
-                $draft = "no";
-            }
-
-            if (!file_exists($_FILES["image"]["tmp_name"])) {
-                $messages = array();
-                $this->item->changeItem($id_category, $title, $slug, $content, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft, $id_item);
-                $this->message->extendedCardUpdated($id_item);
-            } else if (!in_array($extension_upload, $extensions_authorized)) {
-                $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardread/' . $id_item);
-                    exit;
-                }
-            } else if (($_FILES["image"]["size"] > 1000000)) {
-                $errors['errors'] = 'Le fichier est trop lourd.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardread/' . $id_item);
-                    exit;
-                }
-            } else if ($width < "800" && $height < "600") {
-                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_ADMIN_URL . 'extendedcards/extendedcardread/' . $id_item);
-                    exit;
+            if (!empty($_FILES['image']['tmp_name']) && file_exists($_FILES['image']['tmp_name'])) {
+                $fileinfo      = @getimagesize($_FILES["image"]["tmp_name"]);
+                $width         = $fileinfo[0];
+                $height        = $fileinfo[1];
+                $time          = date("Y-m-d-H-i-s") . "-";
+                $itemimagename = str_replace(' ', '-', strtolower($_FILES['image']['name']));
+                $itemimagename = preg_replace("/\.[^.\s]{3,4}$/", "", $itemimagename);
+                $itemimagename = "{$time}$slug.{$extension_upload}";
+                $destination   = ROOT_PATH . 'public/images/extendedcard_images';
+                if (!in_array($extension_upload, $extensions_authorized)) {
+                    $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardread/' . $id_item);
+                        exit;
+                    }
+                } else if (($_FILES["image"]["size"] > 1000000)) {
+                    $errors['errors'] = 'Le fichier est trop lourd.';
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardread/' . $id_item);
+                        exit;
+                    }
+                } else if ($width < "800" && $height < "600") {
+                    $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_ADMIN_URL . 'extendedcardsadmin/extendedcardread/' . $id_item);
+                        exit;
+                    }
+                } else {
+                    move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
+                    $this->item->changeItemImage($id_category, $title, $slug, $content, $itemimagename, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft, $id_item);
+                    $this->message->extendedCardUpdated($id_item);
                 }
             } else {
-                move_uploaded_file($_FILES['image']['tmp_name'], $destination . "/" . $itemimagename);
-                $this->item->changeItemImage($id_category, $title, $slug, $content, $itemimagename, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $draft, $version, $id_item);
+                $messages = array();
+                $this->item->changeItem($id_category, $title, $slug, $content, $owner, $date_native, $year_native, $licence, $os_supported, $sgbdr, $number_of_users, $pdm, $langage, $features, $last_news, $version, $draft, $id_item);
                 $this->message->extendedCardUpdated($id_item);
             }
         }
@@ -372,6 +328,5 @@ class ControllerExtendedcardsadmin extends Controller
         setlocale(LC_ALL, $oldLocale);
         return $clean;
     }
-
 
 }

@@ -10,19 +10,7 @@
 <?php require __DIR__ . '/../errors/confirmation.php'; ?>
 <div class="table-responsive">
   <h2 id="lastitems">Extended Cards Publiées</h2>
-	<div>
-		<select id="items-list" class="form-select mt-4 mb-4 custom-select" autocomplete="off">
-				<?php
-				if (isset($_POST['catid']) && is_numeric($_POST['catid'])) {
-            $id_category = intval($_POST['catid']);
-						}
-						else {?><option>Filtrer par Catégorie</option><?php
-							foreach($categories as $category)
-						{
-							echo '<option data-url="'.BASE_ADMIN_URL.'extendedcardsadmin/'.$category['catid'].'/1" value = "'.$category['catid'].'">'.$category['catname'].'</option>';
-						} 	}				?>
-			</select>
-	</div>
+
 
 	<img width="30px" src="<?php echo BASE_URL; ?>public/images/icons/loading.gif" id="loader">
 	<div id="items-data"></div>

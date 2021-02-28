@@ -60,7 +60,6 @@ class ControllerUser extends Controller
                 $username       = $this->request->getParameter("username");
                 $pass           = $this->request->getParameter("pass");
                 $email          = $this->request->getParameter("email");
-
                 if ($responseData->success) {
                     $this->user->checkUser($username, $pass, $email);
                     ob_start();
@@ -150,10 +149,10 @@ class ControllerUser extends Controller
     {
         $id_user              = $this->request->getParameter("id");
         $user                 = $this->user->getUser($id_user);
-        $items_from_user       = $this->user->getUserExtendedCards($id_user);
+        $items_from_user      = $this->user->getUserExtendedCards($id_user);
         $number_of_items      = $this->calculate->getTotalOfItemsFront();
-        $number_of_cards       = $this->calculate->getTotalOfCards();
-        $number_of_links       = $this->calculate->getTotalOfLinks();
+        $number_of_cards      = $this->calculate->getTotalOfCards();
+        $number_of_links      = $this->calculate->getTotalOfLinks();
         $total_comments_count = $this->calculate->getTotalOfComments();
         $total_users_count    = $this->calculate->getTotalOfUsers();
         $this->generateView(array(
@@ -190,56 +189,54 @@ class ControllerUser extends Controller
     // Modification de la Tab "Infos" d'un User en Front :
     public function updateuserinfos()
     {
-      if (!empty($_POST['email'])) {
-        $email      = $this->request->getParameter("email");
-        $firstname             = $_POST["firstname"];
-        $name                  = $_POST["name"];
-        $city                  = $_POST["city"];
-        $linkedin              = $_POST["linkedin"];
-        $github                = $_POST["github"];
-        $twitter               = $_POST["twitter"];
-        $website               = $_POST["website"];
-        $date_birth            = $_POST["date_birth"];
-        $user       = $this->request->getSession()->getAttribut("user");
-        $this->user->changeUser($email, $firstname, $name, $city, $linkedin, $github,
-        $twitter, $website, $date_birth);
-        $this->message->userUpdated();
-        $user = $this->user->getUser($id_user);
-        if ($user === false) {
-            throw new Exception('Impossible de modifier l\' utilisateur !');
-        } else {
-            $this->request->getSession()->setAttribut("user", $user);
-            $this->generateView();
+        if (!empty($_POST['email'])) {
+            $email      = $this->request->getParameter("email");
+            $firstname  = $_POST["firstname"];
+            $name       = $_POST["name"];
+            $city       = $_POST["city"];
+            $linkedin   = $_POST["linkedin"];
+            $github     = $_POST["github"];
+            $twitter    = $_POST["twitter"];
+            $website    = $_POST["website"];
+            $date_birth = $_POST["date_birth"];
+            $user       = $this->request->getSession()->getAttribut("user");
+            $this->user->changeUser($email, $firstname, $name, $city, $linkedin, $github, $twitter, $website, $date_birth);
+            $this->message->userUpdated();
+            $user = $this->user->getUser($id_user);
+            if ($user === false) {
+                throw new Exception('Impossible de modifier l\' utilisateur !');
+            } else {
+                $this->request->getSession()->setAttribut("user", $user);
+                $this->generateView();
+            }
         }
     }
-}
 
     // Modification de la Tab "Mot de passe" d'un User en Front :
     public function updateuserpassword()
     {
-      if (!empty($_POST['pass']) && !empty($_POST['passcheck'])) {
-        $user       = $this->request->getSession()->getAttribut("user");
-        $pass       = $this->request->getParameter("pass");
-        $passcheck  = $this->request->getParameter("passcheck");
-        $this->user->checkUserPass($pass, $passcheck);
-        $this->message->userPasswordUpdated();
-        $user = $this->user->getUser($id_user);
-        if ($user === false) {
-            throw new Exception('Impossible de modifier l\' utilisateur !');
-        } else {
-            $this->request->getSession()->setAttribut("user", $user);
-            $this->generateView();
-          }
-    }
-        else {
-          $errors['errors'] = 'Merci de renseigner le mot de passe dans les deux champs';
-          if (!empty($errors)) {
-              $_SESSION['errors'] = $errors;
-              header('Location: ' . BASE_URL . 'user/useredit#password');
-              exit;
-              }
+        if (!empty($_POST['pass']) && !empty($_POST['passcheck'])) {
+            $user      = $this->request->getSession()->getAttribut("user");
+            $pass      = $this->request->getParameter("pass");
+            $passcheck = $this->request->getParameter("passcheck");
+            $this->user->checkUserPass($pass, $passcheck);
+            $this->message->userPasswordUpdated();
+            $user = $this->user->getUser($id_user);
+            if ($user === false) {
+                throw new Exception('Impossible de modifier l\' utilisateur !');
+            } else {
+                $this->request->getSession()->setAttribut("user", $user);
+                $this->generateView();
             }
-}
+        } else {
+            $errors['errors'] = 'Merci de renseigner le mot de passe dans les deux champs';
+            if (!empty($errors)) {
+                $_SESSION['errors'] = $errors;
+                header('Location: ' . BASE_URL . 'user/useredit#password');
+                exit;
+            }
+        }
+    }
 
     // Modification de la Tab "Identifiant" d'un User en Front :
     public function updateuserusername()
@@ -258,9 +255,8 @@ class ControllerUser extends Controller
         if (isset($_POST["update"])) {
             $errors                = array();
             $messages              = array();
-            $fileinfo              = @getimagesize($_FILES["avatar"]["tmp_name"]);
-            $width                 = $fileinfo[0];
-            $height                = $fileinfo[1];
+            $id_user               = $_SESSION['id_user'];
+            $time                  = date("Y-m-d-H-i-s");
             $extension_upload      = pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION);
             $extensions_authorized = array(
                 'jpg',
@@ -268,13 +264,14 @@ class ControllerUser extends Controller
                 'gif',
                 'png'
             );
-            $id_user               = $_SESSION['id_user'];
-            $time                  = date("Y-m-d-H-i-s");
-            $avatarname            = str_replace(' ', '-', strtolower($_FILES['avatar']['name']));
-            $avatarname            = preg_replace("/\.[^.\s]{3,4}$/", "", $avatarname);
-            $avatarname            = "{$time}-{$id_user}-avatar.{$extension_upload}";
-            $destination           = ROOT_PATH . 'public/images/avatars';
-
+            if (empty($_FILES['avatar']['tmp_name'])) {
+                $errors['errors'] = 'Aucune photo sélectionnée.';
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: ' . BASE_URL . 'user/');
+                    exit;
+                }
+            }
             if (!in_array($extension_upload, $extensions_authorized)) {
                 $errors['errors'] = 'L\'extension du fichier n\'est pas autorisée.';
                 if (!empty($errors)) {
@@ -282,24 +279,34 @@ class ControllerUser extends Controller
                     header('Location: ' . BASE_URL . 'user/');
                     exit;
                 }
-            } else if (($_FILES["avatar"]["size"] > 1000000)) {
-                $errors['errors'] = 'Le fichier est trop lourd.';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_URL . 'user/');
-                    exit;
+            }
+            if (!empty($_FILES['avatar']['tmp_name']) && file_exists($_FILES['avatar']['tmp_name'])) {
+                $fileinfo    = @getimagesize($_FILES["avatar"]["tmp_name"]);
+                $width       = $fileinfo[0];
+                $height      = $fileinfo[1];
+                $avatarname  = str_replace(' ', '-', strtolower($_FILES['avatar']['name']));
+                $avatarname  = preg_replace("/\.[^.\s]{3,4}$/", "", $avatarname);
+                $avatarname  = "{$time}-{$id_user}-avatar.{$extension_upload}";
+                $destination = ROOT_PATH . 'public/images/avatars';
+                if (($_FILES["avatar"]["size"] > 1000000)) {
+                    $errors['errors'] = 'Le fichier est trop lourd.';
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_URL . 'user/');
+                        exit;
+                    }
+                } else if ($width < "800" && $height < "600") {
+                    $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
+                    if (!empty($errors)) {
+                        $_SESSION['errors'] = $errors;
+                        header('Location: ' . BASE_URL . 'user/');
+                        exit;
+                    }
+                } else {
+                    move_uploaded_file($_FILES['avatar']['tmp_name'], $destination . "/" . $avatarname);
+                    $newAvatar = $this->user->changeAvatar($avatarname);
+                    $this->message->userAvatarUpdated();
                 }
-            } else if ($width < "800" && $height < "600") {
-                $errors['errors'] = 'Les dimensions sont trop petites. <br>Minimum : 800 X 600 px';
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: ' . BASE_URL . 'user/');
-                    exit;
-                }
-            } else {
-                move_uploaded_file($_FILES['avatar']['tmp_name'], $destination . "/" . $avatarname);
-                $newAvatar = $this->user->changeAvatar($avatarname);
-                $this->message->userAvatarUpdated();
             }
         }
     }

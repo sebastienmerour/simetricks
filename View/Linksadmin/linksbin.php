@@ -28,11 +28,11 @@
 	      while ($link = $links_deleted->fetch()) {
 	      ?>
 	      <tr>
-	        <td><h6 class="mt-2 text-left"><a href="<?= BASE_ADMIN_URL.'links/linkread/' . $this->clean($link['id']) ?>">
+	        <td><h6 class="mt-2 text-left"><a href="<?= BASE_ADMIN_URL.'linksadmin/linkread/' . $this->clean($link['id']) ?>">
 	        <?= $this->clean($link['name']); ?></a></span></td>
 					<td><h6 class="mt-2 text-left"><?= $this->clean($link['url']); ?></h6></td>
-	        <td><a href="<?= BASE_ADMIN_URL. 'links/restorethislink/' . $this->clean($link['id'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
-	        <td><a href="<?= BASE_ADMIN_URL. 'links/removelink/' . $this->clean($link['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer définitivement</a></td>
+	        <td><a href="<?= BASE_ADMIN_URL. 'linksadmin/restorethislink/' . $this->clean($link['id'])?>" role="button" class="btn btn-sm btn-success">Restaurer</a></td>
+	        <td><a href="<?= BASE_ADMIN_URL. 'linksadmin/removelink/' . $this->clean($link['id'])?>" role="button" class="btn btn-sm btn-danger">Supprimer définitivement</a></td>
 	      </tr>
 	      <?php
 	        }
@@ -41,7 +41,7 @@
 	  </table>
 		<div class="d-flex flex-row-reverse btn-toolbar mb-3 mb-md-0">
 			<div class="btn-group mr-2">
-				<a href="<?= BASE_ADMIN_URL; ?>links/emptylinks" role="button" class="float-right btn btn-sm btn-dark">Vider la Corbeille</a>
+				<a href="<?= BASE_ADMIN_URL; ?>linksadmin/emptylinks" role="button" class="float-right btn btn-sm btn-dark">Vider la Corbeille</a>
 			</div>
 		</div>
 	</div>

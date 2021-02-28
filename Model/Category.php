@@ -18,10 +18,10 @@ class Category extends Model
     // Création d'une nouvelle catégorie :
     public function insertCategory($name, $slugcategory, $description)
     {
-        $sql                      = 'INSERT INTO categories (name, slug, description)
+        $sql        = 'INSERT INTO categories (name, slug, description)
                      VALUES
                       (:name, :slug, :description)';
-        $categories               = $this->dbConnect($sql, array(
+        $categories = $this->dbConnect($sql, array(
             ':name' => $name,
             ':slug' => $slugcategory,
             ':description' => $description
@@ -41,37 +41,27 @@ class Category extends Model
      GROUP BY categories.id
      HAVING categories.bin != "yes"
      ORDER BY categories.name ASC LIMIT 0, 100';
-     $categories = $this->dbConnect($sql);
-     if ($categories->rowCount() > 0)
-                return $categories;
-            else
-              throw new Exception("Aucune Catégorie trouvée.");
- }
-
-    public function getCategoriesAdmin()
-    {
-        $sql        = 'SELECT categories.id AS catid, categories.name AS catname, categories.slug AS catslug,
-    categories.description AS catdesc, categories.bin AS catbin
-    FROM categories
-    WHERE categories.bin != "yes"
-    ORDER BY catname ASC';
         $categories = $this->dbConnect($sql);
-        return $categories;
+        if ($categories->rowCount() > 0)
+            return $categories;
+        else
+            throw new Exception("Aucune Catégorie trouvée.");
     }
+
 
     // Afficher une Catégorie en particulier :
     public function getCategory($id_category)
     {
-        $sql      = 'SELECT id AS catid, name, slug, description, bin
+        $sql = 'SELECT id AS catid, name, slug, description, bin
         FROM categories
         WHERE id = ? ';
-        $req      = $this->dbConnect($sql, array(
+        $req = $this->dbConnect($sql, array(
             $id_category
         ));
         if ($req->rowCount() == 1)
-                   return $category = $req->fetch();
-               else
-                 throw new Exception("Cette Catégorie n'existe pas.");
+            return $category = $req->fetch();
+        else
+            throw new Exception("Cette Catégorie n'existe pas.");
     }
 
     // Afficher la liste des Catégories Supprimées :
@@ -93,9 +83,9 @@ class Category extends Model
     // Modification d'une catégorie :
     public function changeCategory($id_category, $name, $slugcategory, $description)
     {
-        $sql                      = 'UPDATE categories SET name = :name, slug = :slug, description = :description
+        $sql      = 'UPDATE categories SET name = :name, slug = :slug, description = :description
         WHERE id = :id_category';
-        $category                 = $this->dbConnect($sql, array(
+        $category = $this->dbConnect($sql, array(
             ':id_category' => $id_category,
             ':slug' => $slugcategory,
             ':name' => $name,
@@ -106,9 +96,9 @@ class Category extends Model
     // Restaurer une Catégorie depuis la Corbeille
     public function restoreCategory($id_category)
     {
-        $bin                      = "no";
-        $sql                      = 'UPDATE categories SET bin = :bin WHERE id = :id';
-        $restore                  = $this->dbConnect($sql, array(
+        $bin     = "no";
+        $sql     = 'UPDATE categories SET bin = :bin WHERE id = :id';
+        $restore = $this->dbConnect($sql, array(
             ':id' => $id_category,
             ':bin' => $bin
         ));
@@ -119,9 +109,9 @@ class Category extends Model
     // Déplacement d'une catégorie vers la Corbeille
     public function moveCategory($id_category)
     {
-        $bin                      = "yes";
-        $sql                      = 'UPDATE categories SET bin = :bin WHERE id = :id';
-        $move                     = $this->dbConnect($sql, array(
+        $bin  = "yes";
+        $sql  = 'UPDATE categories SET bin = :bin WHERE id = :id';
+        $move = $this->dbConnect($sql, array(
             ':id' => $id_category,
             ':bin' => $bin
         ));
@@ -149,6 +139,5 @@ class Category extends Model
         ));
         $req->execute();
     }
-
-
+    
 }
